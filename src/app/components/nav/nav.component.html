@@ -1,0 +1,30 @@
+<mat-toolbar>
+    <span><img src="assets/img/logo-janfer.svg" alt="logo da janfer sport e beach"></span>
+    <button mat-button class="button-primary" color="primary">
+      <fa-icon [icon]="faMagfyingGlass"></fa-icon>
+      Consulta
+    </button>
+
+    <button mat-button class="button-primary" color="primary" >
+      <fa-icon [icon]="faClipBoardList"></fa-icon>
+      Produto
+    </button>
+
+    <button mat-button class="button-primary" color="primary" >Entrada</button>
+
+    <button mat-button class="button-primary" color="primary" >Saida</button>
+
+    <button mat-button class="button-primary" color="primary" >Perda</button>
+
+    <button mat-button class="button-primary" color="primary" routerLink="/fornecedor">
+      <fa-icon [icon]="faDolly"></fa-icon>
+      Fornecedor
+    </button>
+
+    <button mat-button class="button-primary" color="primary" >Ordem de Compra</button>
+
+  </mat-toolbar>
+
+<div class="toolbar-content">
+    <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,54 @@
+<div class="container mat-elevation-z8">
+    <h1 class="full-width">Atualizar Fornecedor</h1>
+    <form class="form">
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Empresa</mat-label>
+            <input matInput [formControl]="empresa" [(ngModel)]="fornecedor.empresa" name="empresa" required placeholder="Ex: Ramatex" maxlength="50">
+            <mat-icon matSuffix>business_center</mat-icon>
+        </mat-form-field>
+    
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input [(ngModel)]="fornecedor.nome" name="nome" matInput [formControl]="nome" required placeholder="Ex. João" maxlength="50">
+            <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+  
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Selecione o Tipo</mat-label>
+            <mat-select [(ngModel)]="fornecedor.tipoEmpresa" name="tipoEmpresa" [formControl]="tipoEmpresa" required>
+                <mat-option [value]="'0'">FORNECEDOR</mat-option>
+                <mat-option [value]="'1'">CLIENTE</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+   
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>E-Mail</mat-label>
+            <input [(ngModel)]="fornecedor.email" name="email" matInput [formControl]="email" required placeholder="Ex. exemplo@exemplo.com.br">
+            <mat-icon matSuffix>contact_mail</mat-icon>
+        </mat-form-field>
+   
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Telefone</mat-label>
+            <input [(ngModel)]="fornecedor.telefone" name="telefone" matInput [formControl]="telefone" required placeholder="Ex. (47) 9 9999-9999" mask="(00) 0000-0000">
+            <mat-icon matSuffix>dialpad</mat-icon>
+        </mat-form-field>
+   
+        <mat-form-field class="full-width" appearance="fill">
+            <mat-label>Endereço</mat-label>
+            <input [(ngModel)]="fornecedor.endereco" name="endereco" matInput [formControl]="endereco" required placeholder="Ex. Ramatex">
+            <mat-icon matSuffix>pin_drop</mat-icon>
+        </mat-form-field>
+        
+        <mat-radio-group color="primary" [(ngModel)]="fornecedor.ativo" [ngModelOptions]="{standalone: true}">
+            <mat-radio-button [value]="true" >Ativo</mat-radio-button>
+            <mat-radio-button [value]="false" >Inativo</mat-radio-button>
+        </mat-radio-group>
+   
+    <button (click)="update()" [disabled]="!fieldValidate()" class="full-width mat-elevation-z4" mat-raised-button color="primary">Atualizar</button>
+    <button class="full-width mat-elevation-z4" mat-stroked-button color="warn" routerLink="../../">Cancelar</button>
+
+</form>
+    <P class="full-width" >Development by Clóvis Junior</P>
+
+</div>
