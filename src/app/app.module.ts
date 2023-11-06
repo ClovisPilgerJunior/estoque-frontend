@@ -33,22 +33,22 @@ import { ToastrModule } from 'ngx-toastr';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { NavComponent } from './components/nav/nav.component';
-import { EntradaCadastroComponent } from './components/entrada-cadastro/entrada-cadastro.component';
 import { FornecedorConsultaComponent } from './components/fornecedor/fornecedor-consultar/fornecedor-consultar.component';
 import { FornecedorCadastroComponent } from './components/fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor-atualizar/fornecedor-atualizar.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
-    EntradaCadastroComponent,
     FornecedorConsultaComponent,
     FornecedorCadastroComponent,
     FornecedorAtualizarComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    ProdutoCapaListarComponent
   ],
   imports: [
     BrowserModule,

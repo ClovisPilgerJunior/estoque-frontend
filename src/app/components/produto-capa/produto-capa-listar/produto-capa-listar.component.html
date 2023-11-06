@@ -1,0 +1,94 @@
+<div class="container">
+  <h1>Listar Produto Capa</h1>
+  <button routerLink="cadastrar" mat-raised-button color="primary">
+    Cadastrar Produto Capa
+  </button>
+  <mat-form-field>
+    <mat-label>Filtro</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex: Ramatex"
+      #input
+    />
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <!-- Po- Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Po- Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+      </ng-container>
+
+      <!-- Po- Column -->
+      <ng-container matColumnDef="tipoProduto">
+        <th mat-header-cell *matHeaderCellDef>Tipo Produto</th>
+        <td mat-cell *matCellDef="let element">{{ element.tipoProduto }}</td>
+      </ng-container>
+
+      <!-- Po- Column -->
+      <ng-container matColumnDef="medidaUnidade">
+        <th mat-header-cell *matHeaderCellDef>Unidade de Medida</th>
+        <td mat-cell *matCellDef="let element">{{ element.medidaUnidade }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="fornecedor">
+        <th mat-header-cell *matHeaderCellDef>Fornecedor</th>
+        <td mat-cell *matCellDef="let element">{{ element.fornecedor.empresa }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="minimo">
+        <th mat-header-cell *matHeaderCellDef>Mínimo</th>
+        <td mat-cell *matCellDef="let element">{{ element.minimo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="maximo">
+        <th mat-header-cell *matHeaderCellDef>Máximo</th>
+        <td mat-cell *matCellDef="let element">{{ element.maximo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="resuprimento">
+        <th mat-header-cell *matHeaderCellDef>Resuprimento</th>
+        <td mat-cell *matCellDef="let element">{{ element.resuprimento }}</td>
+      </ng-container>
+
+      <!-- Column -->
+      <ng-container matColumnDef="ativo">
+        <th mat-header-cell *matHeaderCellDef>Ativo</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.ativo; else inativo">Sim</span>
+          <ng-template #inativo>Não</ng-template>
+        </td>
+      </ng-container>
+
+      <!-- - Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let element">
+          <a routerLink="atualizar/{{ element.id }}">
+            <i class="material-icons edit">edit</i>
+          </a>
+          <a (click)="delete(element.id)" style="cursor: pointer">
+            <i class="material-icons delete">delete</i>
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons
+      aria-label="Selecione a quantidade de páginas"
+    >
+    </mat-paginator>
+  </div>
+</div>

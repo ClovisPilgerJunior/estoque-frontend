@@ -1,13 +1,17 @@
+export class FornecedorDTO {
+  id: number;
+  empresa: string;
+  nome: string;
+}
+
 export class ProdutoCapa {
-    id: number;
-    description: string;
-    tipoProduto: string;
-    medidaUnidade: string;
-    fornecedor: string;
-    minimo: number;
-    maximo: number;
-    resuprimento: string;
-    ativo: boolean;
-  }
-  
-  
+  id?: any;
+  description: string;
+  tipoProduto: string;
+  medidaUnidade: string;
+  fornecedor: FornecedorDTO; // Agora, fornecedor é do tipo Fornecedor
+  minimo: number;
+  maximo: number;
+  resuprimento: string;
+  ativo: boolean;
+}
