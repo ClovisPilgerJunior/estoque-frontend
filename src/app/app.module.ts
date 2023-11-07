@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 
 // Imports para componentes do Angular Material
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -39,6 +40,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor-atualizar/fornecedor-atualizar.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
+import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto-capa-cadastrar/produto-capa-cadastrar.component';
 
 @NgModule({
   declarations: [
@@ -48,12 +50,14 @@ import { ProdutoCapaListarComponent } from './components/produto-capa/produto-ca
     FornecedorCadastroComponent,
     FornecedorAtualizarComponent,
     ConfirmationDialogComponent,
-    ProdutoCapaListarComponent
+    ProdutoCapaListarComponent,
+    ProdutoCapaCadastrarComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatAutocompleteModule,
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,

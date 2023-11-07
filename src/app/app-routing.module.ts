@@ -1,4 +1,5 @@
-import { NgModule } from '@angular/core';
+import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto-capa-cadastrar/produto-capa-cadastrar.component';
+import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NavComponent } from './components/nav/nav.component';
 import { FornecedorConsultaComponent } from './components/fornecedor/fornecedor-consultar/fornecedor-consultar.component';
@@ -11,6 +12,7 @@ const routes: Routes = [
   path: '',
   component: NavComponent, children: [
     { path: 'produtoCapa', component: ProdutoCapaListarComponent },
+    { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent},
 
     { path: 'fornecedor', component: FornecedorConsultaComponent },
     { path: 'fornecedor/cadastrar', component: FornecedorCadastroComponent },
