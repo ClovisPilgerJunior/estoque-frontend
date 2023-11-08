@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { FornecedorDTO, ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
+import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 
 @Component({
   selector: 'app-produto-capa-cadastrar',
@@ -26,13 +26,16 @@ export class ProdutoCapaCadastrarComponent {
   }
 
 
-  fornecedor: FornecedorDTO[] = []
+  fornecedor: fornecedor[] = []
 
   findAllFornecedor(): void {
-    this.fornecedorService.findAllDTO().subscribe(response => {
-      this.fornecedor = response
-    })
+    this.fornecedorService.findAll().subscribe(response => {
+      // Filtrar a lista de fornecedores para remover os inativos
+      this.fornecedor = response.filter(fornecedor => fornecedor.ativo === true);
+      console.log(this.fornecedor);
+    });
   }
+
 
   medidas = [
     { valor: 0, nome: 'UNIDADE' },
@@ -60,8 +63,9 @@ export class ProdutoCapaCadastrarComponent {
     private toast: ToastrService,
     private router: Router
   ) {
-    console.log(this.fieldValidate)
+
    this.findAllFornecedor()
+   console.log(this.findAllFornecedor())
   }
 
     description: FormControl = new FormControl(null, [Validators.required])

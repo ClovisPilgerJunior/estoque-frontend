@@ -41,6 +41,7 @@ import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
 import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto-capa-cadastrar/produto-capa-cadastrar.component';
+import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto-capa-atualizar/produto-capa-atualizar.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto
     FornecedorAtualizarComponent,
     ConfirmationDialogComponent,
     ProdutoCapaListarComponent,
-    ProdutoCapaCadastrarComponent
+    ProdutoCapaCadastrarComponent,
+    ProdutoCapaAtualizarComponent
   ],
   imports: [
     BrowserModule,
