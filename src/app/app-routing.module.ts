@@ -7,6 +7,7 @@ import { FornecedorCadastroComponent } from './components/fornecedor/fornecedor-
 import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor-atualizar/fornecedor-atualizar.component';
 import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
 import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto-capa-atualizar/produto-capa-atualizar.component';
+import { produtoCapaResolver } from './guards/produto-capa.resolver';
 
 const routes: Routes = [
 {
@@ -14,7 +15,9 @@ const routes: Routes = [
   component: NavComponent, children: [
     { path: 'produtoCapa', component: ProdutoCapaListarComponent },
     { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent},
-    { path: 'produtoCapa/atualizar/:id', component: ProdutoCapaAtualizarComponent},
+    { path: 'produtoCapa/atualizar/:id', component: ProdutoCapaAtualizarComponent, resolve: {
+      produtoCapa: produtoCapaResolver
+    }},
 
     { path: 'fornecedor', component: FornecedorConsultaComponent },
     { path: 'fornecedor/cadastrar', component: FornecedorCadastroComponent },

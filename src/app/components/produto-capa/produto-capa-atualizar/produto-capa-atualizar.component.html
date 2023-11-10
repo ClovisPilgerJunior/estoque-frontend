@@ -1,12 +1,12 @@
 <div class="container mat-elevation-z8">
   <h1 class="full-width">Atualizar Produto Capa</h1>
-  <form class="form">
+  <form class="form" [formGroup]="updateForm">
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Descrição</mat-label>
       <input
         matInput
-        [formControl]="description"
-        [(ngModel)]="produtoCapa.description"
+        formControlName="description"
+        #description
         name="description"
         required
         placeholder="Ex: botão de ouro"
@@ -17,21 +17,21 @@
 
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Tipo de Produto</mat-label>
-      <mat-select [(ngModel)]="produtoCapa.tipoProduto" name="tipoProduto" required>
+      <mat-select formControlName="tipoProduto" name="tipoProduto" required>
         <mat-option *ngFor="let option of produtos" [value]="option.valor">{{ option.nome }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Unidade Medida</mat-label>
-      <mat-select [(ngModel)]="produtoCapa.medidaUnidade" name="medidaUnidade" required>
+      <mat-select  name="medidaUnidade" required>
         <mat-option *ngFor="let option of medidas" [value]="option.valor">{{ option.nome }}</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field class="full-width" appearance="outline">
       <mat-label>Selecione uma Cliente</mat-label>
-      <mat-select [(ngModel)]="produtoCapa.fornecedor" name="fornecedor" [formControl]="fornecedorSelect" required>
+      <mat-select name="fornecedor" required>
           <mat-option *ngFor="let forenecedores of fornecedor" [value]="forenecedores.id">{{forenecedores.empresa}}</mat-option>
       </mat-select>
   </mat-form-field>
@@ -39,11 +39,8 @@
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Estoque Mínimo</mat-label>
       <input
-        [(ngModel)]="produtoCapa.minimo"
-        (ngModelChange)="updateMaximo()"
         name="minimo"
         matInput
-        [formControl]="minimo"
         required
         [mask]="'0*'"
         placeholder="Ex. 10"
@@ -54,10 +51,8 @@
     <mat-form-field class="full-width" appearance="fill">
       <mat-label>Estoque Máximo</mat-label>
       <input
-        [(ngModel)]="produtoCapa.maximo"
         name="maximo"
         matInput
-        [formControl]="maximo"
         required
         [mask]="'0*'"
         placeholder="Ex. 100"
@@ -66,19 +61,17 @@
     </mat-form-field>
 
     <button
-      (click)="update()"
-      [disabled]="!fieldValidate()"
       class="full-width mat-elevation-z4"
       mat-raised-button
       color="primary"
     >
-      Cadastrar
+      Atualizar
     </button>
     <button
       class="full-width mat-elevation-z4"
       mat-stroked-button
       color="warn"
-      routerLink=".."
+      (click)="onCancel()"
     >
       Cancelar
     </button>
