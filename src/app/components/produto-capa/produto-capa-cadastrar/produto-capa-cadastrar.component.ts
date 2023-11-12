@@ -1,4 +1,4 @@
-import { fornecedor } from 'src/app/models/Fornecedor';
+import { Fornecedor } from 'src/app/models/Fornecedor';
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,8 +16,8 @@ export class ProdutoCapaCadastrarComponent {
 
   produtoCapa: ProdutoCapa = {
     description: '',
-    tipoProduto: '',
-    medidaUnidade: '',
+    tipoProduto: null,
+    medidaUnidade: null,
     fornecedor: null,
     minimo: null,
     maximo: null,
@@ -25,8 +25,8 @@ export class ProdutoCapaCadastrarComponent {
     ativo: true
   }
 
-
-  fornecedor: fornecedor[] = []
+  fornecedor: Fornecedor[] = []
+  
 
   findAllFornecedor(): void {
     this.fornecedorService.findAll().subscribe(response => {

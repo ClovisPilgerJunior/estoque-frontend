@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { fornecedor } from 'src/app/models/Fornecedor';
+import { Fornecedor } from 'src/app/models/Fornecedor';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -16,10 +16,10 @@ import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmat
 export class FornecedorConsultaComponent {
   [x: string]: any;
 
-  ELEMENT_DATA: fornecedor[] = []
+  ELEMENT_DATA: Fornecedor[] = []
 
   displayedColumns: string[] = ['id', 'empresa', 'nome', 'tipoEmpresa', 'email', 'telefone', 'endereco', 'ativo', 'action'];
-  dataSource = new MatTableDataSource<fornecedor>(this.ELEMENT_DATA);
+  dataSource = new MatTableDataSource<Fornecedor>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -40,7 +40,7 @@ export class FornecedorConsultaComponent {
   findAll() {
     this.service.findAll().subscribe(response => {
       this.ELEMENT_DATA = response;
-      this.dataSource = new MatTableDataSource<fornecedor>(response);
+      this.dataSource = new MatTableDataSource<Fornecedor>(response);
       this.dataSource.paginator = this.paginator
     })
   }

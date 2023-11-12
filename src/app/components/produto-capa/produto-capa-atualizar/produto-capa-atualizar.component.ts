@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit, TrackByFunction } from '@angular/core';
 import { Location } from '@angular/common';
 import {
   FormBuilder,
@@ -8,52 +8,60 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { fornecedor } from 'src/app/models/Fornecedor';
+import { Fornecedor } from 'src/app/models/Fornecedor';
 import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Enum } from 'src/app/models/enum';
+
+interface testEnum {
+  valor: number;
+  nome: string;
+}
 
 @Component({
   selector: 'app-produto-capa-atualizar',
   templateUrl: './produto-capa-atualizar.component.html',
   styleUrls: ['./produto-capa-atualizar.component.scss'],
 })
-export class ProdutoCapaAtualizarComponent {
 
-  updateForm!: FormGroup;
+
+export class ProdutoCapaAtualizarComponent implements OnInit {
+
+  updateForm: FormGroup
+
+  produtoCapa: ProdutoCapa;
+
+
+  ngOnInit(): void {
+    this.updateForm.patchValue(this.data);
+
+
+  }
+
 
   constructor(
+    private dialogRef: MatDialogRef<ProdutoCapaAtualizarComponent>,
     private fb: FormBuilder,
-    private location: Location,
     private produtoCapaService: ProdutoCapaService,
     private fornecedorService: FornecedorService,
     private toast: ToastrService,
-    private route: ActivatedRoute,
-    private router: Router
-    ) {
-    this.findAllFornecedor();
-  }
-
-  ngOnInit(): void {
-    const produtoCapa: ProdutoCapa = this.route.snapshot.data['produtoCapa']
-    console.log(produtoCapa)
+    private router: Router,
+    @Inject(MAT_DIALOG_DATA) private data: any
+  ) {
     this.updateForm = this.fb.group({
-      description: [produtoCapa.description],
-      tipoProduto: [produtoCapa.tipoProduto]
-
-    })
-  }
-
-  fornecedor: fornecedor[] = [];
-
-  findAllFornecedor(): void {
-    this.fornecedorService.findAll().subscribe((response) => {
-      // Filtrar a lista de fornecedores para remover os inativos
-      this.fornecedor = response.filter(
-        (fornecedor) => fornecedor.ativo === true
-      );
-      console.log(this.fornecedor);
+      id: '',
+      description: '',
+      tipoProduto: null,
+      medidaUnidade: null,
+      fornecedor: null,
+      minimo: '',
+      maximo: '',
+      ativo: true
     });
+    this.findAllFornecedor();
+    console.log(data)
   }
 
   medidas = [
@@ -76,8 +84,54 @@ export class ProdutoCapaAtualizarComponent {
     { valor: 2, nome: 'DIVERSOS' },
   ];
 
-  onCancel() {
-    this.location.back();
+  listFornecedor: Fornecedor[]
+
+
+  converterProdutoValorNumerico(nome: string): number {
+    const produto = this.produtos.find(p => p.nome === nome);
+    return produto ? produto.valor : 0; // Substitua 0 pelo valor padrão se não encontrar
+  }
+
+  converterMedidaValorNumerico(nome: string): number {
+    const medida = this.medidas.find(p => p.nome === nome);
+    return medida ? medida.valor : 0; // Substitua 0 pelo valor padrão se não encontrar
+  }
+
+  converterParaValorNumerico(nome: string): number {
+    const fornecedor = this.listFornecedor.find(f => f.empresa === nome);
+    return fornecedor ? fornecedor.id : 0; // Substitua 0 pelo valor padrão se não encontrar
+  }
+
+  findAllFornecedor(): void {
+    this.fornecedorService.findAll().subscribe(response => {
+      // Filtrar a lista de fornecedores para remover os inativos
+      this.listFornecedor = response.filter(fornecedor => fornecedor.ativo === true);
+      console.log(this.listFornecedor);
+    });
+  }
+
+  onUpdate() {
+    // Copie os valores do formulário para evitar alterações indesejadas
+    const formData = { ...this.updateForm.value };
+
+    // Converta o tipoProduto de volta para o valor numérico antes de enviar para o serviço
+    formData.tipoProduto = this.converterProdutoValorNumerico(formData.tipoProduto);
+    formData.medidaUnidade = this.converterMedidaValorNumerico(formData.medidaUnidade);
+    formData.fornecedor = this.converterParaValorNumerico(formData.fornecedor)
+
+
+    this.produtoCapaService.update(formData).subscribe({
+      next: (val: any) => {
+        console.log(val)
+        this.dialogRef.close();
+          this.toast.success('Produto Capa atualizado com sucesso', );
+          this.router.navigate(['produtoCapa'])
+        },
+        error: ex => {
+          console.log(ex)
+          this.toast.error(ex.error.message);
+        }
+    })
   }
 
 }

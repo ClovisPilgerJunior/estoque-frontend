@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { fornecedor } from 'src/app/models/Fornecedor';
+import { Fornecedor } from 'src/app/models/Fornecedor';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { FornecedorService } from 'src/app/services/fornecedor.service';
 })
 export class FornecedorAtualizarComponent {
 
-  fornecedor: fornecedor = {
+  fornecedor: Fornecedor = {
     empresa: '',
     nome: '',
     tipoEmpresa: '',

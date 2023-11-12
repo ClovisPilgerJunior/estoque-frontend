@@ -3,7 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject, map } from 'rxjs';
-import { fornecedor } from 'src/app/models/Fornecedor';
+import { Fornecedor } from 'src/app/models/Fornecedor';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { FornecedorService } from 'src/app/services/fornecedor.service';
 })
 export class FornecedorCadastroComponent implements OnInit {
 
-  fornecedor: fornecedor = {
+  fornecedor: Fornecedor = {
     empresa: '',
     nome: '',
     tipoEmpresa: '',

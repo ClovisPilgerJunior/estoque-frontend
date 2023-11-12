@@ -71,7 +71,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Ações</th>
         <td mat-cell *matCellDef="let element">
-          <a routerLink="atualizar/{{ element.id }}">
+          <a (click)="onEditForm(element)"  style="cursor: pointer">
             <i class="material-icons edit">edit</i>
           </a>
           <a (click)="delete(element.id)" style="cursor: pointer">
