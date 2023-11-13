@@ -1,8 +1,5 @@
 <div class="container">
   <h1>Listar Produto Capa</h1>
-  <button routerLink="cadastrar" mat-raised-button color="primary">
-    Cadastrar Produto Capa
-  </button>
   <mat-form-field>
     <mat-label>Filtro</mat-label>
     <input
@@ -49,6 +46,36 @@
         <td mat-cell *matCellDef="let element">{{ element.fornecedor }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="entradas">
+        <th mat-header-cell *matHeaderCellDef>Entradas</th>
+        <td mat-cell *matCellDef="let element">{{ element.entradas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="saidas">
+        <th mat-header-cell *matHeaderCellDef>saidas
+        <td mat-cell *matCellDef="let element">{{ element.saidas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="perdas">
+        <th mat-header-cell *matHeaderCellDef>Perdas</th>
+        <td mat-cell *matCellDef="let element">{{ element.perdas }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="saldo">
+        <th mat-header-cell *matHeaderCellDef>Saldo</th>
+        <td mat-cell *matCellDef="let element">{{ element.saldo }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="valorCompra">
+        <th mat-header-cell *matHeaderCellDef>Preço Un.</th>
+        <td mat-cell *matCellDef="let element">{{ element.valorCompra |  currency:'BRL ':'symbol-narrow':'1.1-2'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="valorTotal">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency:'BRL ':'symbol-narrow':'1.1-2'}}</td>
+      </ng-container>
+
       <ng-container matColumnDef="minimo">
         <th mat-header-cell *matHeaderCellDef>Mínimo</th>
         <td mat-cell *matCellDef="let element">{{ element.minimo }}</td>
@@ -73,18 +100,6 @@
         </td>
       </ng-container>
 
-      <!-- - Column -->
-      <ng-container matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>Ações</th>
-        <td mat-cell *matCellDef="let element">
-          <a (click)="onEditForm(element)" style="cursor: pointer">
-            <i class="material-icons edit">edit</i>
-          </a>
-          <a (click)="delete(element.id)" style="cursor: pointer">
-            <i class="material-icons delete">delete</i>
-          </a>
-        </td>
-      </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

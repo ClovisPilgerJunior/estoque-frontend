@@ -5,57 +5,105 @@
   <div mat-dialog-content>
     <div class="row">
       <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Codigo Interno</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          placeholder="Ex: 1"
+          maxlength="50"
+          formControlName="codSistema"
+        />
+
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
         <mat-label>Descrição</mat-label>
-        <input matInput type="text" required placeholder="Ex: botão de ouro" maxlength="50"
-          formControlName="description">
-        <mat-icon matSuffix>business_center</mat-icon>
+        <input
+          matInput
+          type="text"
+          required
+          placeholder="Ex: botão de ouro"
+          maxlength="50"
+          formControlName="description"
+        />
+
       </mat-form-field>
+
+      <div class="tipos">
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de Produto</mat-label>
+          <mat-select formControlName="tipoProduto" required>
+            <mat-option *ngFor="let option of produtos" [value]="option.nome">{{
+              option.nome
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Unidade Medida</mat-label>
+          <mat-select formControlName="medidaUnidade" required>
+            <mat-option *ngFor="let option of medidas" [value]="option.nome">{{
+              option.nome
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
       <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Tipo de Produto</mat-label>
-        <mat-select  formControlName="tipoProduto" required>
-          <mat-option  *ngFor="let option of produtos"  [value]="option.nome">{{ option.nome }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Unidade Medida</mat-label>
-        <mat-select formControlName="medidaUnidade" required>
-          <mat-option *ngFor="let option of medidas" [value]="option.nome">{{ option.nome }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="full-width" appearance="outline">
         <mat-label>Selecione uma Cliente</mat-label>
         <mat-select formControlName="fornecedor" required>
-          <mat-option *ngFor="let fornecedores of listFornecedor" [value]="fornecedores.empresa">
-            {{fornecedores.empresa}}
+          <mat-option
+            *ngFor="let fornecedores of listFornecedor"
+            [value]="fornecedores.empresa"
+          >
+            {{ fornecedores.empresa }}
           </mat-option>
         </mat-select>
-       </mat-form-field>
-
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Estoque Mínimo</mat-label>
-        <input formControlName="minimo" matInput required [mask]="'0*'" placeholder="Ex. 10" type="number">
-        <mat-icon matSuffix>pin_drop</mat-icon>
       </mat-form-field>
+      <div class="tipos">
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Estoque Mínimo</mat-label>
+          <input
+            formControlName="minimo"
+            matInput
+            required
+            [mask]="'0*'"
+            placeholder="Ex. 10"
+            type="number"
+          />
+        </mat-form-field>
 
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Estoque Máximo</mat-label>
-        <input formControlName="maximo" matInput ired [mask]="'0*'" placeholder="Ex. 100" type="number">
-        <mat-icon matSuffix>pin_drop</mat-icon>
-      </mat-form-field>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Estoque Máximo</mat-label>
+          <input
+            formControlName="maximo"
+            matInput
+            ired
+            [mask]="'0*'"
+            placeholder="Ex. 100"
+            type="number"
+          />
+
+        </mat-form-field>
+      </div>
 
       <mat-radio-group color="primary" formControlName="ativo">
         <mat-radio-button [value]="true">Ativo</mat-radio-button>
         <mat-radio-button [value]="false">Inativo</mat-radio-button>
       </mat-radio-group>
-
     </div>
   </div>
 
-  <div mat-dialog-actions>
-    <button mat-raised-button color="warn" type="button" [mat-dialog-close]="false">Cancelar</button>
+  <div mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      [mat-dialog-close]="false"
+    >
+      Cancelar
+    </button>
     <button mat-raised-button color="primary" type="submit">Atualizar</button>
   </div>
 </form>

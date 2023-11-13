@@ -8,6 +8,7 @@ import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor
 import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
 import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto-capa-atualizar/produto-capa-atualizar.component';
 import { produtoCapaResolver } from './guards/produto-capa.resolver';
+import { ProdutoCapaConsultarComponent } from './components/produto-capa/produto-capa-consultar/produto-capa-consultar.component';
 
 const routes: Routes = [
 {
@@ -15,6 +16,7 @@ const routes: Routes = [
   component: NavComponent, children: [
     { path: 'produtoCapa', component: ProdutoCapaListarComponent },
     { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent},
+    { path: 'produtoConsultar', component: ProdutoCapaConsultarComponent},
     { path: 'produtoCapa/atualizar/:id', component: ProdutoCapaAtualizarComponent, resolve: {
       produtoCapa: produtoCapaResolver
     }},

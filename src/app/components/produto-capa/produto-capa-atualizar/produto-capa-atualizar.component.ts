@@ -52,6 +52,7 @@ export class ProdutoCapaAtualizarComponent implements OnInit {
   ) {
     this.updateForm = this.fb.group({
       id: '',
+      codSistema: null,
       description: '',
       tipoProduto: null,
       medidaUnidade: null,

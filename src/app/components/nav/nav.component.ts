@@ -20,7 +20,7 @@ export class NavComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.router.navigate(['produtoCapa'])
+    this.router.navigate(['produtoConsultar'])
   }
 
 

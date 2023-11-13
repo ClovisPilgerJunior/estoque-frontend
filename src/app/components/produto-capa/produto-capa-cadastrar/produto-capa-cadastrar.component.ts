@@ -15,6 +15,7 @@ import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 export class ProdutoCapaCadastrarComponent {
 
   produtoCapa: ProdutoCapa = {
+    codSistema: null,
     description: '',
     tipoProduto: null,
     medidaUnidade: null,
@@ -26,7 +27,7 @@ export class ProdutoCapaCadastrarComponent {
   }
 
   fornecedor: Fornecedor[] = []
-  
+
 
   findAllFornecedor(): void {
     this.fornecedorService.findAll().subscribe(response => {

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_CONFIG } from '../config/api.config';
+import { ProdutoCapaCalculated } from '../models/ProdutoCapaCalculated';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class ProdutoCapaService {
 
   findById(id: number): Observable<ProdutoCapa> {
     return this.http.get<ProdutoCapa>(`${API_CONFIG.baseUrl}/produtoCapa/${id}`)
+  }
+
+  findAllCalculated(): Observable<ProdutoCapaCalculated[]> {
+    return this.http.get<ProdutoCapaCalculated[]>(`${API_CONFIG.baseUrl}/produtoCapa/calculado`)
   }
 
   findAll(): Observable<ProdutoCapa[]> {
