@@ -1,13 +1,13 @@
-import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
-import { ProdutoCapa } from './../../../models/ProdutoCapa';
-import { Component, Inject, InjectionToken, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaAtualizarComponent } from '../produto-capa-atualizar/produto-capa-atualizar.component';
+import { ProdutoCapa } from './../../../models/ProdutoCapa';
 
 @Component({
   selector: 'app-produto-capa-listar',
@@ -18,7 +18,7 @@ export class ProdutoCapaListarComponent {
 
   ELEMENT_DATA: ProdutoCapa[] = []
 
-  displayedColumns: string[] = ['id', 'codSistema', 'description', 'tipoProduto', 'medidaUnidade', 'fornecedor', 'minimo', 'maximo', 'resuprimento', 'ativo'];
+  displayedColumns: string[] = ['id', 'codSistema', 'description', 'tipoProduto', 'medidaUnidade', 'fornecedor', 'minimo', 'maximo', 'resuprimento', 'ativo', 'action'];
   dataSource = new MatTableDataSource<ProdutoCapa>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

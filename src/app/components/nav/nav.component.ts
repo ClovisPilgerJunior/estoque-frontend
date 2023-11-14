@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faClipboardList, faCoffee, faDolly, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCircleDown } from '@fortawesome/free-regular-svg-icons';
+import { faCircleArrowDown, faClipboardList, faCoffee, faDolly, faMagnifyingGlass, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -13,6 +14,9 @@ export class NavComponent implements OnInit {
   faDolly = faDolly;
   faClipBoardList = faClipboardList;
   faMagfyingGlass = faMagnifyingGlass;
+  faPlusCircle = faPlusCircle;
+  faMinusCircle = faMinusCircle;
+  faDownCircle = faCircleDown;
 
   constructor(
     private router: Router,
@@ -20,7 +24,7 @@ export class NavComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.router.navigate(['produtoConsultar'])
+    this.router.navigate(['produtoEntrada'])
   }
 
 

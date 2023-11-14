@@ -10,11 +10,17 @@
       Produto
     </button>
 
-    <button mat-button class="button-primary" color="primary" >Entrada</button>
+    <button mat-button class="button-primary" color="primary" routerLink="/produtoEntrada">
+      <fa-icon [icon]="faPlusCircle"></fa-icon>
+      Entrada</button>
 
-    <button mat-button class="button-primary" color="primary" >Saida</button>
+    <button mat-button class="button-primary" color="primary" >
+      <fa-icon [icon]="faMinusCircle"></fa-icon>
+      Saida</button>
 
-    <button mat-button class="button-primary" color="primary" >Perda</button>
+    <button mat-button class="button-primary" color="primary" >
+      <fa-icon [icon]="faDownCircle"></fa-icon>
+      Perda</button>
 
     <button mat-button class="button-primary" color="primary" routerLink="/fornecedor">
       <fa-icon [icon]="faDolly"></fa-icon>

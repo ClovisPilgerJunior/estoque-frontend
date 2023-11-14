@@ -1,3 +1,4 @@
+import { ProdutoEntrada } from './models/ProdutoEntrada';
 import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto-capa-cadastrar/produto-capa-cadastrar.component';
 import { NgModule, Component } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -9,6 +10,7 @@ import { ProdutoCapaListarComponent } from './components/produto-capa/produto-ca
 import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto-capa-atualizar/produto-capa-atualizar.component';
 import { produtoCapaResolver } from './guards/produto-capa.resolver';
 import { ProdutoCapaConsultarComponent } from './components/produto-capa/produto-capa-consultar/produto-capa-consultar.component';
+import { ProdutoCapaEntradaListarComponent } from './components/produto-capa-entrada/produto-capa-entrada-listar/produto-capa-entrada-listar.component';
 
 const routes: Routes = [
 {
@@ -17,9 +19,8 @@ const routes: Routes = [
     { path: 'produtoCapa', component: ProdutoCapaListarComponent },
     { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent},
     { path: 'produtoConsultar', component: ProdutoCapaConsultarComponent},
-    { path: 'produtoCapa/atualizar/:id', component: ProdutoCapaAtualizarComponent, resolve: {
-      produtoCapa: produtoCapaResolver
-    }},
+
+    { path: 'produtoEntrada', component: ProdutoCapaEntradaListarComponent},
 
     { path: 'fornecedor', component: FornecedorConsultaComponent },
     { path: 'fornecedor/cadastrar', component: FornecedorCadastroComponent },

@@ -2,3 +2,24 @@
 @import '../node_modules/ngx-toastr/toastr.css';
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #eee;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #3b47af;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(89, 86, 241);
+}

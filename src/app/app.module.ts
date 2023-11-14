@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,11 +38,20 @@ import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor
 import { FornecedorCadastroComponent } from './components/fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
 import { FornecedorConsultaComponent } from './components/fornecedor/fornecedor-consultar/fornecedor-consultar.component';
 import { NavComponent } from './components/nav/nav.component';
+import { ProdutoCapaEntradaAtualizarComponent } from './components/produto-capa-entrada/produto-capa-entrada-atualizar/produto-capa-entrada-atualizar.component';
+import { ProdutoCapaEntradaListarComponent } from './components/produto-capa-entrada/produto-capa-entrada-listar/produto-capa-entrada-listar.component';
 import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto-capa-atualizar/produto-capa-atualizar.component';
 import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto-capa-cadastrar/produto-capa-cadastrar.component';
 import { ProdutoCapaConsultarComponent } from './components/produto-capa/produto-capa-consultar/produto-capa-consultar.component';
 import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ProdutoEntradaEntradaCadastrarComponent } from './components/produto-capa-entrada/produto-capa-entrada-cadastrar/produto-capa-entrada-cadastrar.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import localePt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -55,7 +64,10 @@ import { ConfirmationDialogComponent } from './shared/components/confirmation-di
     ProdutoCapaListarComponent,
     ProdutoCapaCadastrarComponent,
     ProdutoCapaAtualizarComponent,
-    ProdutoCapaConsultarComponent
+    ProdutoCapaConsultarComponent,
+    ProdutoCapaEntradaListarComponent,
+    ProdutoCapaEntradaAtualizarComponent,
+    ProdutoEntradaEntradaCadastrarComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +92,8 @@ import { ConfirmationDialogComponent } from './shared/components/confirmation-di
     MatTableModule,
     MatIconModule,
     FontAwesomeModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatListModule,
     MatCardModule,
     MatMenuModule,
@@ -92,7 +106,7 @@ import { ConfirmationDialogComponent } from './shared/components/confirmation-di
     NgxMaskPipe
 
   ],
-  providers: [provideNgxMask()],
+  providers: [provideNgxMask(), {provide: LOCALE_ID, useValue: 'pt' }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

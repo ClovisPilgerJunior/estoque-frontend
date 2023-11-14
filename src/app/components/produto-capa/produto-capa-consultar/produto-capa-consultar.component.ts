@@ -48,4 +48,7 @@ export class ProdutoCapaConsultarComponent {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  getTotalCost() {
+    return this.ELEMENT_DATA.map(t => t.valorCompra).reduce((acc, value) => acc + value, 0);
+  }
 }
