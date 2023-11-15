@@ -93,7 +93,7 @@ export class ProdutoCapaEntradaListarComponent {
     const dialogRef = this.dialog.open(ProdutoCapaEntradaAtualizarComponent, {
       data,
     });
-
+    console.log(data)
     dialogRef.afterClosed().subscribe({
       next: (response) => {
         response = this.findAll();

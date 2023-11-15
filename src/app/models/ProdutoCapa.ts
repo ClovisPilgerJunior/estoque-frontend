@@ -7,6 +7,5 @@ export class ProdutoCapa {
   fornecedor: number;
   minimo: number;
   maximo: number;
-  resuprimento: string;
   ativo: boolean;
 }

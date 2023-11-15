@@ -18,7 +18,7 @@ export class ProdutoCapaListarComponent {
 
   ELEMENT_DATA: ProdutoCapa[] = []
 
-  displayedColumns: string[] = ['id', 'codSistema', 'description', 'tipoProduto', 'medidaUnidade', 'fornecedor', 'minimo', 'maximo', 'resuprimento', 'ativo', 'action'];
+  displayedColumns: string[] = ['id', 'codSistema', 'description', 'tipoProduto', 'medidaUnidade', 'fornecedor', 'minimo', 'maximo', 'ativo', 'action'];
   dataSource = new MatTableDataSource<ProdutoCapa>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

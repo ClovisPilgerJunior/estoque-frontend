@@ -13,6 +13,6 @@ export class ProdutoCapaCalculated {
   valorTotal: number;
   minimo: number;
   maximo: number;
-  resuprimento: number;
+  resuprimento: string;
   ativo: boolean;
 }

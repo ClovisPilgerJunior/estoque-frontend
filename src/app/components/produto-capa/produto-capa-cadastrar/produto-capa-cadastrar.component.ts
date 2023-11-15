@@ -22,7 +22,6 @@ export class ProdutoCapaCadastrarComponent {
     fornecedor: null,
     minimo: null,
     maximo: null,
-    resuprimento: '',
     ativo: true
   }
 

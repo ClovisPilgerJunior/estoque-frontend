@@ -1,1 +1,105 @@
-<p>produto-capa-entrada-atualizar works!</p>
+<div mat-dialog-title>
+  <h1>Lançar Entrada do Produto</h1>
+</div>
+<form [formGroup]="produtoEntradaUpdate" (ngSubmit)="onUpdate()">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>SKU</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          placeholder="Ex: 5550"
+          maxlength="50"
+          formControlName="produtoCapa"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Número da Nota</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          placeholder="Ex: 5550"
+          maxlength="50"
+          formControlName="numeroNota"
+        />
+      </mat-form-field>
+
+      <div class="tipos">
+        <mat-form-field appearance="outline">
+          <mat-label>Data do Pedido</mat-label>
+          <input matInput [matDatepicker]="dataPedido" formControlName="dataPedido" />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="dataPedido"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dataPedido></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Data da Entrega</mat-label>
+          <input matInput [matDatepicker]="dataEntrega" formControlName="dataEntrega" />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="dataEntrega"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dataEntrega></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="tipos">
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Preço de Compra</mat-label>
+          <input
+            matInput
+            type="text"
+            required
+            placeholder="Ex: R$ 0,00"
+            maxlength="120"
+            formControlName="precoCompra"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Quantidade</mat-label>
+          <input
+            formControlName="quantidade"
+            matInput
+            required
+            [mask]="'0*'"
+            placeholder="Ex. 10"
+            type="number"
+          />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Observação</mat-label>
+        <input
+          formControlName="observacao"
+          matInput
+          placeholder="Ex. Rolo de elastico x"
+          type="text"
+        />
+      </mat-form-field>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      [mat-dialog-close]="false"
+    >
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" type="submit">Atualizar</button>
+  </div>
+</form>
+

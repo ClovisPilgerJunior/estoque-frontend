@@ -51,6 +51,7 @@ produtoEntrada: FormGroup;
       next: response => {
         this.toast.success('Entrada do produto lançada com sucesso');
         console.log(response)
+        this.dialogRef.close();
         this.router.navigate(['produtoEntrada'])
       },
       error: ex => {
@@ -60,7 +61,7 @@ produtoEntrada: FormGroup;
             this.toast.error(primeiroErro.message);
           }
         } else {
-          this.toast.error(ex.error);
+          this.toast.error(ex.error.message);
         }
         console.log(ex)
       }

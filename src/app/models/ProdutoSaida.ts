@@ -1,4 +1,4 @@
-exporta interface ProdutoSaida {
+export interface ProdutoSaida {
   id?: number;
   dataSaida: Date;
   quantidade: number;
