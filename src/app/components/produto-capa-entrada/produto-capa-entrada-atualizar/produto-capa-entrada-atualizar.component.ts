@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { parse } from 'date-fns';
 import { ToastrService } from 'ngx-toastr';
 import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
@@ -17,8 +18,19 @@ export class ProdutoCapaEntradaAtualizarComponent {
   produtoEntradaUpdate: FormGroup;
 
   ngOnInit(): void {
-    this.produtoEntradaUpdate.patchValue(this.data);
-    this.findAllProdutoCapa();
+    this.produtoEntradaUpdate.patchValue(this.data)
+    // Converta as datas para o formato esperado pelo DatePicker
+    const dataPedido = parse(this.data.dataPedido, 'dd/MM/yyyy', new Date());
+    const dataEntrega = parse(this.data.dataEntrega, 'dd/MM/yyyy', new Date());
+
+    // Atribua as datas convertidas ao formulário
+    this.produtoEntradaUpdate.patchValue({
+      dataPedido,
+      dataEntrega,
+    });
+
+    console.log(this.data)
+
   }
 
   constructor(
@@ -52,6 +64,7 @@ export class ProdutoCapaEntradaAtualizarComponent {
     });
   }
 
+
   converterParaValorNumerico(nome: string): number {
     const produtoCapa = this.produtoCapa.find(f => f.description === nome);
     return produtoCapa ? produtoCapa.id : 0; // Substitua 0 pelo valor padrão se não encontrar
@@ -61,11 +74,13 @@ export class ProdutoCapaEntradaAtualizarComponent {
     const formData = { ...this.produtoEntradaUpdate.value };
     console.log(this.produtoCapa)
 
+    formData.precoCompra = parseFloat(
+      formData.precoCompra.replace('R$', '').replace(',', '.').trim()
+    );
 
     formData.dataPedido = formatDate(formData.dataPedido, 'dd/MM/yyyy', 'en-US');
     formData.dataEntrega = formatDate(formData.dataEntrega, 'dd/MM/yyyy', 'en-US');
     console.log(formData)
-    formData.produtoCapa = this.converterParaValorNumerico(formData.produtoCapa)
 
     this.produtoEntradaService.update(formData).subscribe({
       next: (val: any) => {

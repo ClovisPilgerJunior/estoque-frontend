@@ -21,10 +21,12 @@ export class ProdutoCapaEntradaListarComponent {
   displayedColumns: string[] = [
     'id',
     'produtoCapa',
+    'produtoCapaDesc',
     'numeroNota',
     'dataPedido',
     'dataEntrega',
     'quantidade',
+    'precoCompra',
     'observacao',
     'action',
   ];

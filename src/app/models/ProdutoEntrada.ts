@@ -7,4 +7,5 @@ export interface ProdutoEntrada {
     quantidade: number;
     observacao: string;
     produtoCapa?: number;
+    produtoCapaDesc?: String;
   }

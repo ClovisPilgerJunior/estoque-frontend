@@ -42,7 +42,7 @@
             <!-- Column -->
             <ng-container matColumnDef="telefone">
                 <th mat-header-cell *matHeaderCellDef> Telefone </th>
-                <td mat-cell *matCellDef="let element"> {{element.telefone}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.telefone | mask: "(00) 0000-0000||(00) 0 0000-0000" }} </td>
             </ng-container>
 
             <!-- Column -->
