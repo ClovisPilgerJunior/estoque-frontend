@@ -1,6 +1,8 @@
 export interface ProdutoPerda {
   id?: number;
-  data: Date;
+  data: string;
   quantidade: number;
-  motivo: String;
+  motivo: string;
+  produtoCapa?: number;
+  produtoCapaDesc?: string;
 }

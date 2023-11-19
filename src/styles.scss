@@ -23,3 +23,21 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(89, 86, 241);
 }
+
+
+tr.mat-mdc-row {
+  height: 30px;
+}
+
+
+.mat-mdc-row:nth-child(even) {
+  background-color: #f1f1f1; /* Set the background color for even rows */
+}
+
+.mat-mdc-row:nth-child(odd) {
+  background-color: #ffffff; /* Set the background color for odd rows */
+}
+
+.mat-table {
+  background-color: #3b47af;
+}

@@ -13,8 +13,8 @@
     <table mat-table [dataSource]="dataSource">
       <!-- Po- Column -->
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>Id</th>
-        <td  mat-cell *matCellDef="let element">{{ element.id }}</td>
+        <th mat-header-cell *matHeaderCellDef>SKU</th>
+        <td style="padding: 14px" mat-cell *matCellDef="let element">{{ element.id }}</td>
       </ng-container>
 
       <!-- Po- Column -->
@@ -68,12 +68,12 @@
 
       <ng-container matColumnDef="valorCompra">
         <th mat-header-cell *matHeaderCellDef>Preço Un.</th>
-        <td mat-cell *matCellDef="let element">{{ element.valorCompra |  currency:'BRL':'symbol-narrow':'1.1-2'}}</td>
+        <td mat-cell *matCellDef="let element">{{ element.valorCompra |  currency:'BRL':'symbol-narrow':'1.2-2'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="valorTotal">
         <th mat-header-cell *matHeaderCellDef>Total</th>
-        <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency:'BRL':'symbol-narrow':'1.1-2'}}</td>
+        <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency:'BRL':'symbol-narrow':'1.2-2'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="minimo">

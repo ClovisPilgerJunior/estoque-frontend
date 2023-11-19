@@ -47,11 +47,33 @@ import { ProdutoCapaListarComponent } from './components/produto-capa/produto-ca
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoEntradaEntradaCadastrarComponent } from './components/produto-capa-entrada/produto-capa-entrada-cadastrar/produto-capa-entrada-cadastrar.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import localePt from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 
-registerLocaleData(localePt);
+import { provideEnvironmentNgxCurrency, NgxCurrencyInputMode } from 'ngx-currency';
+import { NgxCurrencyDirective } from "ngx-currency";
+import { ProdutoCapaSaidaListarComponent } from './components/produto-capa-saida/produto-capa-saida-listar/produto-capa-saida-listar.component';
+import { ProdutoCapaSaidaAddEditComponent } from './components/produto-capa-saida/produto-capa-saida-add-edit/produto-capa-saida-add-edit.component';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ProdutoCapaPerdaListarComponent } from './components/produto-capa-perda/produto-capa-perda-listar/produto-capa-perda-listar.component';
+import { ProdutoCapaPerdaAddEditComponent } from './components/produto-capa-perda/produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
+
+
+registerLocaleData(localePt, 'pt');
+
+export const ISO_FORMAT = {
+  parse: {
+      dateInput: 'dd/MM/yyyy',
+  },
+  display: {
+      dateInput: 'dd/MM/yyyy',
+      monthYearLabel: 'MMM YYYY',
+      dateA11yLabel: 'LL',
+      monthYearA11yLabel: 'MMMM YYYY',
+  },
+
+};
 
 @NgModule({
   declarations: [
@@ -67,7 +89,11 @@ registerLocaleData(localePt);
     ProdutoCapaConsultarComponent,
     ProdutoCapaEntradaListarComponent,
     ProdutoCapaEntradaAtualizarComponent,
-    ProdutoEntradaEntradaCadastrarComponent
+    ProdutoEntradaEntradaCadastrarComponent,
+    ProdutoCapaSaidaListarComponent,
+    ProdutoCapaSaidaAddEditComponent,
+    ProdutoCapaPerdaListarComponent,
+    ProdutoCapaPerdaAddEditComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +122,9 @@ registerLocaleData(localePt);
     MatNativeDateModule,
     MatListModule,
     MatCardModule,
+    MatMomentDateModule,
     MatMenuModule,
+    NgxCurrencyDirective,
     ToastrModule.forRoot({
       timeOut: 4000,
       closeButton: true,
@@ -106,7 +134,24 @@ registerLocaleData(localePt);
     NgxMaskPipe
 
   ],
-  providers: [provideNgxMask(), {provide: LOCALE_ID, useValue: 'pt' }],
+  providers: [provideNgxMask(), {provide: LOCALE_ID, useValue: 'pt' },
+  provideEnvironmentNgxCurrency({
+    align: "left",
+    allowNegative: true,
+    allowZero: true,
+    decimal: ",",
+    precision: 2,
+    prefix: "R$ ",
+    suffix: "",
+    thousands: ".",
+    nullable: true,
+    min: null,
+    max: null,
+    inputMode: NgxCurrencyInputMode.Financial,
+  }),{ provide: MAT_DATE_LOCALE, useValue: 'pt' },
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+

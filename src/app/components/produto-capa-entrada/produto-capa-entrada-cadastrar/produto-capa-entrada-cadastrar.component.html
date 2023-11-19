@@ -59,6 +59,8 @@
             type="text"
             required
             placeholder="Ex: R$ 0,00"
+            currencyMask
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
             maxlength="120"
             formControlName="precoCompra"
           />

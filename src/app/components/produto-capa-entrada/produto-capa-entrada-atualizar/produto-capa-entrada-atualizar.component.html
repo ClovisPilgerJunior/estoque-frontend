@@ -56,10 +56,12 @@
           <mat-label>Preço de Compra</mat-label>
           <input
             matInput
-            type="text"
+            type="tel"
             required
             placeholder="Ex: R$ 0,00"
-            maxlength="120"
+            maxlength="10"
+            currencyMask
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
             formControlName="precoCompra"
           />
         </mat-form-field>

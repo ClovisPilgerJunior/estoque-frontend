@@ -11,16 +11,22 @@ import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto
 import { produtoCapaResolver } from './guards/produto-capa.resolver';
 import { ProdutoCapaConsultarComponent } from './components/produto-capa/produto-capa-consultar/produto-capa-consultar.component';
 import { ProdutoCapaEntradaListarComponent } from './components/produto-capa-entrada/produto-capa-entrada-listar/produto-capa-entrada-listar.component';
+import { ProdutoCapaSaidaListarComponent } from './components/produto-capa-saida/produto-capa-saida-listar/produto-capa-saida-listar.component';
+import { ProdutoCapaPerdaListarComponent } from './components/produto-capa-perda/produto-capa-perda-listar/produto-capa-perda-listar.component';
 
 const routes: Routes = [
 {
   path: '',
   component: NavComponent, children: [
     { path: 'produtoCapa', component: ProdutoCapaListarComponent },
-    { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent},
-    { path: 'produtoConsultar', component: ProdutoCapaConsultarComponent},
+    { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent },
+    { path: 'produtoConsultar', component: ProdutoCapaConsultarComponent },
 
-    { path: 'produtoEntrada', component: ProdutoCapaEntradaListarComponent},
+    { path: 'produtoEntrada', component: ProdutoCapaEntradaListarComponent },
+
+    { path: 'produtoSaida', component: ProdutoCapaSaidaListarComponent },
+
+    { path: 'produtoPerda', component: ProdutoCapaPerdaListarComponent },
 
     { path: 'fornecedor', component: FornecedorConsultaComponent },
     { path: 'fornecedor/cadastrar', component: FornecedorCadastroComponent },

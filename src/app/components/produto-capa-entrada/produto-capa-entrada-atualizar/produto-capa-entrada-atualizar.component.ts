@@ -74,10 +74,6 @@ export class ProdutoCapaEntradaAtualizarComponent {
     const formData = { ...this.produtoEntradaUpdate.value };
     console.log(this.produtoCapa)
 
-    formData.precoCompra = parseFloat(
-      formData.precoCompra.replace('R$', '').replace(',', '.').trim()
-    );
-
     formData.dataPedido = formatDate(formData.dataPedido, 'dd/MM/yyyy', 'en-US');
     formData.dataEntrega = formatDate(formData.dataEntrega, 'dd/MM/yyyy', 'en-US');
     console.log(formData)

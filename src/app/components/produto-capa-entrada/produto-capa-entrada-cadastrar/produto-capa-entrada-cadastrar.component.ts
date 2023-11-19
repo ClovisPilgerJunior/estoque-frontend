@@ -43,6 +43,8 @@ produtoEntrada: FormGroup;
 
     const formData = this.produtoEntrada.value;
 
+    console.log(formData.precoCompra)
+
   // Formatando datas
   formData.dataPedido = formatDate(formData.dataPedido, 'dd/MM/yyyy', 'en-US');
   formData.dataEntrega = formatDate(formData.dataEntrega, 'dd/MM/yyyy', 'en-US');
