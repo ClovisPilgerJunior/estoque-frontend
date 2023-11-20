@@ -15,93 +15,100 @@
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>SKU</th>
         <td style="padding: 14px" mat-cell *matCellDef="let element">{{ element.id }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Po- Column -->
       <ng-container matColumnDef="codSistema">
         <th mat-header-cell *matHeaderCellDef>Cod. Interno</th>
         <td mat-cell *matCellDef="let element">{{ element.codSistema }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Po- Column -->
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Descrição</th>
         <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Po- Column -->
       <ng-container matColumnDef="tipoProduto">
         <th mat-header-cell *matHeaderCellDef>Tipo Produto</th>
         <td mat-cell *matCellDef="let element">{{ element.tipoProduto }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <!-- Po- Column -->
       <ng-container matColumnDef="medidaUnidade">
         <th mat-header-cell *matHeaderCellDef>Unidade de Medida</th>
         <td mat-cell *matCellDef="let element">{{ element.medidaUnidade }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="fornecedor">
         <th mat-header-cell *matHeaderCellDef>Fornecedor</th>
         <td mat-cell *matCellDef="let element">{{ element.fornecedor }}</td>
+        <td mat-footer-cell *matFooterCellDef style="text-align: right;">Total</td>
       </ng-container>
 
       <ng-container matColumnDef="entradas">
         <th mat-header-cell *matHeaderCellDef>Entradas</th>
         <td mat-cell *matCellDef="let element">{{ element.entradas }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{getTotalEntrada()}}</td>
       </ng-container>
 
       <ng-container matColumnDef="saidas">
-        <th mat-header-cell *matHeaderCellDef>saidas
+        <th mat-header-cell *matHeaderCellDef>Saidas</th>
         <td mat-cell *matCellDef="let element">{{ element.saidas }}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalSaida()}} </td>
       </ng-container>
 
       <ng-container matColumnDef="perdas">
         <th mat-header-cell *matHeaderCellDef>Perdas</th>
         <td mat-cell *matCellDef="let element">{{ element.perdas }}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalPerda()}} </td>
       </ng-container>
 
       <ng-container matColumnDef="saldo">
         <th mat-header-cell *matHeaderCellDef>Saldo</th>
-        <td mat-cell *matCellDef="let element">{{ element.saldo }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.saldo | mask: '999.999' }}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalSaldo()}} </td>
       </ng-container>
 
       <ng-container matColumnDef="valorCompra">
         <th mat-header-cell *matHeaderCellDef>Preço Un.</th>
-        <td mat-cell *matCellDef="let element">{{ element.valorCompra |  currency:'BRL':'symbol-narrow':'1.2-2'}}</td>
+        <td mat-cell *matCellDef="let element">{{ element.valorCompra | currency:'BRL':'symbol-narrow':'1.2-2'}}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalUnit() | currency:'BRL':'symbol-narrow':'1.2-2'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="valorTotal">
         <th mat-header-cell *matHeaderCellDef>Total</th>
         <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency:'BRL':'symbol-narrow':'1.2-2'}}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency:'BRL':'symbol-narrow':'1.2-2'}} </td>
       </ng-container>
 
       <ng-container matColumnDef="minimo">
         <th mat-header-cell *matHeaderCellDef>Mínimo</th>
         <td mat-cell *matCellDef="let element">{{ element.minimo }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="maximo">
         <th mat-header-cell *matHeaderCellDef>Máximo</th>
         <td mat-cell *matCellDef="let element">{{ element.maximo }}</td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <ng-container matColumnDef="resuprimento">
         <th mat-header-cell *matHeaderCellDef>Resuprimento</th>
         <td mat-cell *matCellDef="let element">{{ element.resuprimento }}</td>
-      </ng-container>
-
-      <!-- Column -->
-      <ng-container matColumnDef="ativo">
-        <th mat-header-cell *matHeaderCellDef>Ativo</th>
-        <td mat-cell *matCellDef="let element">
-          <span *ngIf="element.ativo; else inativo">Sim</span>
-          <ng-template #inativo>Não</ng-template>
-        </td>
+        <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 
     </table>
 

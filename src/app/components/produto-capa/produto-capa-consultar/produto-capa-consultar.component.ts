@@ -16,7 +16,7 @@ export class ProdutoCapaConsultarComponent {
 
   ELEMENT_DATA: ProdutoCapaCalculated[] = []
 
-  displayedColumns: string[] = ['id', 'codSistema', 'description', 'tipoProduto', 'medidaUnidade', 'fornecedor', 'entradas', 'saidas', 'perdas', 'saldo', 'valorCompra', 'valorTotal', 'minimo', 'maximo', 'resuprimento', 'ativo'];
+  displayedColumns: string[] = ['id', 'codSistema', 'description', 'tipoProduto', 'medidaUnidade', 'fornecedor', 'entradas', 'saidas', 'perdas', 'saldo', 'valorCompra', 'valorTotal', 'minimo', 'maximo', 'resuprimento'];
   dataSource = new MatTableDataSource<ProdutoCapaCalculated>(this.ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -28,7 +28,6 @@ export class ProdutoCapaConsultarComponent {
     private route: ActivatedRoute,
     private toast: ToastrService,
   ) {
-    this.findAll();
   }
 
   ngOnInit(): void {
@@ -49,6 +48,26 @@ export class ProdutoCapaConsultarComponent {
   }
 
   getTotalCost() {
+    return this.ELEMENT_DATA.map(t => t.valorTotal).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTotalUnit() {
     return this.ELEMENT_DATA.map(t => t.valorCompra).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTotalSaida() {
+    return this.ELEMENT_DATA.map(t => t.saidas).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTotalEntrada() {
+    return this.ELEMENT_DATA.map(t => t.entradas).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTotalPerda() {
+    return this.ELEMENT_DATA.map(t => t.perdas).reduce((acc, value) => acc + value, 0);
+  }
+
+  getTotalSaldo() {
+    return this.ELEMENT_DATA.map(t => t.saldo).reduce((acc, value) => acc + value, 0);
   }
 }

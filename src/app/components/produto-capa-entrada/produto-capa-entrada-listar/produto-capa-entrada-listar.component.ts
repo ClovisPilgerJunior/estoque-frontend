@@ -41,7 +41,6 @@ export class ProdutoCapaEntradaListarComponent {
     private route: ActivatedRoute,
     private toast: ToastrService
   ) {
-    this.findAll();
   }
 
   ngOnInit(): void {

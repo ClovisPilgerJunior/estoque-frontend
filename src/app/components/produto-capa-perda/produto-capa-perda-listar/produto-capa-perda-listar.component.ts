@@ -38,7 +38,6 @@ export class ProdutoCapaPerdaListarComponent {
     private route: ActivatedRoute,
     private toast: ToastrService
   ) {
-    this.findAll();
   }
 
   ngOnInit(): void {

@@ -30,7 +30,6 @@ export class FornecedorConsultaComponent {
     private route: ActivatedRoute,
     private toast: ToastrService
   ) {
-    this.findAll();
   }
 
   ngOnInit(): void {
