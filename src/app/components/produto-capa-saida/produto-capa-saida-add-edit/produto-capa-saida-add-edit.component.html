@@ -17,24 +17,24 @@
           />
         </mat-form-field>
 
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width" appearance="fill">
                 <mat-label>Data da Saida</mat-label>
-                <input matInput [matDatepicker]="datadesaida" formControlName="dataSaida" />
+                <input matInput [matDatepicker]="dataSaida" formControlName="dataSaida" maxlength="8" />
                 <mat-datepicker-toggle
                 matIconSuffix
-                [for]="datadesaida"
+                [for]="dataSaida"
                 ></mat-datepicker-toggle>
-                <mat-datepicker #datadesaida></mat-datepicker>
+                <mat-datepicker #dataSaida></mat-datepicker>
             </mat-form-field>
-        
-        
+
+
         <mat-form-field class="full-width" appearance="fill">
             <mat-label>Setores</mat-label>
             <mat-select formControlName="setor" name="setores" required>
               <mat-option *ngFor="let option of setores" [value]="option.nome">{{ option.nome }}</mat-option>
             </mat-select>
           </mat-form-field>
-  
+
           <mat-form-field class="full-width" appearance="fill">
             <mat-label>Quantidade</mat-label>
             <input
@@ -52,11 +52,12 @@
             <input
               formControlName="retiradoPor"
               matInput
+              required
               placeholder="Ex. João"
               type="text"
             />
           </mat-form-field>
-  
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Observação</mat-label>
           <input
@@ -66,10 +67,10 @@
             type="text"
           />
         </mat-form-field>
-  
+
       </div>
     </div>
-  
+
     <div mat-dialog-actions align="center">
       <button
         mat-raised-button
@@ -79,7 +80,7 @@
       >
         Cancelar
       </button>
-      <button mat-raised-button color="primary" type="submit">{{data ? 'Atualizar': 'Lançar'}}</button>
+      <button mat-raised-button color="primary" type="submit"[disabled]="!produtoSaida.valid
+      ">{{data ? 'Atualizar': 'Lançar'}}</button>
     </div>
   </form>
-  

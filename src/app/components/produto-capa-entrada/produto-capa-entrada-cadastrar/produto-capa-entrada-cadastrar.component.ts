@@ -1,10 +1,11 @@
 import { formatDate } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProdutoEntrada } from 'src/app/models/ProdutoEntrada';
+import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 import { ProdutoEntradaService } from 'src/app/services/produto-entrada.service';
 
 @Component({
@@ -26,35 +27,85 @@ produtoEntrada: FormGroup;
 
     this.produtoEntrada = this.formBuilder.group({
     numeroNota: '',
-    dataPedido: '',
-    dataEntrega: '',
-    precoCompra: '',
-    quantidade: '',
+    dataPedido: ['', Validators.required],
+    dataEntrega: ['', Validators.required],
+    precoCompra: ['', Validators.required], // A validação será aplicada apenas quando retornoFac não estiver selecionado
+    quantidade: ['', Validators.required],
     observacao: '',
-    produtoCapa: ''
-    })
+    produtoCapa: ['', Validators.required],
+    retornoFac: false,
+    }),
+    this.findAllEntradas();
+
+    this.produtoEntrada.get('retornoFac')?.valueChanges.subscribe((valor) => {
+      const precoCompraControl = this.produtoEntrada.get('precoCompra');
+
+      // Se retornoFac não estiver selecionado, torna precoCompra obrigatório
+      if (!valor) {
+        precoCompraControl?.setValidators([Validators.required]);
+      } else {
+        // Se retornoFac está selecionado, remove a validação obrigatória
+        precoCompraControl?.setValidators(null);
+      }
+
+      // Atualiza o estado de validação do campo precoCompra
+      precoCompraControl?.updateValueAndValidity();
+    });
+
   }
 
   ngOnInit(): void {
+  }
 
+  listaDeEntradas: ProdutoEntrada[] = []
+
+  findAllEntradas(): void {
+    this.produtoEntradaService.findAll().subscribe(response => {
+      // Filtrar a lista de fornecedores para remover os inativos
+      this.listaDeEntradas = response
+      console.log(this.listaDeEntradas);
+    });
+  }
+
+  obterPrecoCompra(sku: number): number {
+    const listaInvertida = [...this.listaDeEntradas].reverse(); // Invertendo a ordem da lista
+    const produtoEntrada = listaInvertida.find(f => f.produtoCapa === sku);
+    return produtoEntrada ? produtoEntrada.precoCompra : 0; // Substitua 0 pelo valor padrão se não encontrar
   }
 
   create(): void {
-
     const formData = this.produtoEntrada.value;
 
-    console.log(formData.precoCompra)
+    // Formatando datas
+    formData.dataPedido = formatDate(formData.dataPedido, 'dd/MM/yyyy', 'en-US');
+    formData.dataEntrega = formatDate(formData.dataEntrega, 'dd/MM/yyyy', 'en-US');
 
-  // Formatando datas
-  formData.dataPedido = formatDate(formData.dataPedido, 'dd/MM/yyyy', 'en-US');
-  formData.dataEntrega = formatDate(formData.dataEntrega, 'dd/MM/yyyy', 'en-US');
+    // Aguarde até que a lista de entradas seja carregada antes de obter o preço de compra
+    this.findAllEntradas();
 
+    // Verifica se retornoFac é verdadeiro
+    if (formData.retornoFac) {
+      // Obtenha o SKU (ID do produtoCapa)
+      const sku = formData.produtoCapa;
+
+      // Obtenha o valor existente de precoCompra
+      const precoCompra = this.obterPrecoCompra(sku);
+
+      // Defina o preço de compra no formulário
+      formData.precoCompra = precoCompra;
+    }
+
+    // Chame o serviço create
+    this.salvarProdutoEntrada(formData);
+  }
+
+  salvarProdutoEntrada(formData: any): void {
     this.produtoEntradaService.create(formData).subscribe({
       next: response => {
         this.toast.success('Entrada do produto lançada com sucesso');
-        console.log(response)
+        console.log(response);
         this.dialogRef.close();
-        this.router.navigate(['produtoEntrada'])
+        this.router.navigate(['produtoEntrada']);
       },
       error: ex => {
         if (ex.error && ex.error.errors && ex.error.errors.length > 0) {
@@ -65,9 +116,8 @@ produtoEntrada: FormGroup;
         } else {
           this.toast.error(ex.error.message);
         }
-        console.log(ex)
+        console.error(ex);
       }
-    })
+    });
   }
-
 }

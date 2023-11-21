@@ -14,7 +14,7 @@
       <!-- Po- Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>SKU</th>
-        <td style="padding: 14px" mat-cell *matCellDef="let element">{{ element.id }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
@@ -54,26 +54,26 @@
 
       <ng-container matColumnDef="entradas">
         <th mat-header-cell *matHeaderCellDef>Entradas</th>
-        <td mat-cell *matCellDef="let element">{{ element.entradas }}</td>
-        <td mat-footer-cell *matFooterCellDef>{{getTotalEntrada()}}</td>
+        <td mat-cell *matCellDef="let element">{{ element.entradas | mask: 'separator': {thousandSeparator: '.'} }}</td>
+        <td mat-footer-cell *matFooterCellDef>{{getTotalEntrada() | mask: 'separator': {thousandSeparator: '.'} }}</td>
       </ng-container>
 
       <ng-container matColumnDef="saidas">
         <th mat-header-cell *matHeaderCellDef>Saidas</th>
-        <td mat-cell *matCellDef="let element">{{ element.saidas }}</td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalSaida()}} </td>
+        <td mat-cell *matCellDef="let element">{{ element.saidas | mask: 'separator': {thousandSeparator: '.'} }}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalSaida() | mask: 'separator': {thousandSeparator: '.'} }} </td>
       </ng-container>
 
       <ng-container matColumnDef="perdas">
         <th mat-header-cell *matHeaderCellDef>Perdas</th>
-        <td mat-cell *matCellDef="let element">{{ element.perdas }}</td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalPerda()}} </td>
+        <td mat-cell *matCellDef="let element">{{ element.perdas | mask: 'separator': {thousandSeparator: '.'} }}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalPerda() | mask: 'separator': {thousandSeparator: '.'} }} </td>
       </ng-container>
 
       <ng-container matColumnDef="saldo">
         <th mat-header-cell *matHeaderCellDef>Saldo</th>
-        <td mat-cell *matCellDef="let element">{{ element.saldo | mask: '999.999' }}</td>
-        <td mat-footer-cell *matFooterCellDef> {{getTotalSaldo()}} </td>
+        <td mat-cell *matCellDef="let element">{{ element.saldo | mask: 'separator': {thousandSeparator: '.'} }}</td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalSaldo()| mask: 'separator': {thousandSeparator: '.'} }} </td>
       </ng-container>
 
       <ng-container matColumnDef="valorCompra">
@@ -113,7 +113,7 @@
     </table>
 
     <mat-paginator
-      [pageSizeOptions]="[10, 25, 50, dataSource.data.length]"
+      [pageSizeOptions]="[100, 200, 500, dataSource.data.length]"
       showFirstLastButtons
       aria-label="Selecione a quantidade de páginas"
     >

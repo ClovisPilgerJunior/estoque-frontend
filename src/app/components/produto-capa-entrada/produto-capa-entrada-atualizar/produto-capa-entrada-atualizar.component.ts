@@ -82,12 +82,16 @@ export class ProdutoCapaEntradaAtualizarComponent {
       next: (val: any) => {
         console.log(val)
         this.dialogRef.close();
-          this.toast.success('Produto entrada atualizado com sucesso', );
+          this.toast.success('Produto entrada atualizado com sucesso', 'Sucesso!');
           this.router.navigate(['produtoEntrada'])
         },
-        error: ex => {
-          console.log(ex)
-          this.toast.error(ex.error.message);
+        error: err => {
+          if(err.status=409) {
+            this.toast.warning(err.error.message, 'Aviso')
+          } else {
+          this.toast.error(err.error.message, 'Erro')
+          console.error(err);
+          }
         }
     })
   }

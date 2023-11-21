@@ -4,6 +4,7 @@
 <form [formGroup]="produtoEntrada" (ngSubmit)="create()">
   <div mat-dialog-content>
     <div class="row">
+      <span><mat-checkbox formControlName="retornoFac">Retorno de Facção</mat-checkbox></span>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>SKU</mat-label>
         <input
@@ -21,7 +22,6 @@
         <input
           matInput
           type="number"
-          required
           placeholder="Ex: 5550"
           maxlength="50"
           formControlName="numeroNota"
@@ -41,7 +41,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Data da Entrega</mat-label>
-          <input matInput [matDatepicker]="dataEntrega" formControlName="dataEntrega" />
+          <input matInput [matDatepicker]="dataEntrega" formControlName="dataEntrega"  />
           <mat-datepicker-toggle
             matIconSuffix
             [for]="dataEntrega"
@@ -57,12 +57,13 @@
           <input
             matInput
             type="text"
-            required
+            
             placeholder="Ex: R$ 0,00"
             currencyMask
             [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
             maxlength="120"
             formControlName="precoCompra"
+            [attr.disabled]="produtoEntrada.get('retornoFac').value ? true : null"
           />
         </mat-form-field>
 
@@ -101,6 +102,6 @@
     >
       Cancelar
     </button>
-    <button mat-raised-button color="primary" type="submit">Lançar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!produtoEntrada.valid">Lançar</button>
   </div>
 </form>

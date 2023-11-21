@@ -35,15 +35,10 @@ export class FornecedorCadastroComponent implements OnInit {
     tipoEmpresa: FormControl = new FormControl(null, [Validators.required])
     email: FormControl = new FormControl(null, [Validators.required])
     telefone: FormControl = new FormControl(null, [Validators.required])
-    endereco: FormControl = new FormControl(null, [Validators.required])
-
-
 
   ngOnInit(): void {
 
-
   }
-
 
   create(): void {
     this.fornecedorService.create(this.fornecedor).subscribe({
@@ -70,8 +65,6 @@ export class FornecedorCadastroComponent implements OnInit {
       this.nome.valid &&
       this.tipoEmpresa.valid &&
       this.email &&
-      this.telefone.valid &&
-      this.endereco.valid
+      this.telefone.valid
   }
-
 }

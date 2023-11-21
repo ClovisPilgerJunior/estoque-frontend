@@ -90,7 +90,7 @@ export class ProdutoCapaCadastrarComponent {
   create(): void {
     this.produtoCapaService.create(this.produtoCapa).subscribe({
       next: response => {
-        this.toast.success('Produto capa cadastrado com sucesso');
+        this.toast.success('Produto capa cadastrado com sucesso', 'Sucesso!');
         console.log(response)
         this.router.navigate(['produtoCapa'])
       },
@@ -100,10 +100,12 @@ export class ProdutoCapaCadastrarComponent {
           if (primeiroErro.message) {
             this.toast.error(primeiroErro.message);
           }
-        } else {
-          this.toast.error(ex.error.message);
-        }
-        console.log(ex)
+        } else if(ex.status=409) {
+            this.toast.warning(ex.error.message, 'Aviso')
+          } else {
+          this.toast.error(ex.error.message, 'Erro')
+          console.error(ex);
+          }
       }
     })
   }

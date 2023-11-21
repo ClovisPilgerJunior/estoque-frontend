@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { parse } from 'date-fns';
@@ -34,12 +34,12 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
   ) {
     this.produtoSaida = this.formBuilder.group({
       id: '',
-      dataSaida: '',
-      quantidade: '',
-      retiradoPor: '',
-      setor: '',
+      dataSaida: [formatDate(new Date(), 'dd/MM/yyyy', 'pt'), Validators.required],
+      quantidade: ['', Validators.required],
+      retiradoPor: ['', Validators.required],
+      setor: ['', Validators.required],
       observacao: '',
-      produtoCapa: '',
+      produtoCapa: ['', Validators.required],
       produtoCapaDesc: '',
     })
   }
@@ -63,7 +63,7 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
           .update(formData)
           .subscribe({
             next: (val: any) => {
-              this.toast.success('Saida do produto atualizada!');
+              this.toast.success('Saida do produto atualizada!', 'Sucesso');
               this.dialogRef.close(true);
             },
             error: (err: any) => {
@@ -77,12 +77,16 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
         formData.setor = this.converterParaValorNumerico(formData.setor)
         this.produtoSaidaService.create(formData).subscribe({
           next: (val: any) => {
-            this.toast.success('Saida do produto lançada');
+            this.toast.success('Saida do produto lançada', 'Sucesso!');
             this.dialogRef.close(true);
           },
           error: (err: any) => {
-            this.toast.error(err.error.message)
+            if(err.status=409) {
+              this.toast.warning(err.error.message, 'Aviso')
+            } else {
+            this.toast.error(err.error.message, 'Erro')
             console.error(err);
+            }
           },
         });
       }

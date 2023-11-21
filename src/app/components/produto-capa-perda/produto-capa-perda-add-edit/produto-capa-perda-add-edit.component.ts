@@ -44,23 +44,31 @@ export class ProdutoCapaPerdaAddEditComponent implements OnInit {
           .update(this.produtoPerda.value)
           .subscribe({
             next: (val: any) => {
-              this.toast.success('Perda do produto atualizada!');
+              this.toast.success('Perda do produto atualizada!', 'Sucesso!');
               this.dialogRef.close(true);
             },
             error: (err: any) => {
-              this.toast.error(err.message)
+              if(err.status=409) {
+                this.toast.warning(err.error.message, 'Aviso')
+              } else {
+              this.toast.error(err.error.message, 'Erro')
               console.error(err);
+              }
             },
           });
       } else {
         this.produtoPerdaService.create(this.produtoPerda.value).subscribe({
           next: (val: any) => {
-            this.toast.success('Perda do produto lançada');
+            this.toast.success('Perda do produto lançada', 'Sucesso!');
             this.dialogRef.close(true);
           },
           error: (err: any) => {
-            this.toast.error(err.error.message)
+            if(err.status=409) {
+              this.toast.warning(err.error.message, 'Aviso')
+            } else {
+            this.toast.error(err.error.message, 'Erro')
             console.error(err);
+            }
           },
         });
       }
