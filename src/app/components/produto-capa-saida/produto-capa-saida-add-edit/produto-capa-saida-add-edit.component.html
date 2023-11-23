@@ -1,86 +1,111 @@
-
 <div mat-dialog-title>
-    <h1>Saida de Produto</h1>
-  </div>
-  <form [formGroup]="produtoSaida" (ngSubmit)="onFormSubmit()">
-    <div mat-dialog-content>
-      <div class="row">
+  <h1>Saida de Produto</h1>
+</div>
+<form [formGroup]="produtoSaida" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>SKU</mat-label>
+        <input
+          matInput
+          type="number"
+          required
+          placeholder="Ex: 5550"
+          maxlength="50"
+          formControlName="produtoCapa"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Data da Saida</mat-label>
+        <input
+          matInput
+          [matDatepicker]="dataSaida"
+          formControlName="dataSaida"
+          maxlength="8"
+        />
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="dataSaida"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dataSaida></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Setores</mat-label>
+        <mat-select formControlName="setor" name="setores" required>
+          <mat-option *ngFor="let option of setores" [value]="option.nome">{{
+            option.nome
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        class="full-width"
+        appearance="fill"
+        *ngIf="produtoSaida.get('setor').value === 'FACÇÃO'"
+      >
+        <mat-label>Unidade Produtiva</mat-label>
+        <mat-select formControlName="unidadeProdutiva" name="setores" required>
+          <mat-option
+            *ngFor="let option of listUnidadeProdutiva"
+            [value]="option.nome"
+            >{{ option.nome }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+      <div class="tipos">
         <mat-form-field class="full-width" appearance="fill">
-          <mat-label>SKU</mat-label>
+          <mat-label>Quantidade</mat-label>
           <input
+            formControlName="quantidade"
             matInput
-            type="number"
             required
-            placeholder="Ex: 5550"
-            maxlength="50"
-            formControlName="produtoCapa"
+            [mask]="'0*'"
+            placeholder="Ex. 10"
+            type="number"
           />
         </mat-form-field>
 
-            <mat-form-field class="full-width" appearance="fill">
-                <mat-label>Data da Saida</mat-label>
-                <input matInput [matDatepicker]="dataSaida" formControlName="dataSaida" maxlength="8" />
-                <mat-datepicker-toggle
-                matIconSuffix
-                [for]="dataSaida"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #dataSaida></mat-datepicker>
-            </mat-form-field>
-
-
         <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Setores</mat-label>
-            <mat-select formControlName="setor" name="setores" required>
-              <mat-option *ngFor="let option of setores" [value]="option.nome">{{ option.nome }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Quantidade</mat-label>
-            <input
-              formControlName="quantidade"
-              matInput
-              required
-              [mask]="'0*'"
-              placeholder="Ex. 10"
-              type="number"
-            />
-          </mat-form-field>
-
-        <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Retirado Por</mat-label>
-            <input
-              formControlName="retiradoPor"
-              matInput
-              required
-              placeholder="Ex. João"
-              type="text"
-            />
-          </mat-form-field>
-
-        <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Observação</mat-label>
+          <mat-label>Retirado Por</mat-label>
           <input
-            formControlName="observacao"
+            formControlName="retiradoPor"
             matInput
-            placeholder="Ex. Rolo de elastico x"
+            required
+            placeholder="Ex. João"
             type="text"
           />
         </mat-form-field>
-
       </div>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Observação</mat-label>
+        <input
+          formControlName="observacao"
+          matInput
+          placeholder="Ex. Rolo de elastico x"
+          type="text"
+        />
+      </mat-form-field>
     </div>
+  </div>
 
-    <div mat-dialog-actions align="center">
-      <button
-        mat-raised-button
-        color="warn"
-        type="button"
-        [mat-dialog-close]="false"
-      >
-        Cancelar
-      </button>
-      <button mat-raised-button color="primary" type="submit"[disabled]="!produtoSaida.valid
-      ">{{data ? 'Atualizar': 'Lançar'}}</button>
-    </div>
-  </form>
+  <div mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      [mat-dialog-close]="false"
+    >
+      Cancelar
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!produtoSaida.valid"
+    >
+      {{ data ? "Atualizar" : "Lançar" }}
+    </button>
+  </div>
+</form>

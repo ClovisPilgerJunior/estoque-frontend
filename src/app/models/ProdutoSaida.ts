@@ -4,6 +4,8 @@ export interface ProdutoSaida {
   quantidade: number;
   retiradoPor: string;
   setor: number;
+  unidadeProdutiva?: number;
+  servico?: string;
   observacao: string;
   produtoCapa?: number;
   produtoCapaDesc?: String;

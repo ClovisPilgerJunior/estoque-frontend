@@ -1,3 +1,4 @@
+import { UnidadeProdutivaService } from './../../../services/unidade-produtiva.service';
 import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -5,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { parse } from 'date-fns';
 import { ToastrService } from 'ngx-toastr';
+import { UnidadeProdutiva } from 'src/app/models/unidadeProdutiva';
 import { ProdutoSaidaService } from 'src/app/services/produto-saida.service ';
 
 @Component({
@@ -18,7 +20,8 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
     {valor: 0, nome: 'MERKETING'},
     {valor: 1, nome: 'ESCRITORIO'},
     {valor: 2, nome: 'USO INTERNO'},
-    {valor: 3, nome: 'SERVIÇOS GERAIS'}
+    {valor: 3, nome: 'SERVIÇOS GERAIS'},
+    {valor: 4, nome: 'FACÇÃO'}
   ]
 
   produtoSaida: FormGroup;
@@ -26,6 +29,7 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
 
   constructor(
     private produtoSaidaService: ProdutoSaidaService,
+    private unidadeProdutivaService: UnidadeProdutivaService,
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<ProdutoCapaSaidaAddEditComponent>,
     private toast: ToastrService,
@@ -38,10 +42,22 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
       quantidade: ['', Validators.required],
       retiradoPor: ['', Validators.required],
       setor: ['', Validators.required],
+      unidadeProdutiva: ['', Validators.required],
       observacao: '',
       produtoCapa: ['', Validators.required],
       produtoCapaDesc: '',
-    })
+    });
+    this.findAllUnidadeProdutiva();
+  }
+
+  private setUnidadeProdutivaValidator() {
+    this.produtoSaida.get('unidadeProdutiva').setValidators([Validators.required]);
+    this.produtoSaida.get('unidadeProdutiva').updateValueAndValidity();
+  }
+
+  private removeUnidadeProdutivaValidator() {
+    this.produtoSaida.get('unidadeProdutiva').clearValidators();
+    this.produtoSaida.get('unidadeProdutiva').updateValueAndValidity();
   }
 
   converterParaValorNumerico(nome: string): number {
@@ -51,14 +67,46 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.produtoSaida.patchValue(this.data)
+
+    this.setUnidadeProdutivaValidator();
+
+    // Escuta as mudanças no campo "setor" e ajusta os validadores dinamicamente
+    this.produtoSaida.get('setor').valueChanges.subscribe((setor) => {
+      if (setor === 'FACÇÃO') {
+        this.setUnidadeProdutivaValidator();
+      } else {
+        this.removeUnidadeProdutivaValidator();
+      }
+    });
+  }
+
+  listUnidadeProdutiva: UnidadeProdutiva[];
+
+  findAllUnidadeProdutiva(): void {
+    this.unidadeProdutivaService.findAll().subscribe(response => {
+      // Filtrar a lista de fornecedores para remover os inativos
+      this.listUnidadeProdutiva = response.filter(unidadeProdutiva => unidadeProdutiva.ativo === true);
+      console.log(this.listUnidadeProdutiva);
+    });
+  }
+
+  converterUnidadeProdutivaParaValorNumerico(nome: string): number {
+    const unidadeProdutiva = this.listUnidadeProdutiva.find(u => u.nome === nome);
+    return unidadeProdutiva ? unidadeProdutiva.id : 0; // Substitua 0 pelo valor padrão se não encontrar
   }
 
   onFormSubmit() {
     if (this.produtoSaida.valid) {
       if (this.data) {
         const formData = { ...this.produtoSaida.value };
+        console.log(formData.setor)
         formData.setor = this.converterParaValorNumerico(formData.setor)
+        console.log(formData.setor)
+        if(formData.setor == 4){
+          formData.unidadeProdutiva = this.converterUnidadeProdutivaParaValorNumerico(formData.unidadeProdutiva);
+        }
         formData.dataSaida = formatDate(formData.dataSaida, 'dd/MM/yyyy', 'pt');
+        console.log(formData.unidadeProdutiva)
         this.produtoSaidaService
           .update(formData)
           .subscribe({
@@ -74,7 +122,13 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
       } else {
         const formData = { ...this.produtoSaida.value };
         formData.dataSaida = formatDate(formData.dataSaida, 'dd/MM/yyyy', 'en-US');
-        formData.setor = this.converterParaValorNumerico(formData.setor)
+        console.log(formData.setor)
+        formData.setor = this.converterParaValorNumerico(formData.setor);
+        console.log(formData.setor)
+        if(formData.setor == 4){
+          formData.unidadeProdutiva = this.converterUnidadeProdutivaParaValorNumerico(formData.unidadeProdutiva);
+        }
+        console.log(formData.unidadeProdutiva)
         this.produtoSaidaService.create(formData).subscribe({
           next: (val: any) => {
             this.toast.success('Saida do produto lançada', 'Sucesso!');

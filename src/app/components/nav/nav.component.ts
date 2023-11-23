@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { faCircleDown } from '@fortawesome/free-regular-svg-icons';
-import { faCircleArrowDown, faClipboardList, faCoffee, faDolly, faMagnifyingGlass, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircleArrowDown, faClipboardList, faCoffee, faDolly, faIndustry, faMagnifyingGlass, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -17,6 +17,7 @@ export class NavComponent implements OnInit {
   faPlusCircle = faPlusCircle;
   faMinusCircle = faMinusCircle;
   faDownCircle = faCircleDown;
+  industria = faIndustry;
 
   constructor(
     private router: Router,
@@ -24,7 +25,7 @@ export class NavComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.router.navigate(['produtoConsultar'])
+    this.router.navigate(['unidadeProdutiva'])
   }
 
 

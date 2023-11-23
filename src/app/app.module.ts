@@ -58,6 +58,8 @@ import { ProdutoCapaSaidaAddEditComponent } from './components/produto-capa-said
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ProdutoCapaPerdaListarComponent } from './components/produto-capa-perda/produto-capa-perda-listar/produto-capa-perda-listar.component';
 import { ProdutoCapaPerdaAddEditComponent } from './components/produto-capa-perda/produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
+import { UnidadeProdutivaListarComponent } from './components/unidade-produtiva/unidade-produtiva-listar/unidade-produtiva-listar.component';
+import { UnidadeProdutivaAddEditComponent } from './components/unidade-produtiva/unidade-produtiva-add-edit/unidade-produtiva-add-edit.component';
 
 
 registerLocaleData(localePt, 'pt');
@@ -93,7 +95,9 @@ export const ISO_FORMAT = {
     ProdutoCapaSaidaListarComponent,
     ProdutoCapaSaidaAddEditComponent,
     ProdutoCapaPerdaListarComponent,
-    ProdutoCapaPerdaAddEditComponent
+    ProdutoCapaPerdaAddEditComponent,
+    UnidadeProdutivaListarComponent,
+    UnidadeProdutivaAddEditComponent
   ],
   imports: [
     BrowserModule,

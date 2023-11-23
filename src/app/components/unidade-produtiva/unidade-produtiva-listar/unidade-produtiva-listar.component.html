@@ -1,0 +1,70 @@
+<div class="container">
+  <h1>Unidade Produtiva</h1>
+  <button (click)="onCreate()" mat-raised-button color="primary">
+    Cadastrar Unidade Produtiva
+  </button>
+  <mat-form-field>
+    <mat-label>Filtro</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex: Ramatex"
+      #input
+    />
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <!-- Po- Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>id</th>
+        <td  mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Po- Column -->
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td  mat-cell *matCellDef="let element">{{ element.nome }}</td>
+      </ng-container>
+
+            <!-- Po- Column -->
+      <ng-container matColumnDef="servico">
+        <th mat-header-cell *matHeaderCellDef>Serviço</th>
+        <td  mat-cell *matCellDef="let element">{{ element.servico }}</td>
+      </ng-container>
+
+      <!-- Column -->
+      <ng-container matColumnDef="ativo">
+        <th mat-header-cell *matHeaderCellDef>Ativo</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.ativo; else inativo">Sim</span>
+          <ng-template #inativo>Não</ng-template>
+        </td>
+      </ng-container>
+
+      <!-- - Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let element">
+          <a (click)="onEditForm(element)" style="cursor: pointer">
+            <i class="material-icons edit">edit</i>
+          </a>
+          <a (click)="delete(element.id)" style="cursor: pointer">
+            <i class="material-icons delete">delete</i>
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[50, 100, 200, dataSource.data.length]"
+      showFirstLastButtons
+      aria-label="Selecione a quantidade de páginas"
+    >
+    </mat-paginator>
+  </div>
+</div>
+
+

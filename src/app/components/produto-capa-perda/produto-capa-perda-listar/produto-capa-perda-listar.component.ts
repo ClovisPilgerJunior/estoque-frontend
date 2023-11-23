@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProdutoPerda } from 'src/app/models/ProdutoPerda';
-import { ProdutoPerdaService } from 'src/app/services/produto-saida.service  copy';
+import { ProdutoPerdaService } from 'src/app/services/produto-perda.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaPerdaAddEditComponent } from '../produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
 
