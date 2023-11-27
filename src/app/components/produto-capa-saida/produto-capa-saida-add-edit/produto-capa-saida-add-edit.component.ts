@@ -1,13 +1,13 @@
-import { UnidadeProdutivaService } from './../../../services/unidade-produtiva.service';
 import { formatDate } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { parse } from 'date-fns';
 import { ToastrService } from 'ngx-toastr';
-import { UnidadeProdutiva } from 'src/app/models/unidadeProdutiva';
 import { ProdutoSaidaService } from 'src/app/services/produto-saida.service ';
+import { UnidadeProdutiva } from './../../../models/unidadeProdutiva';
+import { UnidadeProdutivaService } from './../../../services/unidade-produtiva.service';
+import { parse } from 'date-fns';
 
 @Component({
   selector: 'app-produto-capa-saida-add-edit',
@@ -38,7 +38,7 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
   ) {
     this.produtoSaida = this.formBuilder.group({
       id: '',
-      dataSaida: [formatDate(new Date(), 'dd/MM/yyyy', 'pt'), Validators.required],
+      dataSaida: ['', Validators.required],
       quantidade: ['', Validators.required],
       retiradoPor: ['', Validators.required],
       setor: ['', Validators.required],
@@ -68,7 +68,19 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
   ngOnInit(): void {
     this.produtoSaida.patchValue(this.data)
 
-    this.setUnidadeProdutivaValidator();
+    if(this.data){
+      const dataSaida = parse(this.data.dataSaida, 'dd/MM/yyyy', new Date());
+      this.produtoSaida.patchValue({
+        dataSaida
+      });
+    } else {
+      const dataSaida =  new Date();
+      this.produtoSaida.patchValue({
+        dataSaida
+      });
+    }
+
+    this.removeUnidadeProdutivaValidator();
 
     // Escuta as mudanças no campo "setor" e ajusta os validadores dinamicamente
     this.produtoSaida.get('setor').valueChanges.subscribe((setor) => {
@@ -99,13 +111,17 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
     if (this.produtoSaida.valid) {
       if (this.data) {
         const formData = { ...this.produtoSaida.value };
-        console.log(formData.setor)
+        console.log(formData.dataSaida)
+        formData.dataSaida = formatDate(formData.dataSaida, 'dd/MM/yyyy', 'en-US');
+        console.log(formData.dataSaida)
         formData.setor = this.converterParaValorNumerico(formData.setor)
         console.log(formData.setor)
         if(formData.setor == 4){
           formData.unidadeProdutiva = this.converterUnidadeProdutivaParaValorNumerico(formData.unidadeProdutiva);
         }
-        formData.dataSaida = formatDate(formData.dataSaida, 'dd/MM/yyyy', 'pt');
+        if(formData.setor != 4) {
+          formData.unidadeProdutiva = null;
+        }
         console.log(formData.unidadeProdutiva)
         this.produtoSaidaService
           .update(formData)
@@ -115,8 +131,12 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
               this.dialogRef.close(true);
             },
             error: (err: any) => {
-              this.toast.error(err.message)
+              if(err.status=409) {
+                this.toast.warning(err.error.message, 'Aviso')
+              } else {
+              this.toast.error(err.error.message, 'Erro')
               console.error(err);
+              }
             },
           });
       } else {

@@ -71,8 +71,6 @@ export const ISO_FORMAT = {
   display: {
       dateInput: 'dd/MM/yyyy',
       monthYearLabel: 'MMM YYYY',
-      dateA11yLabel: 'LL',
-      monthYearA11yLabel: 'MMMM YYYY',
   },
 
 };
