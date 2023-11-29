@@ -1,8 +1,11 @@
 <div class="container">
-  <h1>Entradas</h1>
-  <button (click)="onCreate()" mat-raised-button color="primary">
-    Lançar Entrada
-  </button>
+  <h1>
+    <button (click)="onCreate()" mat-fab color="primary">
+      <fa-icon [icon]="faPlus" size="2xl"></fa-icon>
+    </button>
+    Entradas
+  </h1>
+
   <mat-form-field>
     <mat-label>Filtro</mat-label>
     <input
@@ -17,7 +20,7 @@
       <!-- Po- Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef>id</th>
-        <td  mat-cell *matCellDef="let element">{{ element.id }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
       </ng-container>
 
       <ng-container matColumnDef="produtoCapa">
@@ -27,7 +30,9 @@
 
       <ng-container matColumnDef="produtoCapaDesc">
         <th mat-header-cell *matHeaderCellDef>Descrição</th>
-        <td mat-cell *matCellDef="let element">{{ element.produtoCapaDesc }}</td>
+        <td mat-cell *matCellDef="let element">
+          {{ element.produtoCapaDesc }}
+        </td>
       </ng-container>
 
       <!-- Po- Column -->
@@ -50,7 +55,11 @@
 
       <ng-container matColumnDef="precoCompra">
         <th mat-header-cell *matHeaderCellDef>Preço de compra</th>
-        <td mat-cell *matCellDef="let element">{{ element.precoCompra | currency:'BRL':'symbol-narrow':'1.2-2'}}</td>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element.precoCompra | currency : "BRL" : "symbol-narrow" : "1.2-2"
+          }}
+        </td>
       </ng-container>
 
       <!-- Po- Column -->
@@ -89,4 +98,3 @@
     </mat-paginator>
   </div>
 </div>
-

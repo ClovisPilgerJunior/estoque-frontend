@@ -1,94 +1,99 @@
 <div class="container">
-    <h1>Saida</h1>
-    <button (click)="onCreate()" mat-raised-button color="primary">
-      Lançar Saida
-    </button>
-    <mat-form-field>
-      <mat-label>Filtro</mat-label>
-      <input
-        matInput
-        (keyup)="applyFilter($event)"
-        placeholder="Ex: Ramatex"
-        #input
-      />
-    </mat-form-field>
-    <div class="mat-elevation-z8 example-table-container">
-      <table mat-table [dataSource]="dataSource">
-        <!-- Po- Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>id</th>
-          <td  mat-cell *matCellDef="let element">{{ element.id }}</td>
-        </ng-container>
+  <h1>
+    <button (click)="onCreate()" mat-fab color="primary">
+      <fa-icon [icon]="faPlus" size="2xl"></fa-icon></button
+    > Saidas
+  </h1>
 
-        <ng-container matColumnDef="produtoCapa">
-          <th mat-header-cell *matHeaderCellDef>SKU</th>
-          <td mat-cell *matCellDef="let element">{{ element.produtoCapa }}</td>
-        </ng-container>
+  <mat-form-field>
+    <mat-label>Filtro</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex: Ramatex"
+      #input
+    />
+  </mat-form-field>
+  <div class="mat-elevation-z8 example-table-container">
+    <table mat-table [dataSource]="dataSource">
+      <!-- Po- Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
 
-        <ng-container matColumnDef="produtoCapaDesc">
-          <th mat-header-cell *matHeaderCellDef>Descrição</th>
-          <td mat-cell *matCellDef="let element">{{ element.produtoCapaDesc }}</td>
-        </ng-container>
+      <ng-container matColumnDef="produtoCapa">
+        <th mat-header-cell *matHeaderCellDef>SKU</th>
+        <td mat-cell *matCellDef="let element">{{ element.produtoCapa }}</td>
+      </ng-container>
 
-        <!-- Po- Column -->
-        <ng-container matColumnDef="dataSaida">
-          <th mat-header-cell *matHeaderCellDef>Data Saida</th>
-          <td mat-cell *matCellDef="let element">{{ element.dataSaida }}</td>
-        </ng-container>
-          <!-- Po- Column -->
-        <ng-container matColumnDef="quantidade">
-          <th mat-header-cell *matHeaderCellDef>Quantidade</th>
-          <td mat-cell *matCellDef="let element">{{ element.quantidade }}</td>
-        </ng-container>
+      <ng-container matColumnDef="produtoCapaDesc">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.produtoCapaDesc }}
+        </td>
+      </ng-container>
 
-        <ng-container matColumnDef="retiradoPor">
-          <th mat-header-cell *matHeaderCellDef>Retirado Por</th>
-          <td mat-cell *matCellDef="let element">{{ element.retiradoPor }}</td>
-        </ng-container>
+      <!-- Po- Column -->
+      <ng-container matColumnDef="dataSaida">
+        <th mat-header-cell *matHeaderCellDef>Data Saida</th>
+        <td mat-cell *matCellDef="let element">{{ element.dataSaida }}</td>
+      </ng-container>
+      <!-- Po- Column -->
+      <ng-container matColumnDef="quantidade">
+        <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+        <td mat-cell *matCellDef="let element">{{ element.quantidade }}</td>
+      </ng-container>
 
-        <ng-container matColumnDef="setor">
-          <th mat-header-cell *matHeaderCellDef>Setor</th>
-          <td mat-cell *matCellDef="let element">{{ element.setor }}</td>
-        </ng-container>
+      <ng-container matColumnDef="retiradoPor">
+        <th mat-header-cell *matHeaderCellDef>Retirado Por</th>
+        <td mat-cell *matCellDef="let element">{{ element.retiradoPor }}</td>
+      </ng-container>
 
-        <ng-container matColumnDef="unidadeProdutiva">
-          <th mat-header-cell *matHeaderCellDef>Unidade Produtiva</th>
-          <td mat-cell *matCellDef="let element">{{ element.unidadeProdutiva }}</td>
-        </ng-container>
+      <ng-container matColumnDef="setor">
+        <th mat-header-cell *matHeaderCellDef>Setor</th>
+        <td mat-cell *matCellDef="let element">{{ element.setor }}</td>
+      </ng-container>
 
-        <ng-container matColumnDef="servico">
-          <th mat-header-cell *matHeaderCellDef>Serviço</th>
-          <td mat-cell *matCellDef="let element">{{ element.servico }}</td>
-        </ng-container>
+      <ng-container matColumnDef="unidadeProdutiva">
+        <th mat-header-cell *matHeaderCellDef>Unidade Produtiva</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.unidadeProdutiva }}
+        </td>
+      </ng-container>
 
-        <ng-container matColumnDef="observacao">
-          <th mat-header-cell *matHeaderCellDef>Observação</th>
-          <td mat-cell *matCellDef="let element">{{ element.observacao }}</td>
-        </ng-container>
+      <ng-container matColumnDef="servico">
+        <th mat-header-cell *matHeaderCellDef>Serviço</th>
+        <td mat-cell *matCellDef="let element">{{ element.servico }}</td>
+      </ng-container>
 
-        <!-- - Column -->
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef>Ações</th>
-          <td mat-cell *matCellDef="let element">
-            <a (click)="onEditForm(element)" style="cursor: pointer">
-              <i class="material-icons edit">edit</i>
-            </a>
-            <a (click)="delete(element.id)" style="cursor: pointer">
-              <i class="material-icons delete">delete</i>
-            </a>
-          </td>
-        </ng-container>
+      <ng-container matColumnDef="observacao">
+        <th mat-header-cell *matHeaderCellDef>Observação</th>
+        <td mat-cell *matCellDef="let element">{{ element.observacao }}</td>
+      </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
+      <!-- - Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let element">
+          <a (click)="onEditForm(element)" style="cursor: pointer">
+            <i class="material-icons edit">edit</i>
+          </a>
+          <a (click)="delete(element.id)" style="cursor: pointer">
+            <i class="material-icons delete">delete</i>
+          </a>
+        </td>
+      </ng-container>
 
-      <mat-paginator
-        [pageSizeOptions]="[50, 100, 200, dataSource.data.length]"
-        showFirstLastButtons
-        aria-label="Selecione a quantidade de páginas"
-      >
-      </mat-paginator>
-    </div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[50, 100, 200, dataSource.data.length]"
+      showFirstLastButtons
+      aria-label="Selecione a quantidade de páginas"
+    >
+    </mat-paginator>
   </div>
-
+</div>

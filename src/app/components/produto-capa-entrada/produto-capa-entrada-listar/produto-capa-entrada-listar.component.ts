@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmat
 import { ProdutoCapaEntradaAtualizarComponent } from '../produto-capa-entrada-atualizar/produto-capa-entrada-atualizar.component';
 import { ProdutoEntradaEntradaCadastrarComponent } from '../produto-capa-entrada-cadastrar/produto-capa-entrada-cadastrar.component';
 import { ProdutoEntrada } from './../../../models/ProdutoEntrada';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-produto-capa-entrada-listar',
@@ -16,6 +17,9 @@ import { ProdutoEntrada } from './../../../models/ProdutoEntrada';
   styleUrls: ['./produto-capa-entrada-listar.component.scss'],
 })
 export class ProdutoCapaEntradaListarComponent {
+
+  faPlus = faPlus;
+
   ELEMENT_DATA: ProdutoEntrada[] = [];
 
   displayedColumns: string[] = [

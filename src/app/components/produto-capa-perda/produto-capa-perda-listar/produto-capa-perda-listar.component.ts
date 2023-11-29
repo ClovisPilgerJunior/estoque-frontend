@@ -8,6 +8,7 @@ import { ProdutoPerda } from 'src/app/models/ProdutoPerda';
 import { ProdutoPerdaService } from 'src/app/services/produto-perda.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaPerdaAddEditComponent } from '../produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-produto-capa-perda-listar',
@@ -15,6 +16,8 @@ import { ProdutoCapaPerdaAddEditComponent } from '../produto-capa-perda-add-edit
   styleUrls: ['./produto-capa-perda-listar.component.scss']
 })
 export class ProdutoCapaPerdaListarComponent {
+
+  faPlus = faPlus;
 
   ELEMENT_DATA: ProdutoPerda[] = [];
 

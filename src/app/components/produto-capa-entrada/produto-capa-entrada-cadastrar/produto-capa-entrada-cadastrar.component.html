@@ -3,8 +3,8 @@
 </div>
 <form [formGroup]="produtoEntrada" (ngSubmit)="create()">
   <div mat-dialog-content>
+    <span><mat-checkbox formControlName="retornoFac">Retorno de Facção</mat-checkbox></span>
     <div class="row">
-      <span><mat-checkbox formControlName="retornoFac">Retorno de Facção</mat-checkbox></span>
       <mat-form-field class="full-width" appearance="fill">
         <mat-label>SKU</mat-label>
         <input
@@ -57,7 +57,7 @@
           <input
             matInput
             type="text"
-            
+
             placeholder="Ex: R$ 0,00"
             currencyMask
             [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"

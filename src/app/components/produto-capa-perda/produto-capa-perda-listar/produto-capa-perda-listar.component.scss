@@ -2,32 +2,35 @@
     width: 95%;
     margin: 1rem auto;
   }
-  
+
   table {
     width: 100%;
   }
-  
+
   mat-form-field {
     width: 100%;
   }
-  
+
   button {
-    width: 100%;
-    margin: auto;
-    border: 2rem;
-    margin: 1rem auto;
-  }
-  
-  h1 {
-    width: 100%;
     text-align: center;
   }
-  
+
+
+  h1 {
+    width: 100%;
+    text-align: left;
+  }
+
   .edit {
     color: rgb(116, 70, 243);
   }
-  
+
   .delete {
     color: red;
   }
-    
+
+
+
+.filter-button {
+  margin-left: 8px; /* Ajuste a margem conforme necessário para separar o botão do campo de filtro */
+}

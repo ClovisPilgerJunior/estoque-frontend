@@ -8,6 +8,7 @@ import { ProdutoSaida } from 'src/app/models/ProdutoSaida';
 import { ProdutoSaidaService } from 'src/app/services/produto-saida.service ';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaSaidaAddEditComponent } from '../produto-capa-saida-add-edit/produto-capa-saida-add-edit.component';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-produto-capa-saida-listar',
@@ -15,6 +16,8 @@ import { ProdutoCapaSaidaAddEditComponent } from '../produto-capa-saida-add-edit
   styleUrls: ['./produto-capa-saida-listar.component.scss']
 })
 export class ProdutoCapaSaidaListarComponent {
+
+  faPlus = faPlus;
 
   ELEMENT_DATA: ProdutoSaida[] = [];
 

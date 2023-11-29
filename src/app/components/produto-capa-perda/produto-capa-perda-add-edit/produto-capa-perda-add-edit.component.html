@@ -1,7 +1,5 @@
 
-<div mat-dialog-title>
-    <h1>Perdas de Produtos</h1>
-  </div>
+<h1 mat-dialog-title>Perdas</h1>
   <form [formGroup]="produtoPerda" (ngSubmit)="onFormSubmit()">
     <div mat-dialog-content>
       <div class="row">
@@ -10,6 +8,7 @@
           <input
             matInput
             type="number"
+            [mask]="'0*'"
             required
             placeholder="Ex: 5550"
             maxlength="50"
@@ -17,7 +16,7 @@
           />
         </mat-form-field>
 
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width" appearance="fill">
                 <mat-label>Data</mat-label>
                 <input matInput [matDatepicker]="datadesaida" formControlName="data" />
                 <mat-datepicker-toggle
@@ -26,7 +25,7 @@
                 ></mat-datepicker-toggle>
                 <mat-datepicker #datadesaida></mat-datepicker>
             </mat-form-field>
-  
+
           <mat-form-field class="full-width" appearance="fill">
             <mat-label>Quantidade</mat-label>
             <input
@@ -38,20 +37,23 @@
               type="number"
             />
           </mat-form-field>
-  
+
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Motivo</mat-label>
-          <input
+          <textarea class="textarea"
             formControlName="motivo"
             matInput
+            #input
             placeholder="Ex. Rolo de elastico x"
+            maxlength="255"
             type="text"
-          />
+          ></textarea>
+          <mat-hint align="end">{{input.value.length}}/255</mat-hint>
         </mat-form-field>
-  
+
       </div>
     </div>
-  
+
     <div mat-dialog-actions align="center">
       <button
         mat-raised-button
@@ -64,4 +66,3 @@
       <button mat-raised-button color="primary" type="submit">{{data ? 'Atualizar': 'Lançar'}}</button>
     </div>
   </form>
-  
