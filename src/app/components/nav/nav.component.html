@@ -1,41 +1,92 @@
 <mat-toolbar>
-    <span><img src="assets/img/logo-janfer.svg" alt="logo da janfer sport e beach"></span>
-    <button mat-button class="button-primary" color="primary" routerLink="/produtoConsultar">
-      <fa-icon [icon]="faMagfyingGlass"></fa-icon>
-      Consulta
-    </button>
+  <span
+    ><img src="assets/img/logo-janfer.svg" alt="logo da janfer sport e beach"
+  /></span>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/produtoConsultar"
+  >
+    <fa-icon [icon]="faMagfyingGlass"></fa-icon>
+    Consulta
+  </button>
 
-    <button mat-button class="button-primary" color="primary" routerLink="/produtoCapa" >
-      <fa-icon [icon]="faClipBoardList"></fa-icon>
-      Produto
-    </button>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/produtoCapa"
+  >
+    <fa-icon [icon]="faClipBoardList"></fa-icon>
+    Produto
+  </button>
 
-    <button mat-button class="button-primary" color="primary" routerLink="/produtoEntrada">
-      <fa-icon [icon]="faPlusCircle"></fa-icon>
-      Entrada</button>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/produtoEntrada"
+  >
+    <fa-icon [icon]="faPlusCircle"></fa-icon>
+    Entrada
+  </button>
 
-    <button mat-button class="button-primary" color="primary" routerLink="/produtoSaida">
-      <fa-icon [icon]="faMinusCircle"></fa-icon>
-      Saida</button>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/produtoSaida"
+  >
+    <fa-icon [icon]="faMinusCircle"></fa-icon>
+    Saida
+  </button>
 
-    <button mat-button class="button-primary" color="primary" routerLink="/produtoPerda">
-      <fa-icon [icon]="faDownCircle"></fa-icon>
-      Perda</button>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/produtoPerda"
+  >
+    <fa-icon [icon]="faDownCircle"></fa-icon>
+    Perda
+  </button>
 
-    <button mat-button class="button-primary" color="primary" routerLink="/fornecedor">
-      <fa-icon [icon]="faDolly"></fa-icon>
-      Fornecedor
-    </button>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/fornecedor"
+  >
+    <fa-icon [icon]="faDolly"></fa-icon>
+    Fornecedor
+  </button>
 
-    <button mat-button class="button-primary" color="primary" routerLink="/unidadeProdutiva">
-      <fa-icon [icon]="industria"></fa-icon>
-      Unidade Produtiva
-    </button>
+  <button
+    mat-button
+    class="button-primary"
+    color="primary"
+    routerLink="/unidadeProdutiva"
+  >
+    <fa-icon [icon]="industria"></fa-icon>
+    Unidade Produtiva
+  </button>
 
-    <button mat-button class="button-primary" color="primary" >Ordem de Compra</button>
+  <button mat-button class="button-primary" color="primary">
+    Ordem de Compra
+  </button>
 
-  </mat-toolbar>
+  <button mat-button class="button-primary" color="primary" routerLink="/userListar" *ngIf="isAdminUser()">
+    <i class="material-icons">person</i>
+    Usuário
+  </button>
+
+  <button mat-button class="button-primary" color="primary" (click)="logout()">
+    <i class="material-icons">exit_to_app</i>
+    Logout
+  </button>
+</mat-toolbar>
 
 <div class="toolbar-content">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

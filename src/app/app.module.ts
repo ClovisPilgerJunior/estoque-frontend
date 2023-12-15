@@ -60,6 +60,10 @@ import { ProdutoCapaPerdaListarComponent } from './components/produto-capa-perda
 import { ProdutoCapaPerdaAddEditComponent } from './components/produto-capa-perda/produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
 import { UnidadeProdutivaListarComponent } from './components/unidade-produtiva/unidade-produtiva-listar/unidade-produtiva-listar.component';
 import { UnidadeProdutivaAddEditComponent } from './components/unidade-produtiva/unidade-produtiva-add-edit/unidade-produtiva-add-edit.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
+import { UserListarComponent } from './components/user/user-listar/user-listar.component';
+import { UserAddEditComponent } from './components/user/user-add-edit/user-add-edit.component';
 
 
 registerLocaleData(localePt, 'pt');
@@ -95,7 +99,10 @@ export const ISO_FORMAT = {
     ProdutoCapaPerdaListarComponent,
     ProdutoCapaPerdaAddEditComponent,
     UnidadeProdutivaListarComponent,
-    UnidadeProdutivaAddEditComponent
+    UnidadeProdutivaAddEditComponent,
+    LoginComponent,
+    UserListarComponent,
+    UserAddEditComponent
   ],
   imports: [
     BrowserModule,
@@ -136,7 +143,7 @@ export const ISO_FORMAT = {
     NgxMaskPipe
 
   ],
-  providers: [provideNgxMask(), {provide: LOCALE_ID, useValue: 'pt' },
+  providers: [ AuthInterceptorProvider,provideNgxMask(), {provide: LOCALE_ID, useValue: 'pt' },
   provideEnvironmentNgxCurrency({
     align: "left",
     allowNegative: true,
