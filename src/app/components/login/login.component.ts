@@ -8,44 +8,51 @@ import { Credentials } from 'src/app/models/credentials';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
   constructor(
     private toast: ToastrService,
     private service: AuthService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   creds: Credentials = {
     name: '',
-    password: ''
-  }
+    password: '',
+  };
 
   name = new FormControl(null, Validators.required);
   password = new FormControl(null, Validators.minLength(3));
 
   login() {
     this.service.authenticate(this.creds).subscribe({
-      next: response => {
+      next: (response) => {
         const responseBody = response.body.toString();
         const cleanedBody = responseBody.replace(/[{}":]|token/g, '');
 
         this.service.successfulLogin(cleanedBody);
-        this.toast.success('Login realizado com sucesso', 'Login', { timeOut: 3000, positionClass: 'toast-bottom-right' });
+        this.toast.success('Login realizado com sucesso', 'Login', {
+          timeOut: 3000,
+          positionClass: 'toast-bottom-right',
+        });
         this.router.navigate(['']);
       },
-      error: err => {
+      error: (err) => {
         // Em casso de erro de autenticação lança esse callback
-        this.toast.error('Usuário e/ou senha inválidos', 'Sistema');
-      }
+        if ((err = 'ERR_CONNECTION_REFUSED')) {
+          this.toast.warning(
+            'conexão recusada com o servidor, sistema desligado',
+            'Sistema'
+          );
+        } else {
+          this.toast.error('Usuário e/ou senha inválidos', 'Sistema');
+        }
+      },
     });
   }
-
-
-
 
   fieldsValidate(): boolean {
     return this.name.valid && this.password.valid;
   }
-
 }

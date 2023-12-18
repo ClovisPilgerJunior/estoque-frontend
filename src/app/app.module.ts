@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // Para realizar requisições HTTP
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 // Imports para componentes do Angular Material
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -64,6 +64,8 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
 import { UserListarComponent } from './components/user/user-listar/user-listar.component';
 import { UserAddEditComponent } from './components/user/user-add-edit/user-add-edit.component';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
 
 
 registerLocaleData(localePt, 'pt');
@@ -102,7 +104,8 @@ export const ISO_FORMAT = {
     UnidadeProdutivaAddEditComponent,
     LoginComponent,
     UserListarComponent,
-    UserAddEditComponent
+    UserAddEditComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -158,6 +161,7 @@ export const ISO_FORMAT = {
     max: null,
     inputMode: NgxCurrencyInputMode.Financial,
   }),{ provide: MAT_DATE_LOCALE, useValue: 'pt' },
+  { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
 ],
   bootstrap: [AppComponent]
 })
