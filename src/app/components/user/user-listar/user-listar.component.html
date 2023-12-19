@@ -1,1 +1,77 @@
-<p>user-listar works!</p>
+<div class="container">
+  <h1>Usuários</h1>
+  <button (click)="onCreate()" mat-raised-button color="primary">
+    Cadastrar Usuário
+  </button>
+  <mat-form-field>
+    <mat-label>Filtro</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex: Mario"
+      #input
+    />
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+      <!-- Po- Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>id</th>
+        <td  mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <!-- Po- Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td  mat-cell *matCellDef="let element">{{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="password">
+        <th mat-header-cell *matHeaderCellDef>Senha</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="!element.senhaVisivel" style="display: inline-block; vertical-align: middle;">********</span>
+          <span *ngIf="element.senhaVisivel" style="display: inline-block; vertical-align: middle;">{{ element.password }}</span>
+          <button mat-icon-button matSuffix (click)="senhaMostrar(element)" style="display: inline-block; vertical-align: middle;">
+           <mat-icon>visibility</mat-icon>
+          </button>
+        </td>
+       </ng-container>
+
+      <ng-container matColumnDef="profiles">
+        <th mat-header-cell *matHeaderCellDef>Perfis</th>
+        <td  mat-cell *matCellDef="let element">{{ element.profiles }}</td>
+      </ng-container>
+
+      <!-- Column -->
+      <ng-container matColumnDef="ativo">
+        <th mat-header-cell *matHeaderCellDef>Ativo</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.ativo; else inativo">Sim</span>
+          <ng-template #inativo>Não</ng-template>
+        </td>
+      </ng-container>
+
+      <!-- - Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let element">
+          <a (click)="onEditForm(element)" style="cursor: pointer">
+            <i class="material-icons edit">edit</i>
+          </a>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[50, 100, 200, dataSource.data.length]"
+      showFirstLastButtons
+      aria-label="Selecione a quantidade de páginas"
+    >
+    </mat-paginator>
+  </div>
+</div>
+
+

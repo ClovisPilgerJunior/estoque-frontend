@@ -1,0 +1,14 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.profile-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+
+  mat-checkbox {
+    margin-right: 20px;
+  }
+}

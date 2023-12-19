@@ -1,1 +1,118 @@
-<p>user-add-edit works!</p>
+
+
+<div mat-dialog-title>
+  <h1>Unidade Produtiva</h1>
+</div>
+<form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content>
+    <div class="row">
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input
+          formControlName="name"
+          matInput
+          required
+          placeholder="Ex. João"
+          type="text"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input
+          formControlName="password"
+          matInput
+          required
+          placeholder="Ex. João"
+          type="text"
+        />
+      </mat-form-field>
+
+      <h4>Permissões</h4>
+
+      <hr>
+
+      <section class="section">
+        <mat-checkbox (click)="addProfile(0)" class="margin" color="primary">Admin</mat-checkbox>
+        <mat-checkbox (click)="addProfile(1)" class="margin" color="primary">Gerente</mat-checkbox>
+        <mat-checkbox (click)="addProfile(2)" class="margin" color="primary">Usuário</mat-checkbox>
+    </section>
+
+    <hr>
+
+    <section class="section">
+      <!-- Fornecedor -->
+      <mat-checkbox (click)="addProfile(3)" class="margin" color="primary">Fornecedor</mat-checkbox>
+      <mat-checkbox (click)="addProfile(4)" class="margin" color="primary">Cadastrar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(5)" class="margin" color="primary">Atualizar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(6)" class="margin" color="primary">Excluir</mat-checkbox>
+      <mat-checkbox (click)="addProfile(7)" class="margin" color="primary">Listar</mat-checkbox>
+    </section>
+
+    <section class="section">
+      <!-- Produto Capa -->
+      <mat-checkbox (click)="addProfile(8)" class="margin" color="primary">Produto Capa</mat-checkbox>
+      <mat-checkbox (click)="addProfile(9)" class="margin" color="primary">Cadastrar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(10)" class="margin" color="primary">Atualizar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(11)" class="margin" color="primary">Excluir</mat-checkbox>
+      <mat-checkbox (click)="addProfile(12)" class="margin" color="primary">Listar</mat-checkbox>
+    </section>
+      <section class="section">
+      <!-- Unidade Produtiva -->
+      <mat-checkbox (click)="addProfile(13)" class="margin" color="primary">Unidade Produtiva</mat-checkbox>
+      <mat-checkbox (click)="addProfile(14)" class="margin" color="primary">Cadastrar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(15)" class="margin" color="primary">Atualizar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(16)" class="margin" color="primary">Excluir</mat-checkbox>
+      <mat-checkbox (click)="addProfile(17)" class="margin" color="primary">Listar</mat-checkbox>
+    </section>
+      <section class="section">
+      <!-- Produto Entrada -->
+      <mat-checkbox (click)="addProfile(18)" class="margin" color="primary">Produto Entrada</mat-checkbox>
+      <mat-checkbox (click)="addProfile(19)" class="margin" color="primary">Cadastrar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(20)" class="margin" color="primary">Atualizar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(21)" class="margin" color="primary">Excluir</mat-checkbox>
+      <mat-checkbox (click)="addProfile(22)" class="margin" color="primary">Listar</mat-checkbox>
+    </section>
+      <section class="section">
+      <!-- Produto Saída -->
+      <mat-checkbox (click)="addProfile(23)" class="margin" color="primary">Produto Saída</mat-checkbox>
+      <mat-checkbox (click)="addProfile(24)" class="margin" color="primary">Cadastrar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(25)" class="margin" color="primary">Atualizar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(26)" class="margin" color="primary">Excluir</mat-checkbox>
+      <mat-checkbox (click)="addProfile(27)" class="margin" color="primary">Listar</mat-checkbox>
+    </section>
+      <section class="section">
+      <!-- Produto Perda -->
+      <mat-checkbox (click)="addProfile(28)" class="margin" color="primary">Produto Perda</mat-checkbox>
+      <mat-checkbox (click)="addProfile(29)" class="margin" color="primary">Cadastrar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(30)" class="margin" color="primary">Atualizar</mat-checkbox>
+      <mat-checkbox (click)="addProfile(31)" class="margin" color="primary">Excluir</mat-checkbox>
+      <mat-checkbox (click)="addProfile(32)" class="margin" color="primary">Listar</mat-checkbox>
+    </section>
+
+
+        <ng-container *ngIf="data">
+          <mat-radio-group color="primary" formControlName="ativo">
+            <mat-radio-button [value]="true">Ativo</mat-radio-button>
+            <mat-radio-button [value]="false">Inativo</mat-radio-button>
+          </mat-radio-group>
+        </ng-container>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      [mat-dialog-close]="false"
+    >
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" type="submit"[disabled]="!userForm.valid
+    ">{{data ? 'Atualizar': 'Cadastrar'}}</button>
+  </div>
+</form>
+
