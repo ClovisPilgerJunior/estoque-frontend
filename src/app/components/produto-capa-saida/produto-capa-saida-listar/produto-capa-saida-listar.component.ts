@@ -1,3 +1,4 @@
+import { AuthService } from './../../../services/auth.service';
 import { Component, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -43,8 +44,46 @@ export class ProdutoCapaSaidaListarComponent {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private authService: AuthService
   ) {
+  }
+
+  isAdminUser(): boolean {
+    // Verifique se o usuário tem a role 'ADMIN'
+    return this.authService.hasPermission('ROLE_ADMIN');
+  }
+
+  isManager(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER');
+  }
+
+  isUser(): boolean {
+    return this.authService.hasPermission('ROLE_USER')
+  }
+
+  isUserAndProdutoSaidaCreate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_PRODUTOSAIDA_CREATE')
+  }
+
+  isUserAndProdutoSaidaUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_PRODUTOSAIDA_UPDATE')
+  }
+
+  isUserAndProdutoSaidaDelete(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_PRODUTOSAIDA_DELETE')
+  }
+
+  isManagerAndProdutoSaidaCreate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_PRODUTOSAIDA_CREATE')
+  }
+
+  isManagerAndProdutoSaidaUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_PRODUTOSAIDA_UPDATE')
+  }
+
+  isManagerAndProdutoSaidaDelete(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_PRODUTOSAIDA_DELETE')
   }
 
   ngOnInit(): void {

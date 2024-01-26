@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ProdutoCapaCalculated } from 'src/app/models/ProdutoCapaCalculated';
+import { AuthService } from 'src/app/services/auth.service';
 import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 
 @Component({
@@ -27,8 +28,10 @@ export class ProdutoCapaConsultarComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastrService,
+    private authService: AuthService
   ) {
   }
+
 
   ngOnInit(): void {
     this.findAll();

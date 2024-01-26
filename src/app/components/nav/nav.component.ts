@@ -43,5 +43,13 @@ export class NavComponent implements OnInit {
     return this.authService.hasPermission('ROLE_ADMIN');
   }
 
+  isManager(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER');
+  }
+
+  isUser(): boolean {
+    return this.authService.hasPermission('ROLE_USER')
+  }
+
 
 }

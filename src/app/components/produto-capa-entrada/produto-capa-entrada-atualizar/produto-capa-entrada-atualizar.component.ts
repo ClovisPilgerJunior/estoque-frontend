@@ -50,7 +50,8 @@ export class ProdutoCapaEntradaAtualizarComponent {
       precoCompra: '',
       quantidade: '',
       observacao: '',
-      produtoCapa: ''
+      produtoCapa: '',
+      produtoCapaDesc: ''
     });
   }
 

@@ -19,3 +19,12 @@ h1 {
 width: 100%;
 text-align: center;
 }
+
+.tipos {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tipos mat-form-field {
+  width: 49%;
+}

@@ -8,6 +8,8 @@ import { ProdutoSaidaService } from 'src/app/services/produto-saida.service ';
 import { UnidadeProdutiva } from './../../../models/unidadeProdutiva';
 import { UnidadeProdutivaService } from './../../../services/unidade-produtiva.service';
 import { parse } from 'date-fns';
+import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
+import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 
 @Component({
   selector: 'app-produto-capa-saida-add-edit',
@@ -34,6 +36,7 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
     private dialogRef: MatDialogRef<ProdutoCapaSaidaAddEditComponent>,
     private toast: ToastrService,
     private router: Router,
+    private produtoCapaService: ProdutoCapaService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.produtoSaida = this.formBuilder.group({
@@ -89,6 +92,62 @@ export class ProdutoCapaSaidaAddEditComponent implements OnInit {
       } else {
         this.removeUnidadeProdutivaValidator();
       }
+    });
+    this.carregarProdutosCapa();
+
+    this.produtoSaida.get('produtoCapa').valueChanges.subscribe((value) => {
+      this.atualizarDescricaoPeloSKU(value);
+    });
+  }
+
+  produtoCapaList: ProdutoCapa[] = [];
+
+  carregarProdutosCapa() {
+    this.produtoCapaService.findAll().subscribe(
+      (produtos: ProdutoCapa[]) => {
+        this.produtoCapaList = produtos;
+      },
+      (error) => {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    );
+  }
+
+  atualizarDescricaoPeloSKU(value: string) {
+    if (!value) {
+      // Se o SKU estiver vazio, deixe a descrição vazia
+      this.produtoSaida.patchValue({
+        produtoCapaDesc: '',
+      });
+      return;
+    }
+
+    const isNumber = !isNaN(Number(value));
+    const produto = this.produtoCapaList.find(
+      (p) => (isNumber && p.id === Number(value)) || p.description === value
+    );
+
+    if (!produto) {
+      // Se o produto não existir, definir a descrição como 'inexistente'
+      this.produtoSaida.patchValue({
+        produtoCapaDesc: 'Não cadastrado',
+      });
+      this.toast.warning('Produto não cadastrado!', 'Sistema!');
+      return;
+    }
+
+    if (!produto.ativo) {
+      // Se o produto estiver inativo, definir a descrição como 'inativo'
+      this.produtoSaida.patchValue({
+        produtoCapaDesc: 'Produto inativado',
+      });
+      this.toast.warning('Produto inativado!', 'Sistema!');
+      return;
+    }
+
+    // Se o produto existir e estiver ativo, definir a descrição normalmente
+    this.produtoSaida.patchValue({
+      produtoCapaDesc: produto.description,
     });
   }
 

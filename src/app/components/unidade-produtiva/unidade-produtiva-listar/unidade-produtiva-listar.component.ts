@@ -1,3 +1,4 @@
+import { AuthService } from './../../../services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -35,8 +36,46 @@ export class UnidadeProdutivaListarComponent implements OnInit {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private authService: AuthService
   ) {
+  }
+
+  isAdminUser(): boolean {
+    // Verifique se o usuário tem a role 'ADMIN'
+    return this.authService.hasPermission('ROLE_ADMIN');
+  }
+
+  isManager(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER');
+  }
+
+  isUser(): boolean {
+    return this.authService.hasPermission('ROLE_USER')
+  }
+
+  isUserAndUnidadeProdutivaCreate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_UNIDADEPRODUTIVA_CREATE')
+  }
+
+  isUserAndUnidadeProdutivaUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_UNIDADEPRODUTIVA_UPDATE')
+  }
+
+  isUserAndUnidadeProdutivaDelete(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_UNIDADEPRODUTIVA_DELETE')
+  }
+
+  isManagerAndUnidadeProdutivaCreate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_UNIDADEPRODUTIVA_CREATE')
+  }
+
+  isManagerAndUnidadeProdutivaUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_UNIDADEPRODUTIVA_UPDATE')
+  }
+
+  isManagerAndUnidadeProdutivaDelete(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_UNIDADEPRODUTIVA_DELETE')
   }
 
   ngOnInit(): void {

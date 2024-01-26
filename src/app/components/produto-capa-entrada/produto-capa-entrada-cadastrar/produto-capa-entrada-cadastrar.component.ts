@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { ProdutoEntrada } from 'src/app/models/ProdutoEntrada';
 import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 import { ProdutoEntradaService } from 'src/app/services/produto-entrada.service';
@@ -22,6 +23,7 @@ produtoEntrada: FormGroup;
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<ProdutoEntradaEntradaCadastrarComponent>,
     private toast: ToastrService,
+    private produtoCapaService: ProdutoCapaService,
     private router: Router
   ) {
 
@@ -33,6 +35,7 @@ produtoEntrada: FormGroup;
     quantidade: ['', Validators.required],
     observacao: '',
     produtoCapa: ['', Validators.required],
+    produtoCapaDesc: '',
     retornoFac: false,
     }),
     this.findAllEntradas();
@@ -55,6 +58,62 @@ produtoEntrada: FormGroup;
   }
 
   ngOnInit(): void {
+    this.carregarProdutosCapa();
+
+    this.produtoEntrada.get('produtoCapa').valueChanges.subscribe((value) => {
+      this.atualizarDescricaoPeloSKU(value);
+    });
+  }
+
+  produtoCapaList: ProdutoCapa[] = [];
+
+  carregarProdutosCapa() {
+    this.produtoCapaService.findAll().subscribe(
+      (produtos: ProdutoCapa[]) => {
+        this.produtoCapaList = produtos;
+      },
+      (error) => {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    );
+  }
+
+  atualizarDescricaoPeloSKU(value: string) {
+    if (!value) {
+      // Se o SKU estiver vazio, deixe a descrição vazia
+      this.produtoEntrada.patchValue({
+        produtoCapaDesc: '',
+      });
+      return;
+    }
+
+    const isNumber = !isNaN(Number(value));
+    const produto = this.produtoCapaList.find(
+      (p) => (isNumber && p.id === Number(value)) || p.description === value
+    );
+
+    if (!produto) {
+      // Se o produto não existir, definir a descrição como 'inexistente'
+      this.produtoEntrada.patchValue({
+        produtoCapaDesc: 'Não cadastrado',
+      });
+      this.toast.warning('Produto não cadastrado!', 'Sistema!');
+      return;
+    }
+
+    if (!produto.ativo) {
+      // Se o produto estiver inativo, definir a descrição como 'inativo'
+      this.produtoEntrada.patchValue({
+        produtoCapaDesc: 'Produto inativado',
+      });
+      this.toast.warning('Produto inativado!', 'Sistema!');
+      return;
+    }
+
+    // Se o produto existir e estiver ativo, definir a descrição normalmente
+    this.produtoEntrada.patchValue({
+      produtoCapaDesc: produto.description,
+    });
   }
 
   listaDeEntradas: ProdutoEntrada[] = []

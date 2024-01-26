@@ -1,6 +1,6 @@
 <div class="container">
     <h1>Listar Fornecedores</h1>
-    <button routerLink="cadastrar" mat-raised-button color="primary">Cadastrar Fornecedor</button>
+    <button routerLink="cadastrar" mat-raised-button color="primary" *ngIf="isAdminUser() || isManagerAndFornecedorCreate() || isUserAndFornecedorCreate()">Cadastrar Fornecedor</button>
     <mat-form-field>
         <mat-label>Filtro</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Ramatex" #input>
@@ -64,10 +64,10 @@
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef> Ações </th>
                 <td mat-cell *matCellDef="let element">
-                <a routerLink="atualizar/{{ element.id }}">
+                <a *ngIf="isAdminUser() || isUserAndFornecedorUpdate() || isManagerAndFornecedorUpdate()" routerLink="atualizar/{{ element.id }}">
                     <i class="material-icons edit">edit</i>
                 </a>
-                <a (click)="delete(element.id)" style="cursor: pointer;">
+                <a *ngIf="isAdminUser() || isUserAndFornecedorDelete() || isManagerAndFornecedorDelete()" (click)="delete(element.id)" style="cursor: pointer;">
                         <i class="material-icons delete">delete</i>
                 </a>
                 </td>

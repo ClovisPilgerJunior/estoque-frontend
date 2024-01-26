@@ -29,7 +29,6 @@ export class AuthService {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedToken = this.jwtService.decodeToken(token);
-      console.log(decodedToken.authorities)
       return decodedToken.authorities || [];
     }
     return [];
@@ -37,7 +36,6 @@ export class AuthService {
 
   hasPermission(permission: string): boolean {
     const permissions = this.getPermissions();
-    console.log(permission)
     return permissions.includes(permission);
   }
 

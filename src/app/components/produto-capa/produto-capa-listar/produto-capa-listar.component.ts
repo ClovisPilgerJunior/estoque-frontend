@@ -8,6 +8,7 @@ import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ProdutoCapaAtualizarComponent } from '../produto-capa-atualizar/produto-capa-atualizar.component';
 import { ProdutoCapa } from './../../../models/ProdutoCapa';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-produto-capa-listar',
@@ -29,7 +30,45 @@ export class ProdutoCapaListarComponent {
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastrService,
+    private authService: AuthService
   ) {
+  }
+
+  isAdminUser(): boolean {
+    // Verifique se o usuário tem a role 'ADMIN'
+    return this.authService.hasPermission('ROLE_ADMIN');
+  }
+
+  isManager(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER');
+  }
+
+  isUser(): boolean {
+    return this.authService.hasPermission('ROLE_USER')
+  }
+
+  isUserAndProdutoCapaCreate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_PRODUTOCAPA_CREATE')
+  }
+
+  isUserAndProdutoCapaUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_PRODUTOCAPA_UPDATE')
+  }
+
+  isUserAndProdutoCapaDelete(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_PRODUTOCAPA_DELETE')
+  }
+
+  isManagerAndProdutoCapaCreate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_PRODUTOCAPA_CREATE')
+  }
+
+  isManagerAndProdutoCapaUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_PRODUTOCAPA_UPDATE')
+  }
+
+  isManagerAndProdutoCapaDelete(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_PRODUTOCAPA_DELETE')
   }
 
   ngOnInit(): void {

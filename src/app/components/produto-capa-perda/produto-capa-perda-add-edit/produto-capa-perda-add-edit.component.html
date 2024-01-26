@@ -1,68 +1,81 @@
-
 <h1 mat-dialog-title>Perdas</h1>
-  <form [formGroup]="produtoPerda" (ngSubmit)="onFormSubmit()">
-    <div mat-dialog-content>
-      <div class="row">
+<form [formGroup]="produtoPerda" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>SKU</mat-label>
+        <input
+          matInput
+          [mask]="'0*'"
+          required
+          placeholder="Ex: 5550"
+          maxlength="50"
+          formControlName="produtoCapa"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="fill">
+        <input
+          matInput
+          placeholder="Produto Capa"
+          formControlName="produtoCapaDesc"
+          [readonly]="true"
+        />
+      </mat-form-field>
+      <div class="tipos">
         <mat-form-field class="full-width" appearance="fill">
-          <mat-label>SKU</mat-label>
+          <mat-label>Data</mat-label>
           <input
             matInput
-            type="number"
-            [mask]="'0*'"
-            required
-            placeholder="Ex: 5550"
-            maxlength="50"
-            formControlName="produtoCapa"
+            [matDatepicker]="datadesaida"
+            formControlName="data"
           />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="datadesaida"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #datadesaida></mat-datepicker>
         </mat-form-field>
-
-            <mat-form-field class="full-width" appearance="fill">
-                <mat-label>Data</mat-label>
-                <input matInput [matDatepicker]="datadesaida" formControlName="data" />
-                <mat-datepicker-toggle
-                matIconSuffix
-                [for]="datadesaida"
-                ></mat-datepicker-toggle>
-                <mat-datepicker #datadesaida></mat-datepicker>
-            </mat-form-field>
-
-          <mat-form-field class="full-width" appearance="fill">
-            <mat-label>Quantidade</mat-label>
-            <input
-              formControlName="quantidade"
-              matInput
-              required
-              [mask]="'0*'"
-              placeholder="Ex. 10"
-              type="number"
-            />
-          </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Motivo</mat-label>
-          <textarea class="textarea"
-            formControlName="motivo"
+          <mat-label>Quantidade</mat-label>
+          <input
+            formControlName="quantidade"
             matInput
-            #input
-            placeholder="Ex. Rolo de elastico x"
-            maxlength="255"
-            type="text"
-          ></textarea>
-          <mat-hint align="end">{{input.value.length}}/255</mat-hint>
+            required
+            [mask]="'0*'"
+            placeholder="Ex. 10"
+            type="number"
+          />
         </mat-form-field>
-
       </div>
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Motivo</mat-label>
+        <textarea
+          class="textarea"
+          formControlName="motivo"
+          matInput
+          #input
+          placeholder="Ex. Rolo de elastico x"
+          maxlength="255"
+          type="text"
+        ></textarea>
+        <mat-hint align="end">{{ input.value.length }}/255</mat-hint>
+      </mat-form-field>
     </div>
+  </div>
 
-    <div mat-dialog-actions align="center">
-      <button
-        mat-raised-button
-        color="warn"
-        type="button"
-        [mat-dialog-close]="false"
-      >
-        Cancelar
-      </button>
-      <button mat-raised-button color="primary" type="submit">{{data ? 'Atualizar': 'Lançar'}}</button>
-    </div>
-  </form>
+  <div mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      color="warn"
+      type="button"
+      [mat-dialog-close]="false"
+    >
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" type="submit">
+      {{ data ? "Atualizar" : "Lançar" }}
+    </button>
+  </div>
+</form>

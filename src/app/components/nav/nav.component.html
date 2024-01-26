@@ -7,6 +7,7 @@
     class="button-primary"
     color="primary"
     routerLink="/produtoConsultar"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="faMagfyingGlass"></fa-icon>
     Consulta
@@ -17,6 +18,7 @@
     class="button-primary"
     color="primary"
     routerLink="/produtoCapa"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="faClipBoardList"></fa-icon>
     Produto
@@ -27,6 +29,7 @@
     class="button-primary"
     color="primary"
     routerLink="/produtoEntrada"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="faPlusCircle"></fa-icon>
     Entrada
@@ -37,6 +40,7 @@
     class="button-primary"
     color="primary"
     routerLink="/produtoSaida"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="faMinusCircle"></fa-icon>
     Saida
@@ -47,6 +51,7 @@
     class="button-primary"
     color="primary"
     routerLink="/produtoPerda"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="faDownCircle"></fa-icon>
     Perda
@@ -57,9 +62,11 @@
     class="button-primary"
     color="primary"
     routerLink="/fornecedor"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="faDolly"></fa-icon>
     Fornecedor
+
   </button>
 
   <button
@@ -67,12 +74,13 @@
     class="button-primary"
     color="primary"
     routerLink="/unidadeProdutiva"
+    *ngIf="isAdminUser() || isManager() || isUser()"
   >
     <fa-icon [icon]="industria"></fa-icon>
     Unidade Produtiva
   </button>
 
-  <button mat-button class="button-primary" color="primary">
+  <button mat-button class="button-primary" color="primary" *ngIf="isAdminUser()" >
     Ordem de Compra
   </button>
 

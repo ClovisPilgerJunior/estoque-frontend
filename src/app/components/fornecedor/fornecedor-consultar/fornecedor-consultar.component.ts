@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-fornecedor-consulta',
@@ -28,8 +29,46 @@ export class FornecedorConsultaComponent {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private toast: ToastrService
+    private toast: ToastrService,
+    private authService: AuthService
   ) {
+  }
+
+  isAdminUser(): boolean {
+    // Verifique se o usuário tem a role 'ADMIN'
+    return this.authService.hasPermission('ROLE_ADMIN');
+  }
+
+  isManager(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER');
+  }
+
+  isUser(): boolean {
+    return this.authService.hasPermission('ROLE_USER')
+  }
+
+  isUserAndFornecedorCreate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_FORNECEDOR_CREATE')
+  }
+
+  isUserAndFornecedorUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_FORNECEDOR_UPDATE')
+  }
+
+  isUserAndFornecedorDelete(): boolean {
+    return this.authService.hasPermission('ROLE_USER') && this.authService.hasPermission('ROLE_FORNECEDOR_DELETE')
+  }
+
+  isManagerAndFornecedorCreate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_FORNECEDOR_CREATE')
+  }
+
+  isManagerAndFornecedorUpdate(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_FORNECEDOR_UPDATE')
+  }
+
+  isManagerAndFornecedorDelete(): boolean {
+    return this.authService.hasPermission('ROLE_MANAGER') && this.authService.hasPermission('ROLE_FORNECEDOR_DELETE')
   }
 
   ngOnInit(): void {
