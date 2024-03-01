@@ -14,6 +14,7 @@ import { ProdutoCapaListarComponent } from './components/produto-capa/produto-ca
 import { UnidadeProdutivaListarComponent } from './components/unidade-produtiva/unidade-produtiva-listar/unidade-produtiva-listar.component';
 import { authGuard } from './auth/auth.guard';
 import { UserListarComponent } from './components/user/user-listar/user-listar.component';
+import { OrdemCompraListarComponent } from './components/ordem-Compra/ordem-compra-listar/ordem-compra-listar.component';
 
 const routes: Routes = [
 { path: 'login', component: LoginComponent},
@@ -29,6 +30,8 @@ const routes: Routes = [
     { path: 'produtoCapa', component: ProdutoCapaListarComponent },
     { path: 'produtoCapa/cadastrar', component: ProdutoCapaCadastrarComponent },
     { path: 'produtoConsultar', component: ProdutoCapaConsultarComponent },
+
+    { path: 'ordemCompra', component: OrdemCompraListarComponent },
 
     { path: 'produtoEntrada', component: ProdutoCapaEntradaListarComponent },
 

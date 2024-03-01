@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ProdutoSaidaService } from 'src/app/services/produto-saida.service ';
+import { ProdutoSaidaService } from 'src/app/services/produto-saida.service';
 import { UnidadeProdutiva } from './../../../models/unidadeProdutiva';
 import { UnidadeProdutivaService } from './../../../services/unidade-produtiva.service';
 import { parse } from 'date-fns';

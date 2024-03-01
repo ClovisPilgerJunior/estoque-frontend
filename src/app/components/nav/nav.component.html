@@ -80,8 +80,12 @@
     Unidade Produtiva
   </button>
 
-  <button mat-button class="button-primary" color="primary" *ngIf="isAdminUser()" >
+  <button mat-button class="button-primary" color="primary" routerLink="/ordemCompra" *ngIf="isAdminUser()" >
     Ordem de Compra
+  </button>
+
+  <button mat-button class="button-primary" color="primary" *ngIf="isAdminUser()" >
+    Ordem de Aviamento
   </button>
 
   <button mat-button class="button-primary" color="primary" routerLink="/userListar" *ngIf="isAdminUser()">

@@ -66,6 +66,8 @@ import { UserListarComponent } from './components/user/user-listar/user-listar.c
 import { UserAddEditComponent } from './components/user/user-add-edit/user-add-edit.component';
 import { SpinnerComponent } from './shared/spinner/spinner.component';
 import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { OrdemCompraListarComponent } from './components/ordem-Compra/ordem-compra-listar/ordem-compra-listar.component';
+import { OrdemCompraAddEditComponent } from './components/ordem-Compra/ordem-compra-add-edit/ordem-compra-add-edit.component';
 
 
 registerLocaleData(localePt, 'pt');
@@ -105,7 +107,9 @@ export const ISO_FORMAT = {
     LoginComponent,
     UserListarComponent,
     UserAddEditComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    OrdemCompraListarComponent,
+    OrdemCompraAddEditComponent
   ],
   imports: [
     BrowserModule,
