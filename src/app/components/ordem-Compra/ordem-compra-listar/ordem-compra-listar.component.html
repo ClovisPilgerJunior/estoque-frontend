@@ -1,1 +1,76 @@
-<p>ordem-compra-listar works!</p>
+<div class="container">
+    <h1>
+      <button (click)="onCreate()" mat-fab color="primary">
+        <fa-icon [icon]="faPlus" size="2xl"></fa-icon></button
+      > Ordem de Compras
+    </h1>
+  
+    <mat-form-field>
+      <mat-label>Filtro</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ex: Ramatex"
+        #input
+      />
+    </mat-form-field>
+    <div class="mat-elevation-z8 example-table-container">
+      <table mat-table [dataSource]="dataSource">
+        <!-- Po- Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>id</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="dataPedidoOrdemCompra">
+          <th mat-header-cell *matHeaderCellDef>Data Pedido</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.dataPedidoOrdemCompra }}
+          </td>
+        </ng-container>
+  
+        <!-- Po- Column -->
+        <ng-container matColumnDef="dataRecebimentoOrdemCompra">
+          <th mat-header-cell *matHeaderCellDef>Data Reecbimento</th>
+          <td mat-cell *matCellDef="let element">{{ element.dataRecebimentoOrdemCompra }}</td>
+        </ng-container>
+        <!-- Po- Column -->
+        <ng-container matColumnDef="quantidade">
+          <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+          <td mat-cell *matCellDef="let element">{{ element.quantidade }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="statusOrdem">
+          <th mat-header-cell *matHeaderCellDef>Status da Ordem</th>
+          <td mat-cell *matCellDef="let element">{{ element.statusOrdem }}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="valorTotal">
+          <th mat-header-cell *matHeaderCellDef>Valor Total</th>
+          <td mat-cell *matCellDef="let element">{{ element.valorTotal }}</td>
+        </ng-container>
+
+  
+        <!-- - Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>Ações</th>
+          <td mat-cell *matCellDef="let element">
+            <a (click)="onEditForm(element)" style="cursor: pointer">
+              <i class="material-icons edit">edit</i>
+            </a>
+          </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+  
+      <mat-paginator
+        [pageSizeOptions]="[50, 100, 200, dataSource.data.length]"
+        showFirstLastButtons
+        aria-label="Selecione a quantidade de páginas"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+  

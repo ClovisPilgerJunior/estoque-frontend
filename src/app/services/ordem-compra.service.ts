@@ -1,9 +1,8 @@
-import { OrdemCompra } from './../models/OrdemCompra';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
-import { OrdemCompraCalculated } from '../models/OrdemCompraCalculated';
+import { OrdemCompra } from './../models/OrdemCompra';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,10 @@ export class OrdemCompraService {
 
   findById(id: number): Observable<OrdemCompra> {
     return this.http.get<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/${id}`)
+  }
+
+  findAll(): Observable<OrdemCompra[]> {
+    return this.http.get<OrdemCompra[]>(`${API_CONFIG.baseUrl}/ordemCompra`)
   }
 
   findAllItemsOrder(id: number): Observable<OrdemCompra[]> {
