@@ -1,1 +1,102 @@
-<p>ordem-compra-add-edit works!</p>
+<div mat-dialog-title>
+    <h1>Saida de Produto</h1>
+  </div>
+  <form [formGroup]="ordemCompra" (ngSubmit)="onFormSubmit()">
+    <div mat-dialog-content>
+      <div class="row">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Id</mat-label>
+          <input
+            matInput
+            type="number"
+            required
+            placeholder="Ex: 5550"
+            maxlength="50"
+            formControlName="id"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Selecione uma Cliente</mat-label>
+            <mat-select formControlName="fornecedor">
+                <mat-option *ngFor="let forenecedores of fornecedor" value="{{forenecedores.id}}">{{forenecedores.empresa}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+  
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Data Pedido</mat-label>
+          <input
+            matInput
+            [matDatepicker]="dataPedido"
+            formControlName="dataPedidoOrdemCompra"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="dataPedido"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dataPedido></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Data Recebimento</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dataRecebimento"
+              formControlName="dataRecebimentoOrdemCompra"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="dataRecebimento"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dataRecebimento></mat-datepicker>
+          </mat-form-field>
+          
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Quantidade</mat-label>
+            <input
+              formControlName="quantidade"
+              matInput
+              required
+              [mask]="'0*'"
+              placeholder="Ex. 10"
+              type="number"
+            />
+        </mat-form-field>
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label>Status</mat-label>
+          <input
+            formControlName="statusOrdem"
+            matInput
+            required
+            [mask]="'0*'"
+            placeholder="Ex. 10"
+            type="number"
+          />
+        </mat-form-field>
+      </div>
+
+    </div>
+  
+
+
+      
+    <div mat-dialog-actions align="center">
+      <button
+        mat-raised-button
+        color="warn"
+        type="button"
+        [mat-dialog-close]="false"
+      >
+        Cancelar
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!ordemCompra.valid"
+      >
+        {{ data ? "Atualizar" : "Lançar" }}
+      </button>
+    </div>
+  </form>
+  
