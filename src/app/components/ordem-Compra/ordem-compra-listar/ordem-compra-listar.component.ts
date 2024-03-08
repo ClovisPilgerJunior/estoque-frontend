@@ -25,6 +25,7 @@ export class OrdemCompraListarComponent {
   displayedColumns: string[] = [
     'id',
     'fornecedor',
+    'dataEmissao',
     'dataPedidoOrdemCompra', 
     'dataRecebimentoOrdemCompra',
     'quantidade',

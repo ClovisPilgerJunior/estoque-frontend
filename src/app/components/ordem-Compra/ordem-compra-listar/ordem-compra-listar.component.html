@@ -26,6 +26,13 @@
           <th mat-header-cell *matHeaderCellDef>Fornecedor</th>
           <td mat-cell *matCellDef="let element">{{ element.fornecedor }}</td>
         </ng-container>
+
+        <ng-container matColumnDef="dataEmissao">
+          <th mat-header-cell *matHeaderCellDef>Data Emissao</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.dataEmissao }}
+          </td>
+        </ng-container>
   
         <ng-container matColumnDef="dataPedidoOrdemCompra">
           <th mat-header-cell *matHeaderCellDef>Data Pedido</th>

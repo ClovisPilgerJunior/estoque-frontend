@@ -1,11 +1,17 @@
-import { Component, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
+import { map, startWith} from 'rxjs/operators';
 import { Fornecedor } from 'src/app/models/Fornecedor';
+import { ItemOrdemCompra } from 'src/app/models/ItemOrdemCompra';
+import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 import { OrdemCompraService } from 'src/app/services/ordem-compra.service';
+import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 
 @Component({
   selector: 'app-ordem-compra-add-edit',
@@ -16,12 +22,19 @@ export class OrdemCompraAddEditComponent {
 
   ordemCompra: FormGroup;
 
+  itemForm: FormGroup;
+
+  produtoControl = new FormControl('');
+  filteredProdutos: Observable<ProdutoCapa[]>;
+  options: string[] = [];
 
   constructor(
     private ordemCompraService: OrdemCompraService,
     private formBuilder: FormBuilder,
     private fornecedorService: FornecedorService,
+    private produtoCapaService: ProdutoCapaService,
     private dialogRef: MatDialogRef<OrdemCompraAddEditComponent>,
+    private dialog: MatDialog,
     private toast: ToastrService,
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -31,16 +44,64 @@ export class OrdemCompraAddEditComponent {
       fornecedor: '',
       dataPedidoOrdemCompra: '',
       dataRecebimentoOrdemCompra: '',
-      quantidade: '',
       statusOrdem: '',
     })
 
-    this.findAllFornecedor()
-   console.log(this.findAllFornecedor())
+    this.itemForm = this.formBuilder.group({
+      id: [''],
+      numeroNota: [''],
+      descricao: [''],
+      quantidade: [''],
+      precoCompra: ['']
+    });
+
+    this.findAllFornecedor();
+    this.carregarProdutosCapa();
+    console.log(this.findAllFornecedor());
+
+
+    this.dialogRef.disableClose = true;
+  }
+
+
+   private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+
+  ELEMENT_DATA: ItemOrdemCompra[] = []
+
+  displayedColumns: string[] = ['id', 'sku', 'Descricao', 'quantidade', 'precoCompra', 'valorTotal', 'observacao', 'actions'];
+  dataSource = [...this.ELEMENT_DATA];
+
+  @ViewChild(MatTable) table: MatTable<ItemOrdemCompra>;
+
+  addData() {
+    const itemOrdemCompra = { ...this.itemForm.value }
+    const produto = this.produtoCapaList.find(produto => produto.id === itemOrdemCompra.id);
+    // Se o produto for encontrado, atribua a descrição ao item da ordem de compra
+    if (produto) {
+      itemOrdemCompra.descricao = produto.description;
+    } else {
+      // Trate o caso em que o produto não é encontrado
+      console.log('Produto não encontrado');
+      // Você pode querer definir uma descrição padrão ou lidar de outra forma
+      itemOrdemCompra.descricao = 'Produto não encontrado';
+    }
+    itemOrdemCompra.valorTotal = itemOrdemCompra.precoCompra * itemOrdemCompra.quantidade;
+    this.dataSource.push(itemOrdemCompra)
+    this.table.renderRows();
+    this.itemForm.reset();
+  }
+
+  removeItem(index: number) {
+    this.dataSource.splice(index, 1);
+    this.table.renderRows();
   }
 
   fornecedor: Fornecedor[] = []
-
 
   findAllFornecedor(): void {
     this.fornecedorService.findAll().subscribe(response => {
@@ -52,7 +113,63 @@ export class OrdemCompraAddEditComponent {
 
   ngOnInit(): void {
     this.ordemCompra.patchValue(this.data)
+
+    this.filteredProdutos = this.produtoControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
   }
+
+
+  toggleEditMode(item: ItemOrdemCompra): void {
+    item.editMode = !item.editMode;
+
+    if (item.editMode) {
+      // Crie um novo FormGroup específico para este item
+      item.formGroup = this.formBuilder.group({
+        quantidade: [item.quantidade],
+        precoCompra: [item.precoCompra],
+        observacao: [item.observacao]
+      });
+    } else {
+      // Limpe o formGroup quando sair do modo de edição
+      item.formGroup = undefined;
+    }
+  }
+
+  confirmEdit(item: ItemOrdemCompra): void {
+    // Aplicar mudanças do FormGroup ao item
+    const formValues = item.formGroup?.value;
+    item.quantidade = formValues?.quantidade;
+    item.precoCompra = formValues?.precoCompra;
+    item.valorTotal = formValues?.quantidade * formValues?.precoCompra;
+    item.observacao = formValues?.observacao;
+
+    // Sair do modo de edição
+    item.editMode = false;
+    item.formGroup = undefined;
+
+    // Aqui você também deve atualizar os dados no servidor conforme necessário
+  }
+
+  cancelEdit(item: ItemOrdemCompra): void {
+    item.editMode = false;
+    item.formGroup = undefined;
+  }
+
+  produtoCapaList: ProdutoCapa[] = [];
+
+  carregarProdutosCapa() {
+    this.produtoCapaService.findAll().subscribe(
+      (produtos: ProdutoCapa[]) => {
+        this.produtoCapaList = produtos;
+      },
+      (error) => {
+        console.error('Erro ao carregar produtos:', error);
+      }
+    );
+  }
+
 
   onFormSubmit() {
     if (this.ordemCompra.valid) {
@@ -65,26 +182,26 @@ export class OrdemCompraAddEditComponent {
               this.dialogRef.close(true);
             },
             error: (err: any) => {
-              if(err.status=409) {
+              if (err.status = 409) {
                 this.toast.warning(err.error.message, 'Aviso')
               } else {
-              this.toast.error(err.error.message, 'Erro')
-              console.error(err);
+                this.toast.error(err.error.message, 'Erro')
+                console.error(err);
               }
             },
           });
       } else {
         this.ordemCompraService.create(this.ordemCompra.value).subscribe({
           next: (val: any) => {
-            this.toast.success('Perda do produto lançada', 'Sucesso!');
+            this.toast.success('Ordem de compra gerada', 'Sucesso!');
             this.dialogRef.close(true);
           },
           error: (err: any) => {
-            if(err.status=409) {
+            if (err.status = 409) {
               this.toast.warning(err.error.message, 'Aviso')
             } else {
-            this.toast.error(err.error.message, 'Erro')
-            console.error(err);
+              this.toast.error(err.error.message, 'Erro')
+              console.error(err);
             }
           },
         });
@@ -94,3 +211,7 @@ export class OrdemCompraAddEditComponent {
 
 
 }
+function startWith(arg0: string): import("rxjs").OperatorFunction<any, unknown> {
+  throw new Error('Function not implemented.');
+}
+

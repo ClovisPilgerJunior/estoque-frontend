@@ -1,102 +1,147 @@
-<div mat-dialog-title>
-    <h1>Saida de Produto</h1>
-  </div>
-  <form [formGroup]="ordemCompra" (ngSubmit)="onFormSubmit()">
-    <div mat-dialog-content>
-      <div class="row">
-        <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Id</mat-label>
-          <input
-            matInput
-            type="number"
-            required
-            placeholder="Ex: 5550"
-            maxlength="50"
-            formControlName="id"
-          />
+<div mat-dialog-title align="center">
+  Ordem de Compra
+</div>
+<form [formGroup]="ordemCompra" (ngSubmit)="onFormSubmit()">
+  <div mat-dialog-content>
+    <div class="row">
+      <mat-form-field class="full-width" appearance="fill">
+        <mat-label>Selecione uma Cliente</mat-label>
+        <mat-select formControlName="fornecedor" required>
+          <mat-option *ngFor="let forenecedores of fornecedor"
+            value="{{forenecedores.id}}">{{forenecedores.empresa}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="add-item-form tipos" [formGroup]="itemForm">
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>SKU</mat-label>
+          <input matInput type="number" formControlName="id">
+        </mat-form-field>
+        <mat-form-field class="example-full-width">
+          <mat-label>Produto</mat-label>
+          <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="produtoControl"
+            [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredProdutos | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Quantidade</mat-label>
+          <input matInput type="number" formControlName="quantidade">
+        </mat-form-field>
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Preço de Compra</mat-label>
+          <input matInput type="text" placeholder="Ex: R$ 0,00" currencyMask
+            [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" maxlength="120" formControlName="precoCompra" />
         </mat-form-field>
 
-        <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Selecione uma Cliente</mat-label>
-            <mat-select formControlName="fornecedor">
-                <mat-option *ngFor="let forenecedores of fornecedor" value="{{forenecedores.id}}">{{forenecedores.empresa}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-  
-        <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Data Pedido</mat-label>
-          <input
-            matInput
-            [matDatepicker]="dataPedido"
-            formControlName="dataPedidoOrdemCompra"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="dataPedido"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #dataPedido></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Data Recebimento</mat-label>
-            <input
-              matInput
-              [matDatepicker]="dataRecebimento"
-              formControlName="dataRecebimentoOrdemCompra"
-            />
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="dataRecebimento"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #dataRecebimento></mat-datepicker>
-          </mat-form-field>
-          
-          <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Quantidade</mat-label>
-            <input
-              formControlName="quantidade"
-              matInput
-              required
-              [mask]="'0*'"
-              placeholder="Ex. 10"
-              type="number"
-            />
-        </mat-form-field>
-        <mat-form-field class="full-width" appearance="outline">
-          <mat-label>Status</mat-label>
-          <input
-            formControlName="statusOrdem"
-            matInput
-            required
-            [mask]="'0*'"
-            placeholder="Ex. 10"
-            type="number"
-          />
-        </mat-form-field>
+      </div>
+      <div class="demo-button-container">
+        <button mat-raised-button (click)="addData()" class="demo-button" type="button">Adicionar Item</button>
       </div>
 
-    </div>
-  
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+        <!-- Existing Columns -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>No.</th>
+          <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="sku">
+          <th mat-header-cell *matHeaderCellDef>SKU</th>
+          <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Descricao">
+          <th mat-header-cell *matHeaderCellDef>Descrição</th>
+          <td mat-cell *matCellDef="let element">{{element.descricao}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantidade">
+          <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <ng-container *ngIf="!element.editMode; else editMode">
+              {{ element.quantidade }}
+            </ng-container>
+            <ng-template #editMode>
+              <input matInput type="number" [formControl]="element.formGroup?.get('quantidade')">
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="precoCompra">
+          <th mat-header-cell *matHeaderCellDef>Preço de Compra</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <ng-container *ngIf="!element.editMode; else editMode">
+              {{ element.precoCompra }}
+            </ng-container>
+            <ng-template #editMode>
+              <input matInput type="number" [formControl]="element.formGroup?.get('precoCompra')">
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <!-- New Columns -->
+
+        <ng-container matColumnDef="valorTotal">
+          <th mat-header-cell *matHeaderCellDef>Valor Total</th>
+          <td mat-cell *matCellDef="let element">{{element.valorTotal }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="observacao">
+          <th mat-header-cell *matHeaderCellDef>Observação</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <ng-container *ngIf="!element.editMode; else editMode">
+              {{ element.observacao }}
+            </ng-container>
+            <ng-template #editMode>
+              <input matInput [formControl]="element.formGroup?.get('observacao')">
+            </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Ações</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <ng-container *ngIf="!element.editMode; else editMode">
+              <button mat-icon-button color="primary" (click)="toggleEditMode(element)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="removeItem(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+            <ng-template #editMode>
+              <button mat-icon-button color="primary" (click)="confirmEdit(element)">
+                <mat-icon>done</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="cancelEdit(element)">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </ng-template>
+
+          </td>
+        </ng-container>
 
 
-      
-    <div mat-dialog-actions align="center">
-      <button
-        mat-raised-button
-        color="warn"
-        type="button"
-        [mat-dialog-close]="false"
-      >
-        Cancelar
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!ordemCompra.valid"
-      >
-        {{ data ? "Atualizar" : "Lançar" }}
-      </button>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
     </div>
-  </form>
-  
+
+  </div>
+
+
+  <div mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" type="button" [mat-dialog-close]="false">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!ordemCompra.valid || dataSource.length === 0">
+      {{ data ? "Atualizar" : "Lançar" }}
+    </button>
+  </div>
+</form>
