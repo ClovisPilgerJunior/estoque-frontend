@@ -3,15 +3,13 @@ import { FormGroup } from "@angular/forms";
 export interface ItemOrdemCompra {
     id?: number;
     numeroNota: number;
-    dataPedido: Date;
-    dataEntrega: Date;
     precoCompra: number;
     quantidade: number;
-    valorTotal: number;
+    valorTotal?: number;
     observacao: string;
-    produtoCapa?: number;
+    produtoCapaId?: number;
     produtoCapaDesc?: String;
-    ordemCompra: number;
+    ordemCompraId: number;
     editMode?: boolean;
     formGroup?: FormGroup;
   }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_CONFIG } from '../config/api.config';
 import { OrdemCompra } from './../models/OrdemCompra';
+import { ItemOrdemCompra } from '../models/ItemOrdemCompra';
 
 @Injectable({
   providedIn: 'root'
@@ -24,20 +25,21 @@ export class OrdemCompraService {
   }
 
   create(OrdemCompra: OrdemCompra): Observable<OrdemCompra> {
-    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra`, OrdemCompra)
+    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra`, OrdemCompra);
   }
-
+  
   faturar(id: number): Observable<OrdemCompra> {
-    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/${id}/faturar`, OrdemCompra)
+    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/faturar`, OrdemCompra)
   }
 
   estornar(id: number): Observable<OrdemCompra> {
-    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/${id}/estornar`, OrdemCompra)
+    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/estornar`, OrdemCompra)
   }
 
-  adicionar(id: number): Observable<OrdemCompra> {
-    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/${id}/addProducts`, OrdemCompra)
+  adicionar(id: number, itens: ItemOrdemCompra[]): Observable<any> {
+    return this.http.post(`${API_CONFIG.baseUrl}/ordemCompra/${id}/addProducts`, { itens });
   }
+  
 
   update(OrdemCompra: OrdemCompra): Observable<OrdemCompra> {
     return this.http.put<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/atualizar/${OrdemCompra.id}`, OrdemCompra)
