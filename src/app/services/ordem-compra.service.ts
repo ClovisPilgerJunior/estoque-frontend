@@ -37,7 +37,7 @@ export class OrdemCompraService {
   }
 
   adicionar(id: number, itens: ItemOrdemCompra[]): Observable<any> {
-    return this.http.post(`${API_CONFIG.baseUrl}/ordemCompra/${id}/addProducts`, { itens });
+    return this.http.post(`${API_CONFIG.baseUrl}/ordemCompra/${id}/addProducts`, itens);
   }
   
 
