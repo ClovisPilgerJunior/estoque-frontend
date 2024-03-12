@@ -63,16 +63,35 @@ export class OrdemCompraAddEditComponent {
   }
 
   ngOnInit(): void {
-    this.ordemCompra.patchValue(this.data)
-
+    this.ordemCompra.patchValue(this.data);
+   
+    // Carregar os itens da ordem de compra se estivermos editando uma ordem existente
+    if (this.data && this.data.id) {
+       this.loadOrderItems(this.data.id);
+    }
+   
     this.filteredProdutos = this.produtoControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const name = typeof value === 'string' ? value : value?.description;
-        return name ? this._filter(name as string) : this.produtoCapaList.slice();
-      }),
+       startWith(''),
+       map(value => {
+         const name = typeof value === 'string' ? value : value?.description;
+         return name ? this._filter(name as string) : this.produtoCapaList.slice();
+       }),
     );
-  }
+   }
+   
+   loadOrderItems(orderId: number): void {
+    this.ordemCompraService.findAllItemsOrder(orderId).subscribe(
+       (items: ItemOrdemCompra[]) => {
+         this.dataSource = items;
+         this.table.renderRows();
+       },
+       (error) => {
+         console.error('Erro ao carregar os itens da ordem de compra:', error);
+         this.toast.error('Erro ao carregar os itens da ordem de compra.', 'Erro');
+       }
+    );
+   }
+   
 
   displayFn(produtoCapa: ProdutoCapa): string {
     return produtoCapa && produtoCapa.description ? produtoCapa.description : '';
