@@ -74,7 +74,7 @@
           <th mat-header-cell *matHeaderCellDef>Preço de Compra</th>
           <td mat-cell *matCellDef="let element; let i = index">
             <ng-container *ngIf="!element.editMode; else editMode">
-              {{ element.precoCompra }}
+              {{ element.precoCompra | currency : "BRL" : "symbol-narrow" : "1.2-2" }}
             </ng-container>
             <ng-template #editMode>
               <input matInput type="number" [formControl]="element.formGroup?.get('precoCompra')">
@@ -86,7 +86,7 @@
 
         <ng-container matColumnDef="valorTotal">
           <th mat-header-cell *matHeaderCellDef>Valor Total</th>
-          <td mat-cell *matCellDef="let element">{{element.valorTotal }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency : "BRL" : "symbol-narrow" : "1.2-2" }}</td>
         </ng-container>
 
         <ng-container matColumnDef="observacao">

@@ -79,18 +79,27 @@ export class OrdemCompraAddEditComponent {
     );
    }
    
-   loadOrderItems(orderId: number): void {
-    this.ordemCompraService.findAllItemsOrder(orderId).subscribe(
-       (items: ItemOrdemCompra[]) => {
-         this.dataSource = items;
-         this.table.renderRows();
-       },
-       (error) => {
-         console.error('Erro ao carregar os itens da ordem de compra:', error);
-         this.toast.error('Erro ao carregar os itens da ordem de compra.', 'Erro');
-       }
-    );
-   }
+// Ajuste o método loadOrderItems para incluir a descrição e o valor total
+loadOrderItems(orderId: number): void {
+  this.ordemCompraService.findAllItemsOrder(orderId).subscribe(
+     (items: ItemOrdemCompra[]) => {
+       // Aqui, você precisa garantir que os itens incluam a descrição e o valor total
+       // Isso pode ser feito ajustando a implementação do seu serviço ou mapeando os dados aqui
+       this.dataSource = items.map(item => ({
+         ...item,
+         // Certifique-se de que a descrição e o valor total estejam sendo incluídos
+         // Isso pode ser necessário se o seu serviço não estiver retornando esses campos
+         descricao: item.produtoCapaDesc, // Ajuste conforme necessário
+         valorTotal: item.quantidade * item.precoCompra, // Calcule o valor total aqui
+       }));
+       this.table.renderRows();
+     },
+     (error) => {
+       console.error('Erro ao carregar os itens da ordem de compra:', error);
+       this.toast.error('Erro ao carregar os itens da ordem de compra.', 'Erro');
+     }
+  );
+ }
    
 
   displayFn(produtoCapa: ProdutoCapa): string {

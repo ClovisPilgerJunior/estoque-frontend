@@ -20,8 +20,8 @@ export class OrdemCompraService {
     return this.http.get<OrdemCompra[]>(`${API_CONFIG.baseUrl}/ordemCompra`)
   }
 
-  findAllItemsOrder(id: number): Observable<OrdemCompra[]> {
-    return this.http.get<OrdemCompra[]>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/getOrderItems`)
+  findAllItemsOrder(id: number): Observable<ItemOrdemCompra[]> {
+    return this.http.get<ItemOrdemCompra[]>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/getOrderItems`)
   }
 
   create(OrdemCompra: OrdemCompra): Observable<OrdemCompra> {
