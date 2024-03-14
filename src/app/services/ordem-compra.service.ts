@@ -40,10 +40,14 @@ export class OrdemCompraService {
     return this.http.post(`${API_CONFIG.baseUrl}/ordemCompra/${id}/addProducts`, itens);
   }
   
-
-  update(OrdemCompra: OrdemCompra): Observable<OrdemCompra> {
-    return this.http.put<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/atualizar/${OrdemCompra.id}`, OrdemCompra)
-  }
+  update(id: number, fornecedorId: number, itens: ItemOrdemCompra[]): Observable<any> {
+    const updateData = {
+       fornecedorId: fornecedorId,
+       items: itens
+    };
+    return this.http.put<ItemOrdemCompra[]>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/updateOrder`, updateData);
+   }
+   
 
   delete(id: Number): Observable<OrdemCompra>{
     return this.http.delete<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/deletar/${id}`)

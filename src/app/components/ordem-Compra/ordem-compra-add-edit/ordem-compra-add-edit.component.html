@@ -15,16 +15,17 @@
       <div class="add-item-form tipos" [formGroup]="itemForm">
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>SKU</mat-label>
-          <input matInput formControlName="produtoCapaId" (change)="onIdChange($event)">
+          <input #skuInput matInput formControlName="produtoCapaId" (change)="onIdChange($event)">
         </mat-form-field>
         <mat-form-field class="example-full-width">
           <mat-label>Produto</mat-label>
           <input type="text" matInput [formControl]="produtoControl" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onProdutoSelected($event)" [displayWith]="displayFn">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onProdutoSelected($event)"
+            [displayWith]="displayFn">
             <mat-option *ngFor="let option of filteredProdutos | async" [value]="option">
-               {{option.description}}
+              {{option.description}}
             </mat-option>
-           </mat-autocomplete>
+          </mat-autocomplete>
         </mat-form-field>
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Quantidade</mat-label>
@@ -38,7 +39,8 @@
 
       </div>
       <div class="demo-button-container">
-        <button mat-raised-button (click)="addData()" [disabled]="!itemForm.valid" class="demo-button" type="button">Adicionar Item</button>
+        <button mat-raised-button (click)="addData()" [disabled]="!itemForm.valid" class="demo-button"
+          type="button">Adicionar Item</button>
       </div>
 
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
@@ -46,16 +48,19 @@
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>No.</th>
           <td mat-cell *matCellDef="let element; let i = index">{{i + 1}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="sku">
           <th mat-header-cell *matHeaderCellDef>SKU</th>
           <td mat-cell *matCellDef="let element">{{element.produtoCapaId}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="descricao">
           <th mat-header-cell *matHeaderCellDef>Descrição</th>
           <td mat-cell *matCellDef="let element">{{element.descricao}}</td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="quantidade">
@@ -68,6 +73,7 @@
               <input matInput type="number" [formControl]="element.formGroup?.get('quantidade')">
             </ng-template>
           </td>
+          <td mat-footer-cell *matFooterCellDef>{{ quantidadeTotal | mask: 'separator': {thousandSeparator: '.'} }}</td>
         </ng-container>
 
         <ng-container matColumnDef="precoCompra">
@@ -77,16 +83,20 @@
               {{ element.precoCompra | currency : "BRL" : "symbol-narrow" : "1.2-2" }}
             </ng-container>
             <ng-template #editMode>
-              <input matInput type="number" [formControl]="element.formGroup?.get('precoCompra')">
+              <input matInput type="text" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
+                [formControl]="element.formGroup?.get('precoCompra')">
             </ng-template>
           </td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <!-- New Columns -->
 
         <ng-container matColumnDef="valorTotal">
           <th mat-header-cell *matHeaderCellDef>Valor Total</th>
-          <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency : "BRL" : "symbol-narrow" : "1.2-2" }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency : "BRL" : "symbol-narrow" : "1.2-2" }}
+          </td>
+          <td mat-footer-cell *matFooterCellDef>{{ subtotal| currency:'BRL':'symbol-narrow':'1.2-2' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="observacao">
@@ -99,6 +109,7 @@
               <input matInput [formControl]="element.formGroup?.get('observacao')">
             </ng-template>
           </td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
         <ng-container matColumnDef="actions">
@@ -108,7 +119,7 @@
               <button mat-icon-button color="primary" (click)="toggleEditMode(element)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button color="warn" (click)="removeItem(i)">
+              <button mat-icon-button color="warn" type="button" (click)="removeItem(i)">
                 <mat-icon>delete</mat-icon>
               </button>
             </ng-container>
@@ -122,12 +133,14 @@
             </ng-template>
 
           </td>
+          <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 
 
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
       </table>
 
     </div>

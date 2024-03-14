@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -13,6 +13,8 @@ import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 import { OrdemCompraService } from 'src/app/services/ordem-compra.service';
 import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
+import { ProdutoEntradaService } from 'src/app/services/produto-entrada.service';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-ordem-compra-add-edit',
@@ -21,18 +23,22 @@ import { ProdutoCapaService } from 'src/app/services/produto-capa.service';
 })
 export class OrdemCompraAddEditComponent {
 
+  @ViewChild('skuInput') skuInput: ElementRef;
   ordemCompra: FormGroup;
 
   itemForm: FormGroup;
 
   produtoControl = new FormControl<string | ProdutoCapa>('');
   filteredProdutos: Observable<ProdutoCapa[]>;
+  subtotal: any;
+  quantidadeTotal: any;
 
   constructor(
     private ordemCompraService: OrdemCompraService,
     private formBuilder: FormBuilder,
     private fornecedorService: FornecedorService,
     private produtoCapaService: ProdutoCapaService,
+    private produtoEntradaService: ProdutoEntradaService,
     private dialogRef: MatDialogRef<OrdemCompraAddEditComponent>,
     private dialog: MatDialog,
     private toast: ToastrService,
@@ -49,10 +55,10 @@ export class OrdemCompraAddEditComponent {
     })
 
     this.itemForm = this.formBuilder.group({
-      produtoCapaId: [0],
+      produtoCapaId: ['', Validators.required],
       numeroNota: [0],
       descricao: [''],
-      quantidade: [0, Validators.required],
+      quantidade: ['', Validators.required],
       precoCompra: [0]
     });
 
@@ -64,43 +70,45 @@ export class OrdemCompraAddEditComponent {
 
   ngOnInit(): void {
     this.ordemCompra.patchValue(this.data);
-   
+
     // Carregar os itens da ordem de compra se estivermos editando uma ordem existente
     if (this.data && this.data.id) {
-       this.loadOrderItems(this.data.id);
+      this.loadOrderItems(this.data.id);
     }
-   
+
     this.filteredProdutos = this.produtoControl.valueChanges.pipe(
-       startWith(''),
-       map(value => {
-         const name = typeof value === 'string' ? value : value?.description;
-         return name ? this._filter(name as string) : this.produtoCapaList.slice();
-       }),
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.description;
+        return name ? this._filter(name as string) : this.produtoCapaList.slice();
+      }),
     );
-   }
-   
-// Ajuste o método loadOrderItems para incluir a descrição e o valor total
-loadOrderItems(orderId: number): void {
-  this.ordemCompraService.findAllItemsOrder(orderId).subscribe(
-     (items: ItemOrdemCompra[]) => {
-       // Aqui, você precisa garantir que os itens incluam a descrição e o valor total
-       // Isso pode ser feito ajustando a implementação do seu serviço ou mapeando os dados aqui
-       this.dataSource = items.map(item => ({
-         ...item,
-         // Certifique-se de que a descrição e o valor total estejam sendo incluídos
-         // Isso pode ser necessário se o seu serviço não estiver retornando esses campos
-         descricao: item.produtoCapaDesc, // Ajuste conforme necessário
-         valorTotal: item.quantidade * item.precoCompra, // Calcule o valor total aqui
-       }));
-       this.table.renderRows();
-     },
-     (error) => {
-       console.error('Erro ao carregar os itens da ordem de compra:', error);
-       this.toast.error('Erro ao carregar os itens da ordem de compra.', 'Erro');
-     }
-  );
- }
-   
+  }
+
+  // Ajuste o método loadOrderItems para incluir a descrição e o valor total
+  loadOrderItems(orderId: number): void {
+    this.ordemCompraService.findAllItemsOrder(orderId).subscribe(
+      (items: ItemOrdemCompra[]) => {
+        // Aqui, você precisa garantir que os itens incluam a descrição e o valor total
+        // Isso pode ser feito ajustando a implementação do seu serviço ou mapeando os dados aqui
+        this.dataSource = items.map(item => ({
+          ...item,
+          // Certifique-se de que a descrição e o valor total estejam sendo incluídos
+          // Isso pode ser necessário se o seu serviço não estiver retornando esses campos
+          descricao: item.produtoCapaDesc, // Ajuste conforme necessário
+          valorTotal: item.quantidade * item.precoCompra, // Calcule o valor total aqui
+        }));
+        this.table.renderRows();
+
+        this.updateTotals();
+      },
+      (error) => {
+        console.error('Erro ao carregar os itens da ordem de compra:', error);
+        this.toast.error('Erro ao carregar os itens da ordem de compra.', 'Erro');
+      }
+    );
+  }
+
 
   displayFn(produtoCapa: ProdutoCapa): string {
     return produtoCapa && produtoCapa.description ? produtoCapa.description : '';
@@ -117,28 +125,114 @@ loadOrderItems(orderId: number): void {
     const selectedProduto = event.option.value as ProdutoCapa;
     console.log(selectedProduto);
     if (selectedProduto) {
-       // Atualize o formulário com o ID do produto selecionado
-       this.itemForm.get('produtoCapaId').setValue(selectedProduto.id);
-       // Atualize o FormControl do produto com o objeto ProdutoCapa completo
-       this.produtoControl.setValue(selectedProduto);
-    }
-   }
+       // Verificar se o produto está inativo
+       if (!selectedProduto.ativo) {
+         // Limpar os campos se o produto estiver inativo
+         this.itemForm.patchValue({
+           produtoCapaId: null,
+           descricao: '',
+           precoCompra: null,
+         });
+         this.produtoControl.setValue(null);
+         this.toast.warning('Produto inativado!', 'Sistema!');
+         if (this.skuInput && this.skuInput.nativeElement) {
+          this.skuInput.nativeElement.focus();
+        }
+         return;
+       }
    
+       // Atualizar o formulário com o ID do produto selecionado
+       this.itemForm.get('produtoCapaId').setValue(selectedProduto.id);
+       // Atualizar o FormControl do produto com o objeto ProdutoCapa completo
+       this.produtoControl.setValue(selectedProduto);
+   
+       // Buscar a última entrada do produto
+       this.produtoEntradaService.findAll().subscribe(entradas => {
+         const entradasDoProduto = entradas.filter(entrada => entrada.produtoCapa === selectedProduto.id);
+         if (entradasDoProduto.length > 0) {
+           // Ordenar as entradas por id em ordem decrescente e pegar a primeira
+           const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
+           // Atualizar o preço de compra no formulário
+           this.itemForm.patchValue({
+             descricao: selectedProduto.description,
+             precoCompra: ultimaEntrada.precoCompra,
+           });
+         } else {
+           // Se não houver entradas para o produto, zerar o preço de compra
+           this.itemForm.patchValue({
+             descricao: selectedProduto.description,
+             precoCompra: 0,
+           });
+         }
+       });
+    }
+   }   
 
 
   onIdChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    const id = +input.value;
+    const value = input.value;
 
-    const produto = this.produtoCapaList.find(produto => produto.id === id);
+    // Tentar encontrar o produto pelo ID
+    let produto = this.produtoCapaList.find(produto => produto.id === +value);
+
+    // Se não encontrar pelo ID, tentar encontrar pelo nome
+    if (!produto) {
+      produto = this.produtoCapaList.find(produto => produto.description.toLowerCase() === value.toLowerCase());
+    }
+
     if (produto) {
-      // Atualize o FormControl do produto com o objeto ProdutoCapa
+      // Verificar se o produto está inativo
+      if (!produto.ativo) {
+        // Limpar os campos se o produto estiver inativo
+        this.produtoControl.setValue(null);
+        this.itemForm.patchValue({
+          produtoCapaId: null,
+          descricao: '',
+          quantidade: '',
+          precoCompra: null,
+        });
+        this.toast.warning('Produto inativado!', 'Sistema!');
+        if (this.skuInput && this.skuInput.nativeElement) {
+          this.skuInput.nativeElement.focus();
+        }
+        return;
+      }
+
+      // Atualizar o FormControl do produto com o objeto ProdutoCapa
       this.produtoControl.setValue(produto);
+
+      // Buscar a última entrada do produto
+      this.produtoEntradaService.findAll().subscribe(entradas => {
+        const entradasDoProduto = entradas.filter(entrada => entrada.produtoCapa === produto.id);
+        if (entradasDoProduto.length > 0) {
+          // Ordenar as entradas por id em ordem decrescente e pegar a primeira
+          const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
+          // Atualizar o preço de compra no formulário
+          this.itemForm.patchValue({
+            descricao: produto.description,
+            precoCompra: ultimaEntrada.precoCompra,
+          });
+        } else {
+          // Se não houver entradas para o produto, zerar o preço de compra
+          this.itemForm.patchValue({
+            descricao: produto.description,
+            precoCompra: 0,
+          });
+        }
+      });
     } else {
       // Limpe o FormControl se o produto não for encontrado
       this.produtoControl.setValue(null);
+      // Limpar os campos do formulário se o produto não for encontrado
+      this.itemForm.patchValue({
+        produtoCapaId: null,
+        descricao: '',
+        precoCompra: null,
+      });
     }
   }
+
 
 
 
@@ -152,36 +246,60 @@ loadOrderItems(orderId: number): void {
   addData() {
     const itemOrdemCompra = { ...this.itemForm.value };
     const produto = this.produtoControl.value as ProdutoCapa;
-     
+
     // Converter produtoCapaId para número
     itemOrdemCompra.produtoCapaId = +itemOrdemCompra.produtoCapaId;
     if (itemOrdemCompra.precoCompra == null) {
       itemOrdemCompra.precoCompra = 0.0;
     }
-     
+
     // Se o produto for encontrado, atribua a descrição ao item da ordem de compra
     if (produto && produto.description) {
-       itemOrdemCompra.descricao = produto.description;
+      itemOrdemCompra.descricao = produto.description;
     } else {
-       // Trate o caso em que o produto não é encontrado ou não tem descrição
-       console.log('Produto não encontrado ou sem descrição');
-       // Você pode querer definir uma descrição padrão ou lidar de outra forma
-       itemOrdemCompra.descricao = 'Produto não encontrado';
+      // Trate o caso em que o produto não é encontrado ou não tem descrição
+      console.log('Produto não encontrado ou sem descrição');
+      itemOrdemCompra.descricao = 'Produto não encontrado';
     }
-     
+
     itemOrdemCompra.valorTotal = itemOrdemCompra.precoCompra * itemOrdemCompra.quantidade;
-    this.dataSource.push(itemOrdemCompra);
+
+    // Verifica se um item com o mesmo produtoCapaId já existe
+    const existingItemIndex = this.dataSource.findIndex(item => item.produtoCapaId === itemOrdemCompra.produtoCapaId);
+    if (existingItemIndex !== -1) {
+      // Atualiza o item existente
+      this.dataSource[existingItemIndex] = itemOrdemCompra;
+    } else {
+      // Adiciona um novo item
+      this.dataSource.push(itemOrdemCompra);
+    }
+
     this.table.renderRows();
     this.itemForm.reset();
     this.produtoControl.setValue(null);
-   }
 
+    this.updateTotals();
+    if (this.skuInput && this.skuInput.nativeElement) {
+      this.skuInput.nativeElement.focus();
+    }
+  }
 
 
   removeItem(index: number) {
-    this.dataSource.splice(index, 1);
-    this.table.renderRows();
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: 'Você tem certeza que deseja retirar esse produto da sua Ordem de Compra?',
+    });
+
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.dataSource.splice(index, 1);
+        this.table.renderRows();
+    
+        this.updateTotals();
+      }
+    });
   }
+
 
   fornecedor: Fornecedor[] = []
 
@@ -268,13 +386,17 @@ loadOrderItems(orderId: number): void {
 
   onFormSubmit() {
     if (this.ordemCompra.valid) {
-      if (this.data) {
-        this.ordemCompraService.update(this.ordemCompra.value).subscribe({
+      const ordemCompraId = this.ordemCompra.value.id;
+      const fornecedorId = this.ordemCompra.value.fornecedorId;
+      const itens = this.dataSource; // Obtenha os itens da lista dataSource
+      console.table(itens)
+
+      if (ordemCompraId) {
+        // Se o ordemCompraId estiver disponível, atualiza a OrdemCompra existente
+        // Inclui o fornecedorId e os itens na chamada para o método update
+        this.ordemCompraService.update(ordemCompraId, fornecedorId, itens).subscribe({
           next: (val: any) => {
             this.toast.success('Ordem de compra atualizada com sucesso!', 'Sistema');
-            const ordemCompraId = this.ordemCompra.value.id;
-            this.updateOrdemCompraIdOnItems(ordemCompraId);
-            this.salvarItensOrdemCompra(ordemCompraId, this.dataSource);
             this.dialogRef.close(true);
           },
           error: (err: any) => {
@@ -283,13 +405,12 @@ loadOrderItems(orderId: number): void {
           },
         });
       } else {
+        // Se o ordemCompraId não estiver disponível, cria uma nova OrdemCompra
+        // Não inclui o fornecedorId aqui, pois não é necessário para a criação
         this.ordemCompraService.create(this.ordemCompra.value).subscribe({
           next: (val: any) => {
             console.log('Resposta do serviço create:', val);
             this.toast.success('Ordem de compra gerada', 'Sucesso!');
-            const ordemCompraId = val.id;
-            this.updateOrdemCompraIdOnItems(ordemCompraId);
-            this.salvarItensOrdemCompra(ordemCompraId, this.dataSource);
             this.dialogRef.close(true);
           },
           error: (err: any) => {
@@ -301,6 +422,9 @@ loadOrderItems(orderId: number): void {
     }
   }
 
+
+
+
   private updateOrdemCompraIdOnItems(ordemCompraId: number): void {
     this.dataSource.forEach(item => {
       item.ordemCompraId = ordemCompraId;
@@ -308,6 +432,41 @@ loadOrderItems(orderId: number): void {
   }
 
 
+  updateTotals() {
+    // Calcular o subtotal e a quantidade total
+    const totalQuantidade = this.dataSource.reduce((acc, item) => acc + item.quantidade, 0);
+    const valorTotal = this.dataSource.reduce((acc, item) => acc + (item.precoCompra * item.quantidade), 0);
+
+    // Atualizar os valores na interface do usuário
+    // Aqui, você precisa atualizar os campos correspondentes na sua interface do usuário
+    // Por exemplo, se você tiver campos de texto para subtotal e quantidade total, você pode atualizá-los aqui
+    this.subtotal = valorTotal;
+    this.quantidadeTotal = totalQuantidade;
+
+  }
+
+
+  updateOrdemCompraItems(ordemCompraId: number, newItems: ItemOrdemCompra[]): void {
+    // Supondo que this.dataSource seja a lista atual de itens da ordem de compra
+    newItems.forEach(newItem => {
+      const existingItemIndex = this.dataSource.findIndex(item => item.id === newItem.id);
+      if (existingItemIndex !== -1) {
+        // Atualiza o item existente
+        this.dataSource[existingItemIndex] = newItem;
+      } else {
+        // Adiciona um novo item
+        this.dataSource.push(newItem);
+      }
+    });
+
+    // Atualiza a tabela e os totais
+    this.table.renderRows();
+    this.updateTotals();
+  }
+
 
 }
+
+
+
 
