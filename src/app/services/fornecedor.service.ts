@@ -15,6 +15,10 @@ export class FornecedorService {
     return this.http.get<Fornecedor>(`${API_CONFIG.baseUrl}/fornecedor/${id}`)
   }
 
+  findByName(name: string): Observable<Fornecedor> {
+    return this.http.get<Fornecedor>(`${API_CONFIG.baseUrl}/name/fornecedor/${name}`)
+  }
+
   findAll(): Observable<Fornecedor[]> {
     return this.http.get<Fornecedor[]>(`${API_CONFIG.baseUrl}/fornecedor`)
   }

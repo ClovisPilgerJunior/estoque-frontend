@@ -27,6 +27,11 @@
           <td mat-cell *matCellDef="let element">{{ element.fornecedor }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="numeroNota">
+          <th mat-header-cell *matHeaderCellDef>Número da Nota</th>
+          <td mat-cell *matCellDef="let element">{{ element.numeroNota }}</td>
+        </ng-container>
+
         <ng-container matColumnDef="dataEmissao">
           <th mat-header-cell *matHeaderCellDef>Data Emissao</th>
           <td mat-cell *matCellDef="let element">
@@ -43,7 +48,7 @@
   
         <!-- Po- Column -->
         <ng-container matColumnDef="dataRecebimentoOrdemCompra">
-          <th mat-header-cell *matHeaderCellDef>Data Reecbimento</th>
+          <th mat-header-cell *matHeaderCellDef>Data Recebimento</th>
           <td mat-cell *matCellDef="let element">{{ element.dataRecebimentoOrdemCompra }}</td>
         </ng-container>
         <!-- Po- Column -->
@@ -62,6 +67,10 @@
           <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency : "BRL" : "symbol-narrow" : "1.2-2" }}</td>
         </ng-container>
 
+        <ng-container matColumnDef="observacao">
+          <th mat-header-cell *matHeaderCellDef>Observação</th>
+          <td mat-cell *matCellDef="let element">{{ element.observacao }}</td>
+        </ng-container>
   
         <!-- - Column -->
         <ng-container matColumnDef="action">

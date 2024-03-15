@@ -30,8 +30,13 @@ export class OrdemCompraAddEditComponent {
 
   produtoControl = new FormControl<string | ProdutoCapa>('');
   filteredProdutos: Observable<ProdutoCapa[]>;
+
+  fornecedorControl = new FormControl<string | Fornecedor>('');
+  filteredFornecedor: Observable<Fornecedor[]>;
+
   subtotal: any;
   quantidadeTotal: any;
+
 
   constructor(
     private ordemCompraService: OrdemCompraService,
@@ -47,18 +52,21 @@ export class OrdemCompraAddEditComponent {
   ) {
     this.ordemCompra = this.formBuilder.group({
       id: 0,
-      fornecedor: '',
+      numeroNota: 0,
+      fornecedor: 0,
       dataPedidoOrdemCompra: '',
       dataRecebimentoOrdemCompra: '',
       statusOrdem: '',
+      observacao: '',
       itemOrdemCompra: [''],
     })
 
     this.itemForm = this.formBuilder.group({
       produtoCapaId: ['', Validators.required],
-      numeroNota: [0],
+      numeroNota: [''],
       descricao: [''],
       quantidade: ['', Validators.required],
+      observacao: [''],
       precoCompra: [0]
     });
 
@@ -76,11 +84,20 @@ export class OrdemCompraAddEditComponent {
       this.loadOrderItems(this.data.id);
     }
 
+
     this.filteredProdutos = this.produtoControl.valueChanges.pipe(
       startWith(''),
       map(value => {
         const name = typeof value === 'string' ? value : value?.description;
         return name ? this._filter(name as string) : this.produtoCapaList.slice();
+      }),
+    );
+
+    this.filteredFornecedor = this.fornecedorControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const name = typeof value === 'string' ? value : value?.empresa;
+        return name ? this._filterFornecedor(name as string) : this.fornecedor.slice();
       }),
     );
   }
@@ -101,6 +118,9 @@ export class OrdemCompraAddEditComponent {
         this.table.renderRows();
 
         this.updateTotals();
+        if (this.skuInput && this.skuInput.nativeElement) {
+          this.skuInput.nativeElement.focus();
+        }
       },
       (error) => {
         console.error('Erro ao carregar os itens da ordem de compra:', error);
@@ -115,58 +135,69 @@ export class OrdemCompraAddEditComponent {
 
   }
 
+  displayFnFornecedor(fornecedor: Fornecedor): string {
+    return fornecedor && fornecedor.empresa ? fornecedor.empresa : '';
+
+  }
+
   private _filter(name: string): ProdutoCapa[] {
     const filterValue = name.toLowerCase();
 
     return this.produtoCapaList.filter(option => option.description.toLowerCase().includes(filterValue));
   }
 
+  private _filterFornecedor(name: string): Fornecedor[] {
+    const filterValue = name.toLowerCase();
+
+    return this.fornecedor.filter(option => option.empresa.toLowerCase().includes(filterValue));
+  }
+
   onProdutoSelected(event: MatAutocompleteSelectedEvent) {
     const selectedProduto = event.option.value as ProdutoCapa;
     console.log(selectedProduto);
     if (selectedProduto) {
-       // Verificar se o produto está inativo
-       if (!selectedProduto.ativo) {
-         // Limpar os campos se o produto estiver inativo
-         this.itemForm.patchValue({
-           produtoCapaId: null,
-           descricao: '',
-           precoCompra: null,
-         });
-         this.produtoControl.setValue(null);
-         this.toast.warning('Produto inativado!', 'Sistema!');
-         if (this.skuInput && this.skuInput.nativeElement) {
+      // Verificar se o produto está inativo
+      if (!selectedProduto.ativo) {
+        // Limpar os campos se o produto estiver inativo
+        this.itemForm.patchValue({
+          produtoCapaId: null,
+          descricao: '',
+          precoCompra: null,
+        });
+        this.produtoControl.setValue(null);
+        this.toast.warning('Produto inativado!', 'Sistema!');
+        if (this.skuInput && this.skuInput.nativeElement) {
           this.skuInput.nativeElement.focus();
         }
-         return;
-       }
-   
-       // Atualizar o formulário com o ID do produto selecionado
-       this.itemForm.get('produtoCapaId').setValue(selectedProduto.id);
-       // Atualizar o FormControl do produto com o objeto ProdutoCapa completo
-       this.produtoControl.setValue(selectedProduto);
-   
-       // Buscar a última entrada do produto
-       this.produtoEntradaService.findAll().subscribe(entradas => {
-         const entradasDoProduto = entradas.filter(entrada => entrada.produtoCapa === selectedProduto.id);
-         if (entradasDoProduto.length > 0) {
-           // Ordenar as entradas por id em ordem decrescente e pegar a primeira
-           const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
-           // Atualizar o preço de compra no formulário
-           this.itemForm.patchValue({
-             descricao: selectedProduto.description,
-             precoCompra: ultimaEntrada.precoCompra,
-           });
-         } else {
-           // Se não houver entradas para o produto, zerar o preço de compra
-           this.itemForm.patchValue({
-             descricao: selectedProduto.description,
-             precoCompra: 0,
-           });
-         }
-       });
+        return;
+      }
+
+      // Atualizar o formulário com o ID do produto selecionado
+      this.itemForm.get('produtoCapaId').setValue(selectedProduto.id);
+      // Atualizar o FormControl do produto com o objeto ProdutoCapa completo
+      this.produtoControl.setValue(selectedProduto);
+
+      // Buscar a última entrada do produto
+      this.produtoEntradaService.findAll().subscribe(entradas => {
+        const entradasDoProduto = entradas.filter(entrada => entrada.produtoCapa === selectedProduto.id);
+        if (entradasDoProduto.length > 0) {
+          // Ordenar as entradas por id em ordem decrescente e pegar a primeira
+          const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
+          // Atualizar o preço de compra no formulário
+          this.itemForm.patchValue({
+            descricao: selectedProduto.description,
+            precoCompra: ultimaEntrada.precoCompra,
+          });
+        } else {
+          // Se não houver entradas para o produto, zerar o preço de compra
+          this.itemForm.patchValue({
+            descricao: selectedProduto.description,
+            precoCompra: 0,
+          });
+        }
+      });
     }
-   }   
+  }
 
 
   onIdChange(event: Event) {
@@ -294,7 +325,7 @@ export class OrdemCompraAddEditComponent {
       if (result) {
         this.dataSource.splice(index, 1);
         this.table.renderRows();
-    
+
         this.updateTotals();
       }
     });
@@ -308,14 +339,20 @@ export class OrdemCompraAddEditComponent {
       // Filtrar a lista de fornecedores para remover os inativos
       this.fornecedor = response.filter(fornecedor => fornecedor.ativo === true);
       console.log(this.fornecedor);
+
+      if (this.data && this.data.id) {
+        const fornecedorSelecionado = this.fornecedor.find(fornecedor =>
+          fornecedor.empresa.trim().toLowerCase() === this.data.fornecedor.trim().toLowerCase()
+        );
+    
+        if (fornecedorSelecionado) {
+          // Definir o valor sem acionar o evento de mudança
+          this.fornecedorControl.setValue(fornecedorSelecionado, { emitEvent: false });
+        } else {
+          console.error('Fornecedor não encontrado:', this.data.fornecedor);
+        }
+     }
     });
-  }
-
-
-
-  private _filterProdutos(value: string): ProdutoCapa[] {
-    const filterValue = value.toLowerCase();
-    return this.produtoCapaList.filter(produto => produto.description.toLowerCase().includes(filterValue));
   }
 
 
@@ -387,9 +424,16 @@ export class OrdemCompraAddEditComponent {
   onFormSubmit() {
     if (this.ordemCompra.valid) {
       const ordemCompraId = this.ordemCompra.value.id;
-      const fornecedorId = this.ordemCompra.value.fornecedorId;
+      const fornecedorSelecionado = this.fornecedorControl.value as Fornecedor;
+      const fornecedorId = fornecedorSelecionado ? fornecedorSelecionado.id : null;
       const itens = this.dataSource; // Obtenha os itens da lista dataSource
       console.table(itens)
+      console.log("fornecedor id:", fornecedorId)
+
+      const ordemCompraParaSalvar = {
+        ...this.ordemCompra.value,
+        fornecedor: fornecedorId, // Inclua o ID do fornecedor aqui
+      };
 
       if (ordemCompraId) {
         // Se o ordemCompraId estiver disponível, atualiza a OrdemCompra existente
@@ -407,11 +451,15 @@ export class OrdemCompraAddEditComponent {
       } else {
         // Se o ordemCompraId não estiver disponível, cria uma nova OrdemCompra
         // Não inclui o fornecedorId aqui, pois não é necessário para a criação
-        this.ordemCompraService.create(this.ordemCompra.value).subscribe({
+        this.ordemCompraService.create(ordemCompraParaSalvar).subscribe({
           next: (val: any) => {
             console.log('Resposta do serviço create:', val);
             this.toast.success('Ordem de compra gerada', 'Sucesso!');
+            const newOrdemCompraId = val.id;
+            this.updateOrdemCompraIdOnItems(newOrdemCompraId);
+            this.salvarItensOrdemCompra(newOrdemCompraId, this.dataSource);
             this.dialogRef.close(true);
+            this.ordemCompra.patchValue(this.data);
           },
           error: (err: any) => {
             this.toast.error(err.error.message, 'Erro');
@@ -421,8 +469,6 @@ export class OrdemCompraAddEditComponent {
       }
     }
   }
-
-
 
 
   private updateOrdemCompraIdOnItems(ordemCompraId: number): void {

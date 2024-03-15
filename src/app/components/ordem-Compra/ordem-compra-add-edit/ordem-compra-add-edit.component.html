@@ -4,13 +4,28 @@
 <form [formGroup]="ordemCompra" (ngSubmit)="onFormSubmit()">
   <div mat-dialog-content>
     <div class="row">
-      <mat-form-field class="full-width" appearance="fill">
-        <mat-label>Selecione uma Cliente</mat-label>
-        <mat-select formControlName="fornecedor" required>
-          <mat-option *ngFor="let forenecedores of fornecedor"
-            value="{{forenecedores.id}}">{{forenecedores.empresa}}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <div class="add-item-form tipos">
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Selecione uma Fornecedor</mat-label>
+          <input type="text" placeholder="Fornecedor" matInput [formControl]="fornecedorControl"
+            [matAutocomplete]="autoFornecedor">
+          <mat-autocomplete #autoFornecedor="matAutocomplete" [displayWith]="displayFnFornecedor">
+            <mat-option *ngFor="let fornecedor of filteredFornecedor | async" [value]="fornecedor">
+              {{fornecedor.empresa}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Número da Nota</mat-label>
+          <input matInput type="number" placeholder="Ex: 5550" maxlength="50" formControlName="numeroNota" />
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Observação</mat-label>
+          <input matInput type="text" placeholder="Ex: Petenate" maxlength="50" formControlName="observacao" />
+        </mat-form-field>
+      </div>
 
       <div class="add-item-form tipos" [formGroup]="itemForm">
         <mat-form-field class="full-width" appearance="fill">
@@ -116,17 +131,17 @@
           <th mat-header-cell *matHeaderCellDef>Ações</th>
           <td mat-cell *matCellDef="let element; let i = index">
             <ng-container *ngIf="!element.editMode; else editMode">
-              <button mat-icon-button color="primary" (click)="toggleEditMode(element)">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" type="button" (click)="removeItem(i)">
-                <mat-icon>delete</mat-icon>
-              </button>
+              <a mat-icon-button color="primary" (click)="toggleEditMode(element)">
+                <i class="material-icons edit">edit</i>
+              </a>
+              <a mat-icon-button color="warn" type="button" (click)="removeItem(i)">
+                <i class="material-icons delete">delete</i>
+              </a>
             </ng-container>
             <ng-template #editMode>
-              <button mat-icon-button color="primary" (click)="confirmEdit(element)">
-                <mat-icon>done</mat-icon>
-              </button>
+              <a mat-icon-button color="primary" (click)="confirmEdit(element)">
+                <i class="material-icons done">done</i>
+              </a>
               <button mat-icon-button color="warn" (click)="cancelEdit(element)">
                 <mat-icon>clear</mat-icon>
               </button>

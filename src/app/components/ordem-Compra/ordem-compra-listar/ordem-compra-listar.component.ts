@@ -25,12 +25,14 @@ export class OrdemCompraListarComponent {
   displayedColumns: string[] = [
     'id',
     'fornecedor',
+    'numeroNota',
     'dataEmissao',
     'dataPedidoOrdemCompra', 
     'dataRecebimentoOrdemCompra',
     'quantidade',
     'statusOrdem',
     'valorTotal',
+    'observacao',
     'action',
   ];
   dataSource = new MatTableDataSource<OrdemCompra>(this.ELEMENT_DATA);
