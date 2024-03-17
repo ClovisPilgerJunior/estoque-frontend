@@ -2,7 +2,7 @@
   Ordem de Compra
 </div>
 <form [formGroup]="ordemCompra" (ngSubmit)="onFormSubmit()">
-  <div mat-dialog-content>
+  <div mat-dialog-content >
     <div class="row">
       <div class="add-item-form tipos">
         <mat-form-field class="full-width" appearance="fill">
@@ -18,12 +18,12 @@
 
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Número da Nota</mat-label>
-          <input matInput type="number" placeholder="Ex: 5550" maxlength="50" formControlName="numeroNota" />
+          <input ngxPrint matInput type="number" placeholder="Ex: 5550" maxlength="50" formControlName="numeroNotaOrdem" />
         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Observação</mat-label>
-          <input matInput type="text" placeholder="Ex: Petenate" maxlength="50" formControlName="observacao" />
+          <input matInput type="text" placeholder="Ex: Petenate" maxlength="50" formControlName="ordemObservacao" />
         </mat-form-field>
       </div>
 
@@ -52,13 +52,19 @@
             [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }" maxlength="120" formControlName="precoCompra" />
         </mat-form-field>
 
+        <mat-form-field class="full-width" appearance="fill">
+          <mat-label>Observação</mat-label>
+          <input matInput type="text" maxlength="50" formControlName="observacao">
+        </mat-form-field>
+
+
       </div>
       <div class="demo-button-container">
         <button mat-raised-button (click)="addData()" [disabled]="!itemForm.valid" class="demo-button"
           type="button">Adicionar Item</button>
       </div>
 
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
         <!-- Existing Columns -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>No.</th>
@@ -85,7 +91,7 @@
               {{ element.quantidade }}
             </ng-container>
             <ng-template #editMode>
-              <input matInput type="number" [formControl]="element.formGroup?.get('quantidade')">
+              <input matInput type="number" [formControl]="element.formGroup?.get('quantidade')" class="custom-input">
             </ng-template>
           </td>
           <td mat-footer-cell *matFooterCellDef>{{ quantidadeTotal | mask: 'separator': {thousandSeparator: '.'} }}</td>
@@ -99,7 +105,7 @@
             </ng-container>
             <ng-template #editMode>
               <input matInput type="text" currencyMask [options]="{ prefix: 'R$ ', thousands: '.', decimal: ',' }"
-                [formControl]="element.formGroup?.get('precoCompra')">
+                [formControl]="element.formGroup?.get('precoCompra')" class="custom-input">
             </ng-template>
           </td>
           <td mat-footer-cell *matFooterCellDef></td>
@@ -121,7 +127,7 @@
               {{ element.observacao }}
             </ng-container>
             <ng-template #editMode>
-              <input matInput [formControl]="element.formGroup?.get('observacao')">
+              <input matInput [formControl]="element.formGroup?.get('observacao')" class="custom-input">
             </ng-template>
           </td>
           <td mat-footer-cell *matFooterCellDef></td>
@@ -131,20 +137,20 @@
           <th mat-header-cell *matHeaderCellDef>Ações</th>
           <td mat-cell *matCellDef="let element; let i = index">
             <ng-container *ngIf="!element.editMode; else editMode">
-              <a mat-icon-button color="primary" (click)="toggleEditMode(element)">
+              <a color="primary" (click)="toggleEditMode(element)" style="cursor: pointer">
                 <i class="material-icons edit">edit</i>
               </a>
-              <a mat-icon-button color="warn" type="button" (click)="removeItem(i)">
+              <a color="warn" type="button" (click)="removeItem(i)" style="cursor: pointer">
                 <i class="material-icons delete">delete</i>
               </a>
             </ng-container>
             <ng-template #editMode>
-              <a mat-icon-button color="primary" (click)="confirmEdit(element)">
+              <a (click)="confirmEdit(element)" style="cursor: pointer">
                 <i class="material-icons done">done</i>
               </a>
-              <button mat-icon-button color="warn" (click)="cancelEdit(element)">
-                <mat-icon>clear</mat-icon>
-              </button>
+              <a  (click)="cancelEdit(element)" style="cursor: pointer">
+                <i class="material-icons clear">clear</i>
+              </a>
             </ng-template>
 
           </td>

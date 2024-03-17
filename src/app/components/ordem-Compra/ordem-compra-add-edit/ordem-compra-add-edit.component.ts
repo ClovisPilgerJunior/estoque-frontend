@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Fornecedor } from 'src/app/models/Fornecedor';
 import { ItemOrdemCompra } from 'src/app/models/ItemOrdemCompra';
+import { OrdemCompra } from 'src/app/models/OrdemCompra';
 import { ProdutoCapa } from 'src/app/models/ProdutoCapa';
 import { FornecedorService } from 'src/app/services/fornecedor.service';
 import { OrdemCompraService } from 'src/app/services/ordem-compra.service';
@@ -52,12 +53,12 @@ export class OrdemCompraAddEditComponent {
   ) {
     this.ordemCompra = this.formBuilder.group({
       id: 0,
-      numeroNota: 0,
+      numeroNotaOrdem: '',
       fornecedor: 0,
       dataPedidoOrdemCompra: '',
       dataRecebimentoOrdemCompra: '',
       statusOrdem: '',
-      observacao: '',
+      ordemObservacao: '',
       itemOrdemCompra: [''],
     })
 
@@ -203,66 +204,74 @@ export class OrdemCompraAddEditComponent {
   onIdChange(event: Event) {
     const input = event.target as HTMLInputElement;
     const value = input.value;
-
+   
     // Tentar encontrar o produto pelo ID
     let produto = this.produtoCapaList.find(produto => produto.id === +value);
-
+   
     // Se não encontrar pelo ID, tentar encontrar pelo nome
     if (!produto) {
-      produto = this.produtoCapaList.find(produto => produto.description.toLowerCase() === value.toLowerCase());
+       produto = this.produtoCapaList.find(produto => produto.description.toLowerCase() === value.toLowerCase());
     }
-
+   
     if (produto) {
-      // Verificar se o produto está inativo
-      if (!produto.ativo) {
-        // Limpar os campos se o produto estiver inativo
-        this.produtoControl.setValue(null);
-        this.itemForm.patchValue({
-          produtoCapaId: null,
-          descricao: '',
-          quantidade: '',
-          precoCompra: null,
-        });
-        this.toast.warning('Produto inativado!', 'Sistema!');
-        if (this.skuInput && this.skuInput.nativeElement) {
-          this.skuInput.nativeElement.focus();
-        }
-        return;
-      }
-
-      // Atualizar o FormControl do produto com o objeto ProdutoCapa
-      this.produtoControl.setValue(produto);
-
-      // Buscar a última entrada do produto
-      this.produtoEntradaService.findAll().subscribe(entradas => {
-        const entradasDoProduto = entradas.filter(entrada => entrada.produtoCapa === produto.id);
-        if (entradasDoProduto.length > 0) {
-          // Ordenar as entradas por id em ordem decrescente e pegar a primeira
-          const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
-          // Atualizar o preço de compra no formulário
-          this.itemForm.patchValue({
-            descricao: produto.description,
-            precoCompra: ultimaEntrada.precoCompra,
-          });
-        } else {
-          // Se não houver entradas para o produto, zerar o preço de compra
-          this.itemForm.patchValue({
-            descricao: produto.description,
-            precoCompra: 0,
-          });
-        }
-      });
+       // Verificar se o produto está inativo
+       if (!produto.ativo) {
+         // Limpar os campos se o produto estiver inativo
+         this.produtoControl.setValue(null);
+         this.itemForm.patchValue({
+           produtoCapaId: null,
+           descricao: '',
+           quantidade: '',
+           precoCompra: null,
+         });
+         this.toast.warning('Produto inativado!', 'Sistema!');
+         if (this.skuInput && this.skuInput.nativeElement) {
+           this.skuInput.nativeElement.focus();
+         }
+         return;
+       }
+   
+       // Atualizar o FormControl do produto com o objeto ProdutoCapa
+       this.produtoControl.setValue(produto);
+   
+       // Buscar a última entrada do produto
+       this.produtoEntradaService.findAll().subscribe(entradas => {
+         const entradasDoProduto = entradas.filter(entrada => entrada.produtoCapa === produto.id);
+         if (entradasDoProduto.length > 0) {
+           // Ordenar as entradas por id em ordem decrescente e pegar a primeira
+           const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
+           // Atualizar o preço de compra no formulário
+           this.itemForm.patchValue({
+             descricao: produto.description,
+             precoCompra: ultimaEntrada.precoCompra,
+           });
+         } else {
+           // Se não houver entradas para o produto, zerar o preço de compra
+           this.itemForm.patchValue({
+             descricao: produto.description,
+             precoCompra: 0,
+           });
+         }
+       });
     } else {
-      // Limpe o FormControl se o produto não for encontrado
-      this.produtoControl.setValue(null);
-      // Limpar os campos do formulário se o produto não for encontrado
-      this.itemForm.patchValue({
-        produtoCapaId: null,
-        descricao: '',
-        precoCompra: null,
-      });
+       // Limpe o FormControl se o produto não for encontrado
+       this.produtoControl.setValue(null);
+       // Limpar os campos do formulário se o produto não for encontrado
+       this.itemForm.patchValue({
+         produtoCapaId: null,
+         descricao: '',
+         precoCompra: null,
+       });
+       // Adicionar um aviso específico para o usuário
+       this.toast.error('Produto não encontrado!', 'Erro!');
+       // Limpar o campo de entrada após o aviso
+       input.value = '';
+       if (this.skuInput && this.skuInput.nativeElement) {
+        this.skuInput.nativeElement.focus();
+      }
     }
-  }
+   }
+   
 
 
 
@@ -293,6 +302,7 @@ export class OrdemCompraAddEditComponent {
       itemOrdemCompra.descricao = 'Produto não encontrado';
     }
 
+    itemOrdemCompra.numeroNota = this.ordemCompra.value.numeroNotaOrdem;
     itemOrdemCompra.valorTotal = itemOrdemCompra.precoCompra * itemOrdemCompra.quantidade;
 
     // Verifica se um item com o mesmo produtoCapaId já existe
@@ -313,6 +323,7 @@ export class OrdemCompraAddEditComponent {
     if (this.skuInput && this.skuInput.nativeElement) {
       this.skuInput.nativeElement.focus();
     }
+    console.table(itemOrdemCompra)
   }
 
 
@@ -410,7 +421,9 @@ export class OrdemCompraAddEditComponent {
     console.table(itens);
     this.ordemCompraService.adicionar(ordemCompraId, itens).subscribe({
       next: () => {
-        this.ordemCompra.patchValue(this.data)
+        this.router.navigate(['/ordemCompra']).then(() => {
+          this.router.navigate(['/ordemCompra']);
+         });
       },
       error: (err: any) => {
         this.toast.error(err.error.message, 'Erro');
@@ -420,26 +433,28 @@ export class OrdemCompraAddEditComponent {
   }
 
 
-
   onFormSubmit() {
     if (this.ordemCompra.valid) {
       const ordemCompraId = this.ordemCompra.value.id;
       const fornecedorSelecionado = this.fornecedorControl.value as Fornecedor;
+      const ordemObservacao = this.ordemCompra.value.ordemObservacao;
+      const numeroNotaOrdem = this.ordemCompra.value.numeroNotaOrdem;
       const fornecedorId = fornecedorSelecionado ? fornecedorSelecionado.id : null;
       const itens = this.dataSource; // Obtenha os itens da lista dataSource
-      console.table(itens)
-      console.log("fornecedor id:", fornecedorId)
 
       const ordemCompraParaSalvar = {
         ...this.ordemCompra.value,
         fornecedor: fornecedorId, // Inclua o ID do fornecedor aqui
+        ordemObservacao: ordemObservacao,
+        numeroNotaOrdem: this.ordemCompra.value.numeroNotaOrdem, 
       };
 
       if (ordemCompraId) {
         // Se o ordemCompraId estiver disponível, atualiza a OrdemCompra existente
         // Inclui o fornecedorId e os itens na chamada para o método update
-        this.ordemCompraService.update(ordemCompraId, fornecedorId, itens).subscribe({
+        this.ordemCompraService.update(ordemCompraId, numeroNotaOrdem, ordemObservacao, fornecedorId, itens ).subscribe({
           next: (val: any) => {
+            console.table("atualizar:", val)
             this.toast.success('Ordem de compra atualizada com sucesso!', 'Sistema');
             this.dialogRef.close(true);
           },
@@ -459,7 +474,6 @@ export class OrdemCompraAddEditComponent {
             this.updateOrdemCompraIdOnItems(newOrdemCompraId);
             this.salvarItensOrdemCompra(newOrdemCompraId, this.dataSource);
             this.dialogRef.close(true);
-            this.ordemCompra.patchValue(this.data);
           },
           error: (err: any) => {
             this.toast.error(err.error.message, 'Erro');

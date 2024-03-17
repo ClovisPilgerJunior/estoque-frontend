@@ -28,22 +28,24 @@ export class OrdemCompraService {
     return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra`, OrdemCompra);
   }
   
-  faturar(id: number): Observable<OrdemCompra> {
-    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/faturar`, OrdemCompra)
-  }
+  faturar(id: number): Observable<string> {
+    return this.http.put(`${API_CONFIG.baseUrl}/ordemCompra/${id}/faturar`, null, { responseType: 'text' });
+}
 
-  estornar(id: number): Observable<OrdemCompra> {
-    return this.http.post<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/estornar`, OrdemCompra)
-  }
+estornar(id: number): Observable<string> {
+  return this.http.post(`${API_CONFIG.baseUrl}/ordemCompra/${id}/estornar`, null, { responseType: 'text' });
+}
 
   adicionar(id: number, itens: ItemOrdemCompra[]): Observable<any> {
     return this.http.post(`${API_CONFIG.baseUrl}/ordemCompra/${id}/addProducts`, itens);
   }
   
-  update(id: number, fornecedorId: number, itens: ItemOrdemCompra[]): Observable<any> {
+  update(id: number, numeroNotaOrdem: number, ordemObservacao: string,  fornecedorId: number, itens: ItemOrdemCompra[]): Observable<any> {
     const updateData = {
        fornecedorId: fornecedorId,
-       items: itens
+       items: itens,
+       numeroNotaOrdem: numeroNotaOrdem, // Certifique-se de incluir o número da nota
+       ordemObservacao: ordemObservacao, // Certifique-se de incluir a observação da ordem
     };
     return this.http.put<ItemOrdemCompra[]>(`${API_CONFIG.baseUrl}/ordemCompra/${id}/updateOrder`, updateData);
    }

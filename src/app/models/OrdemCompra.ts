@@ -1,6 +1,6 @@
 export class OrdemCompra {
     id?: number;
-    numeroNota?: number;
+    numeroNotaOrdem: number;
     fornecedor: number;
     dataEmissao: Date;
     dataPedidoOrdemCompra: Date;
@@ -8,5 +8,5 @@ export class OrdemCompra {
     quantidade: number;
     statusOrdem: number;
     valorTotal?: number;
-    obeservacao?: string;
+    ordemObservacao: string;
   }

@@ -32,7 +32,7 @@ export class OrdemCompraListarComponent {
     'quantidade',
     'statusOrdem',
     'valorTotal',
-    'observacao',
+    'ordemObservacao',
     'action',
   ];
   dataSource = new MatTableDataSource<OrdemCompra>(this.ELEMENT_DATA);
@@ -90,6 +90,13 @@ export class OrdemCompraListarComponent {
     this.findAll();
   }
 
+  isOrderFaturada: boolean = false; // Inicialmente, assumimos que a ordem não está faturada
+
+ // Método para atualizar o status da ordem
+ updateOrderStatus(status: string) {
+    this.isOrderFaturada = status === 'faturar';
+ }
+
   findAll() {
     this.service.findAll().subscribe((response) => {
       this.ELEMENT_DATA = response;
@@ -102,6 +109,88 @@ export class OrdemCompraListarComponent {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+
+  onFaturar(data: any) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+       data: 'Você tem certeza que deseja faturar sua Ordem de Compra?',
+    });
+   
+    dialogRef.afterClosed().subscribe({
+       next: (result: boolean) => {
+         console.log(data.id);
+         if (result) {
+           // Certifique-se de que data.id está definido e é um número
+           if (data.id && typeof data.id === 'number') {
+             this.service.faturar(data.id).subscribe({
+               next: (response) => {
+                 this.toast.success('Ordem faturada com sucesso!', 'sistema')
+                 console.log(response);
+                 // Exemplo: mostrar uma mensagem de sucesso
+               },
+               error: (error) => {
+                this.toast.error(error.error, 'sistema')
+                console.log(error)
+               },
+               complete: () => {
+                 // Aqui você pode colocar qualquer lógica que deve ser executada após a conclusão da requisição
+                 this.findAll();
+               }
+             });
+           } else {
+             console.error('ID da Ordem de Compra não definido ou inválido');
+           }
+         }
+       },
+       error: (error) => {
+         // Aqui você pode lidar com erros que ocorrem ao tentar abrir o diálogo
+         console.error(error);
+       },
+       complete: () => {
+         // Aqui você pode colocar qualquer lógica que deve ser executada após a conclusão da abertura do diálogo
+       }
+    });
+   }
+
+   onEstornar(data: any) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+       data: 'Você tem certeza que deseja estornar sua Ordem de Compra?',
+    });
+   
+    dialogRef.afterClosed().subscribe({
+       next: (result: boolean) => {
+         console.log(data.id);
+         if (result) {
+           // Certifique-se de que data.id está definido e é um número
+           if (data.id && typeof data.id === 'number') {
+             this.service.estornar(data.id).subscribe({
+               next: (response) => {
+                 this.toast.success('Ordem estornada com sucesso!', 'sistema')
+                 this.findAll();
+                 console.log(response);
+                 // Exemplo: mostrar uma mensagem de sucesso
+               },
+               error: (error) => {
+                this.toast.error(error.error, 'sistema')
+                console.log(error)
+               },
+             });
+           } else {
+             console.error('ID da Ordem de Compra não definido ou inválido');
+           }
+         }
+       },
+       error: (error) => {
+         // Aqui você pode lidar com erros que ocorrem ao tentar abrir o diálogo
+         console.error(error);
+       },
+       complete: () => {
+         // Aqui você pode colocar qualquer lógica que deve ser executada após a conclusão da abertura do diálogo
+       }
+    });
+   }
+   
+   
 
 
   onCreate() {
@@ -118,7 +207,6 @@ export class OrdemCompraListarComponent {
     const dialogRef = this.dialog.open(OrdemCompraAddEditComponent, {
       data,
     });
-    console.log(data)
     dialogRef.afterClosed().subscribe({
       next: (response) => {
         response = this.findAll();
