@@ -1,5 +1,5 @@
 import { Component, ElementRef, Inject, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
@@ -32,7 +32,7 @@ export class OrdemCompraAddEditComponent {
   produtoControl = new FormControl<string | ProdutoCapa>('');
   filteredProdutos: Observable<ProdutoCapa[]>;
 
-  fornecedorControl = new FormControl<string | Fornecedor>('');
+  fornecedorControl = new FormControl<string | Fornecedor>('', [this.validateFornecedor.bind(this), Validators.required]);
   filteredFornecedor: Observable<Fornecedor[]>;
 
   subtotal: any;
@@ -54,13 +54,14 @@ export class OrdemCompraAddEditComponent {
     this.ordemCompra = this.formBuilder.group({
       id: 0,
       numeroNotaOrdem: '',
-      fornecedor: 0,
+      fornecedor: [''],
       dataPedidoOrdemCompra: '',
       dataRecebimentoOrdemCompra: '',
       statusOrdem: '',
       ordemObservacao: '',
       itemOrdemCompra: [''],
     })
+    console.log("Validação: ", this.ordemCompra.valid)
 
     this.itemForm = this.formBuilder.group({
       produtoCapaId: ['', Validators.required],
@@ -76,6 +77,19 @@ export class OrdemCompraAddEditComponent {
     this.dialogRef.disableClose = true;
 
   }
+
+  validateFornecedor(control: AbstractControl): ValidationErrors | null {
+    const fornecedorValue = control.value;
+    const fornecedor = typeof fornecedorValue === 'string' ? fornecedorValue : fornecedorValue?.empresa;
+   
+    // Retorna um erro se o fornecedor for vazio ou não for válido
+    if (!fornecedor || !this.fornecedor.some(f => f.empresa.toLowerCase() === fornecedor.toLowerCase())) {
+       return { invalidFornecedor: true };
+    }
+   
+    return null;
+   }   
+   
 
   ngOnInit(): void {
     this.ordemCompra.patchValue(this.data);
@@ -396,6 +410,7 @@ export class OrdemCompraAddEditComponent {
     item.formGroup = undefined;
 
     // Aqui você também deve atualizar os dados no servidor conforme necessário
+    this.updateTotals()
   }
 
   cancelEdit(item: ItemOrdemCompra): void {

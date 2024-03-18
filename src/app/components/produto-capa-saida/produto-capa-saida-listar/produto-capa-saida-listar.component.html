@@ -1,18 +1,12 @@
 <div class="container">
   <h1>
     <button (click)="onCreate()" mat-fab color="primary">
-      <fa-icon [icon]="faPlus" size="2xl"></fa-icon></button
-    > Saidas
+      <fa-icon [icon]="faPlus" size="2xl"></fa-icon></button> Saidas
   </h1>
 
   <mat-form-field>
     <mat-label>Filtro</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ex: Ramatex"
-      #input
-    />
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Ramatex" #input />
   </mat-form-field>
   <div class="mat-elevation-z8 example-table-container">
     <table mat-table [dataSource]="dataSource">
@@ -85,15 +79,11 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns "></tr>
     </table>
-
-    <mat-paginator
-      [pageSizeOptions]="[50, 100, 200, dataSource.data.length]"
-      showFirstLastButtons
-      aria-label="Selecione a quantidade de páginas"
-    >
-    </mat-paginator>
   </div>
+  <mat-paginator [pageSizeOptions]="[50, 100, 200, dataSource.data.length]" showFirstLastButtons
+    aria-label="Selecione a quantidade de páginas">
+  </mat-paginator>
 </div>

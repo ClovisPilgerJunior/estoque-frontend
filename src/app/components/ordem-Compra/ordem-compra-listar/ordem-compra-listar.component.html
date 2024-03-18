@@ -88,7 +88,9 @@
             <ng-container *ngIf="element.statusOrdem !== 'FATURADA'">
               <button mat-menu-item (click)="onFaturar(element)">Faturar</button>
             </ng-container>
-            <button mat-menu-item (click)="onEstornar(element)">Estornar</button>
+            <ng-container *ngIf="element.statusOrdem !== 'NÃO FATURADA'">
+              <button mat-menu-item (click)="onEstornar(element)">Estornar</button>
+            </ng-container>
             <button mat-menu-item>Cancelar</button>
           </mat-menu>
         </td>

@@ -8,13 +8,16 @@
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Selecione uma Fornecedor</mat-label>
           <input type="text" placeholder="Fornecedor" matInput [formControl]="fornecedorControl"
-            [matAutocomplete]="autoFornecedor">
+             [matAutocomplete]="autoFornecedor">
           <mat-autocomplete #autoFornecedor="matAutocomplete" [displayWith]="displayFnFornecedor">
-            <mat-option *ngFor="let fornecedor of filteredFornecedor | async" [value]="fornecedor">
-              {{fornecedor.empresa}}
-            </mat-option>
+             <mat-option *ngFor="let fornecedor of filteredFornecedor | async" [value]="fornecedor">
+               {{fornecedor.empresa}}
+             </mat-option>
           </mat-autocomplete>
-        </mat-form-field>
+          <mat-error *ngIf="fornecedorControl.hasError('invalidFornecedor')">
+             Fornecedor inválido.
+          </mat-error>
+         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Número da Nota</mat-label>
@@ -173,8 +176,8 @@
     <button mat-raised-button color="warn" type="button" [mat-dialog-close]="false">
       Cancelar
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!ordemCompra.valid || dataSource.length === 0">
-      {{ data ? "Atualizar" : "Lançar" }}
+    <button mat-raised-button color="primary" type="submit" [disabled]="!fornecedorControl.valid || dataSource.length === 0">
+      {{ data ? "Atualizar" : "Gerar Ordem" }}
     </button>
   </div>
 </form>

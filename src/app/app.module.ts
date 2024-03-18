@@ -33,42 +33,40 @@ import { ToastrModule } from 'ngx-toastr';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { FornecedorAtualizarComponent } from './components/fornecedor/fornecedor-atualizar/fornecedor-atualizar.component';
 import { FornecedorCadastroComponent } from './components/fornecedor/fornecedor-cadastrar/fornecedor-cadastrar.component';
 import { FornecedorConsultaComponent } from './components/fornecedor/fornecedor-consultar/fornecedor-consultar.component';
 import { NavComponent } from './components/nav/nav.component';
 import { ProdutoCapaEntradaAtualizarComponent } from './components/produto-capa-entrada/produto-capa-entrada-atualizar/produto-capa-entrada-atualizar.component';
+import { ProdutoEntradaEntradaCadastrarComponent } from './components/produto-capa-entrada/produto-capa-entrada-cadastrar/produto-capa-entrada-cadastrar.component';
 import { ProdutoCapaEntradaListarComponent } from './components/produto-capa-entrada/produto-capa-entrada-listar/produto-capa-entrada-listar.component';
 import { ProdutoCapaAtualizarComponent } from './components/produto-capa/produto-capa-atualizar/produto-capa-atualizar.component';
 import { ProdutoCapaCadastrarComponent } from './components/produto-capa/produto-capa-cadastrar/produto-capa-cadastrar.component';
 import { ProdutoCapaConsultarComponent } from './components/produto-capa/produto-capa-consultar/produto-capa-consultar.component';
 import { ProdutoCapaListarComponent } from './components/produto-capa/produto-capa-listar/produto-capa-listar.component';
 import { ConfirmationDialogComponent } from './shared/components/confirmation-dialog/confirmation-dialog.component';
-import { ProdutoEntradaEntradaCadastrarComponent } from './components/produto-capa-entrada/produto-capa-entrada-cadastrar/produto-capa-entrada-cadastrar.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import localePt from '@angular/common/locales/pt';
-import { registerLocaleData } from '@angular/common';
 
-import { provideEnvironmentNgxCurrency, NgxCurrencyInputMode } from 'ngx-currency';
-import { NgxCurrencyDirective } from "ngx-currency";
-import { ProdutoCapaSaidaListarComponent } from './components/produto-capa-saida/produto-capa-saida-listar/produto-capa-saida-listar.component';
-import { ProdutoCapaSaidaAddEditComponent } from './components/produto-capa-saida/produto-capa-saida-add-edit/produto-capa-saida-add-edit.component';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { ProdutoCapaPerdaListarComponent } from './components/produto-capa-perda/produto-capa-perda-listar/produto-capa-perda-listar.component';
-import { ProdutoCapaPerdaAddEditComponent } from './components/produto-capa-perda/produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
-import { UnidadeProdutivaListarComponent } from './components/unidade-produtiva/unidade-produtiva-listar/unidade-produtiva-listar.component';
-import { UnidadeProdutivaAddEditComponent } from './components/unidade-produtiva/unidade-produtiva-add-edit/unidade-produtiva-add-edit.component';
+import { NgxCurrencyDirective, NgxCurrencyInputMode, provideEnvironmentNgxCurrency } from 'ngx-currency';
 import { LoginComponent } from './components/login/login.component';
-import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
-import { UserListarComponent } from './components/user/user-listar/user-listar.component';
-import { UserAddEditComponent } from './components/user/user-add-edit/user-add-edit.component';
-import { SpinnerComponent } from './shared/spinner/spinner.component';
-import { LoadingInterceptor } from './interceptors/loading.interceptor';
-import { OrdemCompraListarComponent } from './components/ordem-Compra/ordem-compra-listar/ordem-compra-listar.component';
 import { OrdemCompraAddEditComponent } from './components/ordem-Compra/ordem-compra-add-edit/ordem-compra-add-edit.component';
-import { NgxPrintModule } from 'ngx-print';
+import { OrdemCompraListarComponent } from './components/ordem-Compra/ordem-compra-listar/ordem-compra-listar.component';
+import { ProdutoCapaPerdaAddEditComponent } from './components/produto-capa-perda/produto-capa-perda-add-edit/produto-capa-perda-add-edit.component';
+import { ProdutoCapaPerdaListarComponent } from './components/produto-capa-perda/produto-capa-perda-listar/produto-capa-perda-listar.component';
+import { ProdutoCapaSaidaAddEditComponent } from './components/produto-capa-saida/produto-capa-saida-add-edit/produto-capa-saida-add-edit.component';
+import { ProdutoCapaSaidaListarComponent } from './components/produto-capa-saida/produto-capa-saida-listar/produto-capa-saida-listar.component';
+import { UnidadeProdutivaAddEditComponent } from './components/unidade-produtiva/unidade-produtiva-add-edit/unidade-produtiva-add-edit.component';
+import { UnidadeProdutivaListarComponent } from './components/unidade-produtiva/unidade-produtiva-listar/unidade-produtiva-listar.component';
+import { UserAddEditComponent } from './components/user/user-add-edit/user-add-edit.component';
+import { UserListarComponent } from './components/user/user-listar/user-listar.component';
+import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 
 registerLocaleData(localePt, 'pt');
@@ -141,7 +139,6 @@ export const ISO_FORMAT = {
     MatCardModule,
     MatMomentDateModule,
     MatMenuModule,
-    NgxPrintModule,
     NgxCurrencyDirective,
     ToastrModule.forRoot({
       timeOut: 4000,

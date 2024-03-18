@@ -2,12 +2,7 @@
   <h1>Listar Produto Capa</h1>
   <mat-form-field>
     <mat-label>Filtro</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ex: Ramatex"
-      #input
-    />
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Ramatex" #input />
   </mat-form-field>
   <div class="mat-elevation-z8 example-table-container">
     <table mat-table [dataSource]="dataSource">
@@ -20,7 +15,7 @@
 
       <!-- Po- Column -->
       <ng-container matColumnDef="codSistema">
-        <th mat-header-cell *matHeaderCellDef>Cod. Interno</th>
+        <th mat-header-cell *matHeaderCellDef >Cod.</th>
         <td mat-cell *matCellDef="let element">{{ element.codSistema }}</td>
         <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
@@ -41,7 +36,7 @@
 
       <!-- Po- Column -->
       <ng-container matColumnDef="medidaUnidade">
-        <th mat-header-cell *matHeaderCellDef>Unidade de Medida</th>
+        <th mat-header-cell *matHeaderCellDef style="white-space: normal; word-wrap: break-word; max-width: 100px;">Unidade Medida</th>
         <td mat-cell *matCellDef="let element">{{ element.medidaUnidade }}</td>
         <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
@@ -106,17 +101,13 @@
         <td mat-footer-cell *matFooterCellDef></td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+      <tr mat-footer-row *matFooterRowDef="displayedColumns sticky: true" ></tr>
 
     </table>
-
-    <mat-paginator
-      [pageSizeOptions]="[100, 200, 500, dataSource.data.length]"
-      showFirstLastButtons
-      aria-label="Selecione a quantidade de páginas"
-    >
-    </mat-paginator>
   </div>
+  <mat-paginator [pageSizeOptions]="[100, 200, 500, dataSource.data.length]" showFirstLastButtons
+    aria-label="Selecione a quantidade de páginas">
+  </mat-paginator>
 </div>

@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
             delay(2000);
             this.router.navigate(['/login']);
           }
-          return throwError(error);
+          return throwError(() => error);
         })
       );
     } else {
@@ -42,7 +42,7 @@ export class AuthInterceptor implements HttpInterceptor {
             delay(2000);
             this.router.navigate(['/login']);
           }
-          return throwError(error);
+          return throwError(() => error);
         })
       );
     }
