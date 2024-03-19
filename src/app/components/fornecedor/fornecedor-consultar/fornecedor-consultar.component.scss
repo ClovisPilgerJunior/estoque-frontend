@@ -30,3 +30,24 @@ h1 {
 .delete {
     color: red;
 }
+
+.mat-mdc-table {
+    white-space: nowrap;
+}
+
+.example-table-container {
+    position: relative;
+    min-height: 200px;
+    max-height: 450px;
+    overflow: auto;
+}
+
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+    padding: 0 5px 0 5px;
+    height: 30px;
+}
+
+tr.mat-mdc-footer-row td {
+    font-weight: bold;
+}

@@ -29,7 +29,7 @@ produtoEntrada: FormGroup;
 
     this.produtoEntrada = this.formBuilder.group({
     numeroNota: '',
-    dataPedido: ['', Validators.required],
+    dataPedido: [''],
     dataEntrega: ['', Validators.required],
     precoCompra: ['', Validators.required], // A validação será aplicada apenas quando retornoFac não estiver selecionado
     quantidade: ['', Validators.required],
@@ -80,41 +80,52 @@ produtoEntrada: FormGroup;
 
   atualizarDescricaoPeloSKU(value: string) {
     if (!value) {
-      // Se o SKU estiver vazio, deixe a descrição vazia
-      this.produtoEntrada.patchValue({
-        produtoCapaDesc: '',
-      });
-      return;
+       // Se o SKU estiver vazio, deixe a descrição vazia e o preço de compra como 0
+       this.produtoEntrada.patchValue({
+         produtoCapaDesc: '',
+         precoCompra: 0, // Atualiza o preço de compra para 0
+       });
+       return;
     }
-
+   
     const isNumber = !isNaN(Number(value));
     const produto = this.produtoCapaList.find(
-      (p) => (isNumber && p.id === Number(value)) || p.description === value
+       (p) => (isNumber && p.id === Number(value)) || p.description === value
     );
-
+   
     if (!produto) {
-      // Se o produto não existir, definir a descrição como 'inexistente'
-      this.produtoEntrada.patchValue({
-        produtoCapaDesc: 'Não cadastrado',
-      });
-      this.toast.warning('Produto não cadastrado!', 'Sistema!');
-      return;
+       // Se o produto não existir, definir a descrição como 'inexistente' e o preço de compra como 0
+       this.produtoEntrada.patchValue({
+         produtoCapaDesc: 'Não cadastrado',
+         precoCompra: 0, // Atualiza o preço de compra para 0
+       });
+       this.toast.warning('Produto não cadastrado!', 'Sistema!');
+       return;
     }
-
+   
     if (!produto.ativo) {
-      // Se o produto estiver inativo, definir a descrição como 'inativo'
-      this.produtoEntrada.patchValue({
-        produtoCapaDesc: 'Produto inativado',
-      });
-      this.toast.warning('Produto inativado!', 'Sistema!');
-      return;
+       // Se o produto estiver inativo, definir a descrição como 'inativo' e o preço de compra como 0
+       this.produtoEntrada.patchValue({
+         produtoCapaDesc: 'Produto inativado',
+         precoCompra: 0, // Atualiza o preço de compra para 0
+       });
+       this.toast.warning('Produto inativado!', 'Sistema!');
+       return;
     }
-
+   
     // Se o produto existir e estiver ativo, definir a descrição normalmente
     this.produtoEntrada.patchValue({
-      produtoCapaDesc: produto.description,
+       produtoCapaDesc: produto.description,
     });
-  }
+   
+    // Atualiza o preço de compra com o último preço do produto
+    const sku = isNumber ? Number(value) : produto.id; // Garante que o SKU seja um número
+    const precoCompra = this.obterPrecoCompra(sku);
+    this.produtoEntrada.patchValue({
+       precoCompra: precoCompra,
+    });
+   }
+   
 
   listaDeEntradas: ProdutoEntrada[] = []
 
@@ -136,8 +147,8 @@ produtoEntrada: FormGroup;
     const formData = this.produtoEntrada.value;
 
     // Formatando datas
-    formData.dataPedido = formatDate(formData.dataPedido, 'dd/MM/yyyy', 'en-US');
-    formData.dataEntrega = formatDate(formData.dataEntrega, 'dd/MM/yyyy', 'en-US');
+    formData.dataPedido = formatDate(formData.dataPedido || new Date(), 'dd/MM/yyyy', 'en-US');
+    formData.dataEntrega = formatDate(formData.dataEntrega || new Date(), 'dd/MM/yyyy', 'en-US');
 
     // Aguarde até que a lista de entradas seja carregada antes de obter o preço de compra
     this.findAllEntradas();
@@ -157,6 +168,7 @@ produtoEntrada: FormGroup;
     // Chame o serviço create
     this.salvarProdutoEntrada(formData);
   }
+
 
   salvarProdutoEntrada(formData: any): void {
     this.produtoEntradaService.create(formData).subscribe({

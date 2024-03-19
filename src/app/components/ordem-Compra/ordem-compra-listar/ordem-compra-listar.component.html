@@ -85,10 +85,13 @@
           </a>
 
           <mat-menu #menu="matMenu" xPosition="before">
-            <ng-container *ngIf="element.statusOrdem !== 'FATURADA'">
-              <button mat-menu-item (click)="onFaturar(element)">Faturar</button>
+            <ng-container
+              *ngIf="element.statusOrdem !== 'AGUARDANDO LIBERAÇÃO' &&
+                     element.statusOrdem !== 'LIBERADO' &&
+                     element.statusOrdem !== 'RECEBIDO'">
+              <button mat-menu-item (click)="onFaturar(element)">Receber</button>
             </ng-container>
-            <ng-container *ngIf="element.statusOrdem !== 'NÃO FATURADA'">
+            <ng-container *ngIf="element.statusOrdem === 'RECEBIDO'">
               <button mat-menu-item (click)="onEstornar(element)">Estornar</button>
             </ng-container>
             <button mat-menu-item>Cancelar</button>

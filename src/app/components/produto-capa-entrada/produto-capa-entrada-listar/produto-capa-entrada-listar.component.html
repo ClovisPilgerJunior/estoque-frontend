@@ -10,7 +10,7 @@
     <mat-label>Filtro</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Ramatex" #input />
   </mat-form-field>
-  <div class="mat-elevation-z8">
+  <div class="mat-elevation-z8 example-table-container">
     <table mat-table [dataSource]="dataSource">
       <!-- Po- Column -->
       <ng-container matColumnDef="id">
@@ -81,7 +81,7 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns sticky: true"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>

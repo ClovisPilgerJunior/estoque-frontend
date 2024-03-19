@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmat
 import { ProdutoCapaAtualizarComponent } from '../produto-capa-atualizar/produto-capa-atualizar.component';
 import { ProdutoCapa } from './../../../models/ProdutoCapa';
 import { AuthService } from 'src/app/services/auth.service';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-produto-capa-listar',
@@ -16,6 +17,8 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./produto-capa-listar.component.scss']
 })
 export class ProdutoCapaListarComponent {
+
+  faPlus = faPlus;
 
   ELEMENT_DATA: ProdutoCapa[] = []
 
