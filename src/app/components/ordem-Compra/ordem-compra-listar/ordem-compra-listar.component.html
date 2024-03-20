@@ -53,12 +53,12 @@
       </ng-container>
 
       <ng-container matColumnDef="statusOrdem">
-        <th mat-header-cell *matHeaderCellDef>Status da Ordem</th>
+        <th mat-header-cell *matHeaderCellDef>Status</th>
         <td mat-cell *matCellDef="let element">{{ element.statusOrdem }}</td>
       </ng-container>
 
       <ng-container matColumnDef="valorTotal">
-        <th mat-header-cell *matHeaderCellDef>Valor Total</th>
+        <th mat-header-cell *matHeaderCellDef>Total (R$)</th>
         <td mat-cell *matCellDef="let element">{{ element.valorTotal | currency : "BRL" : "symbol-narrow" : "1.2-2" }}
         </td>
       </ng-container>
@@ -75,7 +75,7 @@
           <a style="cursor: pointer">
             <i class="material-icons edit">print</i>
           </a>
-          <ng-container *ngIf="element.statusOrdem !== 'FATURADA'">
+          <ng-container *ngIf="element.statusOrdem !== 'RECEBIDO'">
             <a (click)="onEditForm(element)" style="cursor: pointer">
               <i class="material-icons edit">edit</i>
             </a>

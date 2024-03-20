@@ -66,7 +66,7 @@ export class OrdemCompraAddEditComponent {
     this.itemForm = this.formBuilder.group({
       produtoCapaId: ['', Validators.required],
       numeroNota: [''],
-      descricao: [''],
+      produtoCapaDesc: [''],
       quantidade: ['', Validators.required],
       observacao: [''],
       precoCompra: [0]
@@ -127,7 +127,7 @@ export class OrdemCompraAddEditComponent {
           ...item,
           // Certifique-se de que a descrição e o valor total estejam sendo incluídos
           // Isso pode ser necessário se o seu serviço não estiver retornando esses campos
-          descricao: item.produtoCapaDesc, // Ajuste conforme necessário
+          produtoCapaDesc: item.produtoCapaDesc, // Ajuste conforme necessário
           valorTotal: item.quantidade * item.precoCompra, // Calcule o valor total aqui
         }));
         this.table.renderRows();
@@ -176,7 +176,7 @@ export class OrdemCompraAddEditComponent {
         // Limpar os campos se o produto estiver inativo
         this.itemForm.patchValue({
           produtoCapaId: null,
-          descricao: '',
+          produtoCapaDesc: '',
           precoCompra: null,
         });
         this.produtoControl.setValue(null);
@@ -200,13 +200,13 @@ export class OrdemCompraAddEditComponent {
           const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
           // Atualizar o preço de compra no formulário
           this.itemForm.patchValue({
-            descricao: selectedProduto.description,
+            produtoCapaDesc: selectedProduto.description,
             precoCompra: ultimaEntrada.precoCompra,
           });
         } else {
           // Se não houver entradas para o produto, zerar o preço de compra
           this.itemForm.patchValue({
-            descricao: selectedProduto.description,
+            produtoCapaDesc: selectedProduto.description,
             precoCompra: 0,
           });
         }
@@ -234,7 +234,7 @@ export class OrdemCompraAddEditComponent {
          this.produtoControl.setValue(null);
          this.itemForm.patchValue({
            produtoCapaId: null,
-           descricao: '',
+           produtoCapaDesc: '',
            quantidade: '',
            precoCompra: null,
          });
@@ -256,13 +256,13 @@ export class OrdemCompraAddEditComponent {
            const ultimaEntrada = entradasDoProduto.sort((a, b) => b.id - a.id)[0];
            // Atualizar o preço de compra no formulário
            this.itemForm.patchValue({
-             descricao: produto.description,
+            produtoCapaDesc: produto.description,
              precoCompra: ultimaEntrada.precoCompra,
            });
          } else {
            // Se não houver entradas para o produto, zerar o preço de compra
            this.itemForm.patchValue({
-             descricao: produto.description,
+            produtoCapaDesc: produto.description,
              precoCompra: 0,
            });
          }
@@ -273,7 +273,7 @@ export class OrdemCompraAddEditComponent {
        // Limpar os campos do formulário se o produto não for encontrado
        this.itemForm.patchValue({
          produtoCapaId: null,
-         descricao: '',
+         produtoCapaDesc: '',
          precoCompra: null,
        });
        // Adicionar um aviso específico para o usuário
@@ -292,7 +292,7 @@ export class OrdemCompraAddEditComponent {
 
   ELEMENT_DATA: ItemOrdemCompra[] = []
 
-  displayedColumns: string[] = ['id', 'sku', 'descricao', 'quantidade', 'precoCompra', 'valorTotal', 'observacao', 'actions'];
+  displayedColumns: string[] = ['id', 'sku', 'produtoCapaDesc', 'quantidade', 'precoCompra', 'valorTotal', 'observacao', 'actions'];
   dataSource = [...this.ELEMENT_DATA];
 
   @ViewChild(MatTable) table: MatTable<ItemOrdemCompra>;
@@ -309,11 +309,11 @@ export class OrdemCompraAddEditComponent {
 
     // Se o produto for encontrado, atribua a descrição ao item da ordem de compra
     if (produto && produto.description) {
-      itemOrdemCompra.descricao = produto.description;
+      itemOrdemCompra.produtoCapaDesc = produto.description;
     } else {
       // Trate o caso em que o produto não é encontrado ou não tem descrição
       console.log('Produto não encontrado ou sem descrição');
-      itemOrdemCompra.descricao = 'Produto não encontrado';
+      itemOrdemCompra.produtoCapaDesc = 'Produto não encontrado';
     }
 
     itemOrdemCompra.numeroNota = this.ordemCompra.value.numeroNotaOrdem;
