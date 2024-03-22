@@ -12,6 +12,11 @@ export class OrdemCompraService {
 
   constructor(private http: HttpClient) { }
 
+  generateReport(idOrdemCompra: number) {
+    const url = `http://localhost:8080/generate-report?ID_ORDEM_COMPRA=${idOrdemCompra}`;
+    return this.http.get(url, { responseType: 'blob' });
+ }
+
   findById(id: number): Observable<OrdemCompra> {
     return this.http.get<OrdemCompra>(`${API_CONFIG.baseUrl}/ordemCompra/${id}`)
   }

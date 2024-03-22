@@ -72,7 +72,7 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Ações</th>
         <td mat-cell *matCellDef="let element">
-          <a style="cursor: pointer">
+          <a (click)="generateAndOpenReport(element.id)" style="cursor: pointer">
             <i class="material-icons edit">print</i>
           </a>
           <ng-container *ngIf="element.statusOrdem !== 'RECEBIDO'">

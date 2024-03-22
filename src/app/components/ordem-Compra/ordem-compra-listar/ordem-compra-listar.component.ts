@@ -90,6 +90,14 @@ export class OrdemCompraListarComponent {
     this.findAll();
   }
 
+  generateAndOpenReport(idOrdemCompra: number) {
+    this.service.generateReport(idOrdemCompra).subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    });
+ }
+
+
   isOrderFaturada: boolean = false; // Inicialmente, assumimos que a ordem não está faturada
 
  // Método para atualizar o status da ordem
