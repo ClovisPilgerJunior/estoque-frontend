@@ -1,108 +1,59 @@
 <mat-toolbar>
-  <span
-    ><img src="assets/img/logo-janfer.svg" alt="logo da janfer sport e beach"
-  /></span>
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/produtoConsultar"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="faMagfyingGlass"></fa-icon>
-    Consulta
+  <span><img src="assets/img/logo-janfer.svg" alt="logo da janfer sport e beach" /></span>
+  <span class="spacer"></span>
+ 
+  <!-- Menu de Gestão de Produtos -->
+  <button mat-button [matMenuTriggerFor]="produtoMenu" aria-label="Menu de Gestão de Produtos">
+     Gestão de Produtos
   </button>
-
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/produtoCapa"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="faClipBoardList"></fa-icon>
-    Produto
+  <mat-menu #produtoMenu="matMenu">
+     <button mat-menu-item routerLink="/produtoConsultar" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Consulta de Produtos">
+       <fa-icon [icon]="faSearch"></fa-icon> Consulta
+     </button>
+     <button mat-menu-item routerLink="/produtoCapa" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Gestão de Produtos">
+       <fa-icon [icon]="faList"></fa-icon> Produto
+     </button>
+     <button mat-menu-item routerLink="/produtoEntrada" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Entrada de Produtos">
+       <fa-icon [icon]="faPlusCircle"></fa-icon> Entrada
+     </button>
+     <button mat-menu-item routerLink="/produtoSaida" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Saída de Produtos">
+       <fa-icon [icon]="faMinusCircle"></fa-icon> Saída
+     </button>
+     <button mat-menu-item routerLink="/produtoPerda" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Gestão de Perda de Produtos">
+       <fa-icon [icon]="faDownCircle"></fa-icon> Perda
+     </button>
+  </mat-menu>
+ 
+  <!-- Menu de Gestão de Fornecedores e Unidades Produtivas -->
+  <button mat-button [matMenuTriggerFor]="fornecedorMenu" aria-label="Menu de Gestão de Fornecedores e Unidades Produtivas">
+    Gestão de Entidades
   </button>
-
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/produtoEntrada"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="faPlusCircle"></fa-icon>
-    Entrada
+  <mat-menu #fornecedorMenu="matMenu">
+     <button mat-menu-item routerLink="/fornecedor" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Gestão de Fornecedores">
+       <fa-icon [icon]="faDolly"></fa-icon> Fornecedor
+     </button>
+     <button mat-menu-item routerLink="/unidadeProdutiva" *ngIf="isAdminUser() || isManager() || isUser()" tooltip="Gestão de Unidades Produtivas">
+       <fa-icon [icon]="faIndustry"></fa-icon> Unidade Produtiva
+     </button>
+  </mat-menu>
+ 
+  <!-- Botões Específicos -->
+  <button mat-button color="primary" routerLink="/ordemCompra" *ngIf="isAdminUser()" tooltip="Gestão de Ordens de Compra">
+     Ordem de Compra
   </button>
-
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/produtoSaida"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="faMinusCircle"></fa-icon>
-    Saida
+  <button mat-button color="primary" routerLink="/userListar" *ngIf="isAdminUser()" tooltip="Gestão de Usuários">
+     <fa-icon [icon]="faPerson"></fa-icon> Usuário
   </button>
-
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/produtoPerda"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="faDownCircle"></fa-icon>
-    Perda
+  <button mat-button color="primary" routerLink="/notifications" *ngIf="isAdminUser()" tooltip="Notificações">
+     <fa-icon [icon]="faNotifications"></fa-icon> Notificações
   </button>
-
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/fornecedor"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="faDolly"></fa-icon>
-    Fornecedor
-
+  <button mat-button color="primary" (click)="logout()" tooltip="Sair da Conta">
+     <fa-icon [icon]="faExitToApp"></fa-icon> Logout
   </button>
-
-  <button
-    mat-button
-    class="button-primary"
-    color="primary"
-    routerLink="/unidadeProdutiva"
-    *ngIf="isAdminUser() || isManager() || isUser()"
-  >
-    <fa-icon [icon]="industria"></fa-icon>
-    Unidade Produtiva
-  </button>
-
-  <button mat-button class="button-primary" color="primary" routerLink="/ordemCompra" *ngIf="isAdminUser()" >
-    Ordem de Compra
-  </button>
-
-  <button mat-button class="button-primary" color="primary" *ngIf="isAdminUser()" >
-    Ordem de Aviamento
-  </button>
-
-  <button mat-button class="button-primary" color="primary" routerLink="/userListar" *ngIf="isAdminUser()">
-    <i class="material-icons">person</i>
-    Usuário
-  </button>
-  <button mat-button class="button-primary" color="primary">
-    <i class="material-icons">notifications</i>
-  </button>
-
-  <button mat-button class="button-primary" color="primary" (click)="logout()">
-    <i class="material-icons">exit_to_app</i>
-    Logout
-  </button>
-</mat-toolbar>
-
-<div class="toolbar-content">
+ </mat-toolbar>
+ 
+ <div class="toolbar-content">
   <app-spinner></app-spinner>
   <router-outlet></router-outlet>
-</div>
+ </div>
+ 

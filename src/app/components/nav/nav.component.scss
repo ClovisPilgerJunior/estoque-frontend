@@ -7,3 +7,16 @@ img {
 .button-primary {
     margin: 0.5rem 0.3rem;
 }
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+.mat-menu-item {
+    display: flex;
+    align-items: center;
+}
+
+.mat-menu-item i {
+    margin-right: 8px;
+}

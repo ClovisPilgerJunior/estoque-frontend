@@ -1,8 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { faCircleDown } from '@fortawesome/free-regular-svg-icons';
-import { faCircleArrowDown, faClipboardList, faCoffee, faDolly, faIndustry, faMagnifyingGlass, faMinusCircle, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faCircleDown, faUser } from '@fortawesome/free-regular-svg-icons';
+import { faCircleArrowDown, faClipboardList, faCoffee, faDolly, faIndustry, faMagnifyingGlass, faMinusCircle, faPlusCircle, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -16,11 +16,15 @@ export class NavComponent implements OnInit {
 
   faDolly = faDolly;
   faClipBoardList = faClipboardList;
-  faMagfyingGlass = faMagnifyingGlass;
+  faSearch = faMagnifyingGlass;
   faPlusCircle = faPlusCircle;
   faMinusCircle = faMinusCircle;
   faDownCircle = faCircleDown;
-  industria = faIndustry;
+  faIndustry = faIndustry;
+  faExitToApp = faRightFromBracket;
+  faNotifications = faBell;
+  faPerson = faUser;
+  faList = faClipboardList;
 
   constructor(
     private router: Router,
