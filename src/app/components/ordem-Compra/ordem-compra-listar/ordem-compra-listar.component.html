@@ -17,18 +17,23 @@
         <td mat-cell *matCellDef="let element">{{ element.id }}</td>
       </ng-container>
 
+      <ng-container matColumnDef="nomeSolicitante">
+        <th mat-header-cell *matHeaderCellDef>Solicitante</th>
+        <td mat-cell *matCellDef="let element">{{ element.nomeSolicitante }}</td>
+      </ng-container>
+
       <ng-container matColumnDef="fornecedor">
         <th mat-header-cell *matHeaderCellDef>Fornecedor</th>
         <td mat-cell *matCellDef="let element">{{ element.fornecedor }}</td>
       </ng-container>
 
       <ng-container matColumnDef="numeroNota">
-        <th mat-header-cell *matHeaderCellDef>Número da Nota</th>
+        <th mat-header-cell *matHeaderCellDef>Nº Nota</th>
         <td mat-cell *matCellDef="let element">{{ element.numeroNotaOrdem }}</td>
       </ng-container>
 
       <ng-container matColumnDef="dataEmissao">
-        <th mat-header-cell *matHeaderCellDef>Data Emissao</th>
+        <th mat-header-cell *matHeaderCellDef>Data Emissão</th>
         <td mat-cell *matCellDef="let element">
           {{ element.dataEmissao }}
         </td>
@@ -41,14 +46,40 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="dataPrevisaoEntrega">
+        <th mat-header-cell *matHeaderCellDef>Prev. Entrega</th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="editingOrderId !== element.id; else editCell" (dblclick)="startEditing(element.id)">
+            {{ element.dataPrevisaoEntrega || "Não definida"}}
+          </span>
+          <ng-template #editCell>
+            <div class="datepicker-container">
+              <input matInput [matDatepicker]="picker" [(ngModel)]="element.dataPrevisaoEntrega"
+                placeholder="Escolha uma data">
+              <mat-datepicker-toggle matSuffix [for]="picker" matIconSuffix
+                class="datepicker-toggle"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <a (click)="saveEdit(element.id, element.dataPrevisaoEntrega)" style="cursor: pointer">
+                <i class="material-icons done">done</i>
+              </a>
+              <a (click)="cancelEdit()" style="cursor: pointer">
+                <i class="material-icons clear">clear</i>
+              </a>
+            </div>
+          </ng-template>
+        </td>
+      </ng-container>
+
+
+
       <!-- Po- Column -->
       <ng-container matColumnDef="dataRecebimentoOrdemCompra">
-        <th mat-header-cell *matHeaderCellDef>Data Recebimento</th>
+        <th mat-header-cell *matHeaderCellDef>Data Receb.</th>
         <td mat-cell *matCellDef="let element">{{ element.dataRecebimentoOrdemCompra }}</td>
       </ng-container>
       <!-- Po- Column -->
       <ng-container matColumnDef="quantidade">
-        <th mat-header-cell *matHeaderCellDef>Quantidade</th>
+        <th mat-header-cell *matHeaderCellDef>Qtde</th>
         <td mat-cell *matCellDef="let element">{{ element.quantidade }}</td>
       </ng-container>
 
@@ -65,34 +96,53 @@
 
       <ng-container matColumnDef="ordemObservacao">
         <th mat-header-cell *matHeaderCellDef>Observação</th>
-        <td mat-cell *matCellDef="let element">{{ element.ordemObservacao }}</td>
+        <td mat-cell *matCellDef="let element" [attr.title]="element.ordemObservacao">
+          {{(element.ordemObservacao.length > 20) ? ((element.ordemObservacao).slice(0, 20) + '...') :
+          element.ordemObservacao}}
+        </td>
       </ng-container>
+
 
       <!-- - Column -->
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Ações</th>
         <td mat-cell *matCellDef="let element">
-          <a (click)="generateAndOpenReport(element.id)" style="cursor: pointer">
-            <i class="material-icons edit">print</i>
+          <a [matMenuTriggerFor]="menu" style="cursor: pointer">
+            <i class="material-icons settings">settings</i>
           </a>
-          <ng-container *ngIf="element.statusOrdem !== 'RECEBIDO'">
+          <ng-container *ngIf="element.statusOrdem !== 'RECEBIDO' && 
+                               element.statusOrdem !== 'AGUARDANDO RECEBIMENTO' &&
+                               element.statusOrdem !== 'LIBERADO'">
             <a (click)="onEditForm(element)" style="cursor: pointer">
               <i class="material-icons edit">edit</i>
             </a>
           </ng-container>
-          <a [matMenuTriggerFor]="menu" style="cursor: pointer">
-            <i class="material-icons settings">settings</i>
+
+          <a (click)="generateAndOpenReport(element.id)" style="cursor: pointer">
+            <i class="material-icons imp">print</i>
           </a>
 
           <mat-menu #menu="matMenu" xPosition="before">
-            <ng-container
-              *ngIf="element.statusOrdem !== 'AGUARDANDO LIBERAÇÃO' &&
+            <ng-container *ngIf="element.statusOrdem !== 'AGUARDANDO LIBERAÇÃO' &&
                      element.statusOrdem !== 'LIBERADO' &&
-                     element.statusOrdem !== 'RECEBIDO'">
-              <button mat-menu-item (click)="onFaturar(element)">Receber</button>
+                     element.statusOrdem !== 'RECEBIDO' &&
+                     element.statusOrdem !== 'REVISAR'">
+              <button mat-menu-item (click)="onEditForm(element)">Conferir</button>
             </ng-container>
             <ng-container *ngIf="element.statusOrdem === 'RECEBIDO'">
               <button mat-menu-item (click)="onEstornar(element)">Estornar</button>
+            </ng-container>
+            <ng-container *ngIf="element.statusOrdem === 'AGUARDANDO LIBERAÇÃO'">
+              <button mat-menu-item (click)="onLiberar(element)">Liberar</button>
+            </ng-container>
+            <ng-container *ngIf="element.statusOrdem === 'AGUARDANDO LIBERAÇÃO'">
+              <button mat-menu-item (click)="onDevolver(element)">Devolver</button>
+            </ng-container>
+            <ng-container *ngIf="element.statusOrdem === 'LIBERADO'">
+              <button mat-menu-item (click)="onRealizarPedido(element)">Realizar Pedido</button>
+            </ng-container>
+            <ng-container *ngIf="element.statusOrdem === 'REVISAR'">
+              <button mat-menu-item (click)="onRevisar(element)">Revisado</button>
             </ng-container>
             <button mat-menu-item>Cancelar</button>
           </mat-menu>

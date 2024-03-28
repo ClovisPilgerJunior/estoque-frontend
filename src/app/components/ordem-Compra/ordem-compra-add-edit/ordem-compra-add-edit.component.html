@@ -2,31 +2,47 @@
   Ordem de Compra
 </div>
 <form [formGroup]="ordemCompra" (ngSubmit)="onFormSubmit()">
-  <div mat-dialog-content >
+  <div mat-dialog-content>
     <div class="row">
       <div class="add-item-form tipos">
-        <mat-form-field class="full-width" appearance="fill">
+        <mat-form-field class="full-width">
           <mat-label>Selecione uma Fornecedor</mat-label>
           <input type="text" placeholder="Fornecedor" matInput [formControl]="fornecedorControl"
-             [matAutocomplete]="autoFornecedor">
+            [matAutocomplete]="autoFornecedor">
           <mat-autocomplete #autoFornecedor="matAutocomplete" [displayWith]="displayFnFornecedor">
-             <mat-option *ngFor="let fornecedor of filteredFornecedor | async" [value]="fornecedor">
-               {{fornecedor.empresa}}
-             </mat-option>
+            <mat-option *ngFor="let fornecedor of filteredFornecedor | async" [value]="fornecedor">
+              {{fornecedor.empresa}}
+            </mat-option>
           </mat-autocomplete>
           <mat-error *ngIf="fornecedorControl.hasError('invalidFornecedor')">
-             Fornecedor inválido.
+            Fornecedor inválido.
           </mat-error>
-         </mat-form-field>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" *ngIf="ordemCompra.get('statusOrdem')?.value === 'AGUARDANDO RECEBIMENTO'">
+          <mat-label>Nº Nota</mat-label>
+          <input required matInput type="number" [mask]="'0*'" placeholder="Ex: 5550" maxlength="50"
+            formControlName="numeroNotaOrdem" />
+          <mat-error>
+            Informar número da nota
+          </mat-error>
+        </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
-          <mat-label>Número da Nota</mat-label>
-          <input ngxPrint matInput type="number" placeholder="Ex: 5550" maxlength="50" formControlName="numeroNotaOrdem" />
+          <mat-label>Solicitante</mat-label>
+          <input matInput type="text" maxlength="50" formControlName="nomeSolicitante">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Previsão Entrega</mat-label>
+          <input matInput [matDatepicker]="dataEntrega" formControlName="dataPrevisaoEntrega" />
+          <mat-datepicker-toggle matIconSuffix [for]="dataEntrega"></mat-datepicker-toggle>
+          <mat-datepicker #dataEntrega></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field class="full-width" appearance="fill">
           <mat-label>Observação</mat-label>
-          <input matInput type="text" placeholder="Ex: Petenate" maxlength="50" formControlName="ordemObservacao" />
+          <input matInput type="text" placeholder="Ex: Petenate" maxlength="255" formControlName="ordemObservacao" />
         </mat-form-field>
       </div>
 
@@ -151,7 +167,7 @@
               <a (click)="confirmEdit(element)" style="cursor: pointer">
                 <i class="material-icons done">done</i>
               </a>
-              <a  (click)="cancelEdit(element)" style="cursor: pointer">
+              <a (click)="cancelEdit(element)" style="cursor: pointer">
                 <i class="material-icons clear">clear</i>
               </a>
             </ng-template>
@@ -176,8 +192,17 @@
     <button mat-raised-button color="warn" type="button" [mat-dialog-close]="false">
       Cancelar
     </button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!fornecedorControl.valid || dataSource.length === 0">
-      {{ data ? "Atualizar" : "Gerar Ordem" }}
-    </button>
+    <ng-container *ngIf="ordemCompra.get('statusOrdem')?.value !== 'AGUARDANDO RECEBIMENTO'">
+      <button mat-raised-button color="primary" type="submit"
+        [disabled]="!fornecedorControl.valid || dataSource.length === 0">
+        {{ data ? "Atualizar" : "Gerar Ordem" }}
+      </button>
+    </ng-container>
+    <ng-container *ngIf="ordemCompra.get('statusOrdem')?.value === 'AGUARDANDO RECEBIMENTO'">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!canReceiveOrder()">
+        Receber Ordem
+      </button>
+    </ng-container>
+
   </div>
 </form>
